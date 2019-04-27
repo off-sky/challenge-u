@@ -1,14 +1,19 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { PhotoComponent } from './components/photo/photo.component';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
-  declarations: [PhotoComponent],
+  declarations: [
+    PhotoComponent
+  ],
   imports: [
-    CommonModule
+    CommonModule,
+    ReactiveFormsModule
   ],
   exports: [
-    PhotoComponent
+    PhotoComponent,
+    ReactiveFormsModule
   ]
 })
 export class SharedModule { }
