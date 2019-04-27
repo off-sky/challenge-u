@@ -1,0 +1,11 @@
+
+<div class="y-header-wrap" *ngIf="user$ | async; let user">
+    <div>Challenger</div>
+    <div>
+      {{user.displayName}}
+    </div>
+    <div>
+      <y-photo [data]="user?.photo?.data"></y-photo>
+    </div>
+</div>
+   

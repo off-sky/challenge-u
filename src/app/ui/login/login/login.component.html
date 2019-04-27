@@ -1,0 +1,11 @@
+<button (click)="loginFaceBook()">
+  Login via Facebook
+</button>
+
+<div *ngIf="isLoading$ | async">
+  Loading...
+</div>
+
+<div *ngIf="error$ | async; let error">
+  {{ error }}
+</div>

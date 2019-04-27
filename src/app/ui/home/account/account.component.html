@@ -1,0 +1,36 @@
+<y-header></y-header>
+
+<!-- Container for sidebar(s) + page content -->
+<ng-sidebar-container class="y-sidenav-container">
+ 
+    <!-- A sidebar -->
+    <ng-sidebar [opened]="open" #sidebar>
+      <p>Sidebar contents</p>
+    </ng-sidebar>
+
+    <!-- Page content -->
+    <div ng-sidebar-content>
+      <button (click)="sidebar.close()">Toggle sidebar</button>
+    </div>
+
+  </ng-sidebar-container>
+
+<!-- <mat-sidenav-container class="example-container">
+    <mat-sidenav mode="side" [opened]="true">
+        <mat-nav-list>
+            <mat-list-item>
+                <a matLine routerLink="challenges">Challenges</a>
+            </mat-list-item>
+            <mat-list-item>
+                <a matLine href="...">Friends</a>
+            </mat-list-item>
+        </mat-nav-list>
+    </mat-sidenav>
+    <mat-sidenav-content>
+        <router-outlet></router-outlet>
+    </mat-sidenav-content>
+</mat-sidenav-container> -->
+
+<button (click)="onSignOutClick()">Sign Out</button>
+
+<div *ngIf="isLoading$ | async">Processing log out...</div>
