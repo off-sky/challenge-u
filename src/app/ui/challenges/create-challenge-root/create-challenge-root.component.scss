@@ -1,0 +1,31 @@
+.y-title-1 {
+    font-size: 20px;
+    margin-bottom: 10px;
+}
+
+
+.y-columns-wrap {
+    display: flex;
+}
+
+.y-column-left {
+    margin-right: 60px;
+}
+
+
+.example-radio-button {
+    margin-bottom: 5px;
+}
+
+.example-radio-group {
+    display: flex;
+    flex-direction: column;
+    margin: 15px 0;
+  }
+
+  .y-weekday-select-wrap {
+      display: flex;
+      div {
+          margin-right: 10px;
+      }
+  }

@@ -1,6 +1,17 @@
+@import '../../global-styles/variables.scss';
+
 .y-header-wrap {
     display: flex;
-    min-height: 100px;
+    min-height: $header-height;
+    padding: 0 $padding-side 0 $padding-side;
     justify-content: space-between;
     align-items: center;
+    -webkit-box-shadow: -1px 2px 13px 0px rgba(0,0,0,0.75);
+    -moz-box-shadow: -1px 2px 13px 0px rgba(0,0,0,0.75);
+    box-shadow: -1px 2px 13px 0px rgba(0,0,0,0.75);
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 5;
 }

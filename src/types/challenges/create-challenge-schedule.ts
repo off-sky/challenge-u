@@ -2,13 +2,14 @@ import { Observable } from "rxjs";
 import * as common from './common';
 
 export interface CreateChallengeSchedule {
-    add(d: Date): void;
-    remove(d: Date): void;
+    setStartDate(d: Date): void;
+    setEndDate(d: Date): void;
+    setDates(dd: Date[]): void;
     setType(t: common.ChallengeType): void;
-    setFillRule(fr: common.FillRuleType): void;
+    setFillRule(fr: common.FillRuleOption): void;
 
     /**
-     * Observable of UTC timestamps corresponding to activity times
+     * Observable of Dates corresponding to activity times
     */
-    schedule(): Observable<number[]>;
+    schedule(): Observable<Date[]>;
 }

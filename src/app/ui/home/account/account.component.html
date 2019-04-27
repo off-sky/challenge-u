@@ -1,19 +1,11 @@
 <y-header></y-header>
 
 <!-- Container for sidebar(s) + page content -->
-<ng-sidebar-container class="y-sidenav-container">
- 
-    <!-- A sidebar -->
-    <ng-sidebar [opened]="open" #sidebar>
-      <p>Sidebar contents</p>
-    </ng-sidebar>
+<div class="y-sidenav-container">
+   
+      <router-outlet></router-outlet>
 
-    <!-- Page content -->
-    <div ng-sidebar-content>
-      <button (click)="sidebar.close()">Toggle sidebar</button>
-    </div>
-
-  </ng-sidebar-container>
+</div>
 
 <!-- <mat-sidenav-container class="example-container">
     <mat-sidenav mode="side" [opened]="true">
@@ -31,6 +23,3 @@
     </mat-sidenav-content>
 </mat-sidenav-container> -->
 
-<button (click)="onSignOutClick()">Sign Out</button>
-
-<div *ngIf="isLoading$ | async">Processing log out...</div>
