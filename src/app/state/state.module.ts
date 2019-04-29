@@ -9,6 +9,8 @@ import { AppEffects } from './app.effects';
 import { appReducer, appMetaReducers } from './app.reducer';
 
 import { AuthModule } from './auth/auth.module';
+import { UsersModule } from './users/users.module';
+import { ChallengesModule } from './challenges/challenges.module';
 
 @NgModule({
   declarations: [],
@@ -24,6 +26,8 @@ import { AuthModule } from './auth/auth.module';
 
     /**Features */
     AuthModule,
+    ChallengesModule,
+    UsersModule,
 
     !environment.production ? StoreDevtoolsModule.instrument() : []
   ]

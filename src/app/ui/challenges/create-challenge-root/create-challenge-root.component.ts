@@ -1,7 +1,12 @@
-import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { FormGroup, FormControl, Validators, FormArray } from '@angular/forms';
 import { clgu } from 'src/types';
-import { startWith, tap } from 'rxjs/operators';
+import { startWith, tap, take } from 'rxjs/operators';
+import { MonthSelectorComponent } from 'src/app/shared/components/date-selector/month-selector.component';
+import { AppState } from 'src/app/state/app.state';
+import { Store } from '@ngrx/store';
+import { ChallengesActions } from 'src/app/state/challenges/_challenges.actions';
+
 
 @Component({
   selector: 'y-create-challenge-root',
@@ -21,25 +26,65 @@ export class CreateChallengeRootComponent implements OnInit {
   public descriptionControl: FormControl;
   public participantsControl: FormControl;
   public selectedDatesControl: FormControl;
+  public shouldTrackMeasurements: FormControl;
+  public measurementFormArray: FormArray;
 
   public selectedDates: Date[];
+  public shouldTrackProgress: boolean = false;
   public fillRuleOptions: clgu.challenges.common.FillRuleOption[] = [];
   public currentFillRule: clgu.challenges.common.FillRuleType;
 
-  private scheduler = new clgu.challenges.models.CreateChallengeSchedule();
+  private scheduler: clgu.challenges.models.CreateChallengeSchedule;
+
+
+  @ViewChild('dateSelector') private monthSelectorCmp: MonthSelectorComponent;
 
 
 
-  constructor() { }
+  constructor(
+    private store: Store<AppState>
+  ) { }
 
   ngOnInit() {
     this.initForm();
+  }
+
+  public onDatesChanged(newDates: Date[]): void {
+    this.selectedDates = newDates;
+    this.fillRuleControl.setValue('custom');
+  }
+
+
+  public onSubmit(): void {
+    const formValue = this.fg.value;
+    // console.log('>>>>> Challenge:');
+    // console.log(formValue);
+    // console.log('>>>>> Dates:');
+    // console.log(this.selectedDates.map(d => d.toLocaleString()));
+
+    this.store.select(state => state.auth.authCheck.user.id)
+      .pipe(
+        take(1)
+      )
+      .subscribe(userId => {
+          this.store.dispatch(new ChallengesActions.CreateChallenge({
+            ownerId: userId,
+            participants: formValue.participants.map(user => user.id),
+            schedule: this.selectedDates.map(d => d.getTime()),
+            name: formValue.name,
+            description: formValue.description,
+            measurements: formValue.measurements.shouldTrack ? formValue.measurements.items : null,
+            type: formValue.type
+          }));
+      })
+   
   }
 
 
   private initForm(): void {
     const today = new Date();
     const inAWeek = new Date(today.getTime() + 789389800);
+    this.scheduler = new clgu.challenges.models.CreateChallengeSchedule(today, inAWeek, 'daily', 'every_day');
     this.nameControl = new FormControl(null, [ Validators.required ]);
     this.startDateControl = new FormControl(today, [ Validators.required ]);
     this.endDateControl = new FormControl(inAWeek, [Validators.required]);
@@ -48,6 +93,13 @@ export class CreateChallengeRootComponent implements OnInit {
     this.descriptionControl = new FormControl();
     this.participantsControl = new FormControl([], Validators.required);
     this.selectedDatesControl = new FormControl([]);
+    this.measurementFormArray = new FormArray([
+      new FormGroup({
+        displayName: new FormControl(null, [ Validators.required ]),
+        type: new FormControl('number')
+      })
+    ]);
+    this.shouldTrackMeasurements = new FormControl(false);
 
     this.weekDayFg = new FormGroup({
       0: new FormControl(false),
@@ -62,7 +114,8 @@ export class CreateChallengeRootComponent implements OnInit {
     this.fillRuleFg = new FormGroup({
         value:  this.fillRuleControl,
         weekDays: this.weekDayFg
-    })
+    });
+
 
     this.fg = new FormGroup({
       name: this.nameControl,
@@ -71,6 +124,10 @@ export class CreateChallengeRootComponent implements OnInit {
       type: this.typeControl,
       fillRule: this.fillRuleFg,
       description: this.descriptionControl,
+      measurements: new FormGroup({
+        shouldTrack: this.shouldTrackMeasurements,
+        items: this.measurementFormArray,
+      }),
       participants: this.participantsControl,
       selectedDates: this.selectedDatesControl
     });
@@ -114,6 +171,9 @@ export class CreateChallengeRootComponent implements OnInit {
             console.log('Schedule re-calculated:');
             console.log(dates);
             this.selectedDates = dates;
+            if (this.monthSelectorCmp) {
+              this.monthSelectorCmp.setDates(this.selectedDates);
+            }
           });
   }
 

@@ -1,11 +1,19 @@
+@import '../../global-styles/variables';
+
 .y-title-1 {
-    font-size: 20px;
+    font-size: 25px;
+    font-weight: 500;
     margin-bottom: 10px;
 }
 
 
 .y-columns-wrap {
     display: flex;
+    padding-bottom: 80px;
+    .y-column:not(:first-child) {
+        width: 30%;
+        margin-right: 50px;
+    }
 }
 
 .y-column-left {
@@ -23,9 +31,27 @@
     margin: 15px 0;
   }
 
-  .y-weekday-select-wrap {
-      display: flex;
-      div {
-          margin-right: 10px;
-      }
-  }
+.y-weekday-select-wrap {
+    div {
+        margin-right: 10px;
+    }
+}
+
+.sub-title {
+    font-weight: 500;
+}
+
+.block {
+    margin-bottom: 30px;
+}
+
+.bottom-bar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: white;
+    padding: 20px $padding-side;
+    display: flex;
+    justify-content: flex-end;
+}

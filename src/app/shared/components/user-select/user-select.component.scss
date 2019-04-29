@@ -1,0 +1,19 @@
+@import '../../../ui/global-styles/variables';
+
+.selected-item {
+    display: inline-flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: $blue;
+    color: white;
+    padding: 10px;
+    margin-right: 10px;
+    margin-bottom: 10px; 
+    border-radius: 3px;
+
+    &__close-wrap {
+        cursor: pointer;
+        position: relative;
+        top: 3px;
+    }
+}

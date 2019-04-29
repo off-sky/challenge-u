@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { clgu } from '../../../types';
 import { DatabaseService } from './database.service';
-import { switchMap } from 'rxjs/operators';
+import { switchMap, map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -27,9 +27,16 @@ export class UserService {
   }
 
 
+  public getUsers(): Observable<clgu.users.db.UserLike[]> {
+      return this.dbService.readOnce(this.USER_REF)
+        .pipe(
+          map(userObj => Object.keys(userObj).map(id => userObj[id]))
+        )
+  }
+
+
   public getUserDetails(id: string): Observable<clgu.users.db.UserLike> {
       const ref = `${this.USER_REF}/${id}`;
-      console.log('Getting detailsfor: ', id);
       return this.dbService.readOnce(ref);
   }
 

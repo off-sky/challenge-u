@@ -1,0 +1,12 @@
+.form-wrap {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+    .input-wrap:not(:last-child) {
+        margin-right: 15px;
+    }
+}
+
+.close {
+    cursor: pointer;
+}

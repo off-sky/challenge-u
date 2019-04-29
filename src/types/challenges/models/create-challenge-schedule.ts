@@ -22,6 +22,14 @@ export class CreateChallengeSchedule implements iCreateChallengeSchedule {
 
     }
 
+    constructor(startDate: Date, endDate: Date, type: common.ChallengeType, fillRule: common.FillRuleType) {
+        this._startMoment = moment(startDate);
+        this._endMoment = moment(endDate);
+        this._type = type;
+        this._fillRule = fillRule;
+        this.emitNewSchedule();
+    }
+
     setDates(dd: Date[]): void {
 
     }
@@ -56,17 +64,19 @@ export class CreateChallengeSchedule implements iCreateChallengeSchedule {
 
 
     private emitNewSchedule(): void {
-        console.log('About to recalculate schedule...', this._endMoment, this._fillRule, this._startMoment, this._type)
+
         const result = [];
         if (!this._endMoment || !this._fillRule || !this._startMoment || !this._type) {
             return;
         }
 
-        console.log('Calculating...');
+        if (this._fillRule === 'custom') {
+            return;
+        }
 
         const incr = this.getIncrement();
 
-        for(let curr = moment(this._startMoment); curr.isSameOrBefore(this._endMoment); curr = moment(curr.add(1, incr))) {
+        for(let curr = this.getStartMoment(); curr.isSameOrBefore(this._endMoment); curr = moment(curr.add(1, incr))) {
             if (this._type === 'daily' && !this.shouldIncludeDay(curr)) {
                 continue;
             }
@@ -81,6 +91,20 @@ export class CreateChallengeSchedule implements iCreateChallengeSchedule {
 
         this._scheduleEmitter.next(result);
 
+    }
+
+
+    private getStartMoment(): moment.Moment {
+        if (this._type === 'daily') {
+            return moment(this._startMoment);
+        }
+        if (this._type === 'monthly') {
+            return moment(this._startMoment).startOf('month');
+        }
+        
+        if (this._type === 'yearly') {
+            return moment(this._startMoment).startOf('year');
+        }
     }
 
 

@@ -1,0 +1,27 @@
+<form class="example-form">
+  <mat-form-field class="example-full-width">
+    <input type="text"
+           placeholder="Start typing name"
+           matInput
+           [formControl]="inputControl"
+           [matAutocomplete]="auto">
+    <mat-autocomplete #auto="matAutocomplete"
+                      [displayWith]="displayFn"
+                      (optionSelected)="onOptionSelected($event)"
+      >
+      <mat-option *ngFor="let option of filteredUsers$ | async" [value]="option">
+        {{ option.displayName }}
+      </mat-option>
+    </mat-autocomplete>
+  </mat-form-field>
+</form>
+<div class="selected-items">
+    <div class="selected-item" *ngFor="let user of selectedUsers">
+        <div>
+          {{ user.displayName }}
+        </div>
+        <div class="selected-item__close-wrap" (click)="onUserDeselect(user.id)">
+          <mat-icon>close</mat-icon>
+        </div>
+    </div>
+</div>

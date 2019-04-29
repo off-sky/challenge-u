@@ -1,0 +1,41 @@
+<div>
+  <div *ngFor="let fg of control.controls; let i = index">
+      <form [formGroup]="fg">
+          <div class="form-wrap">
+            <div class="input-wrap">
+              <mat-form-field class="example-full-width">
+                  <input matInput
+                          name="measName"
+                          formControlName="displayName"
+                          placeholder="Measurement Name">
+                  <mat-hint align="start"><strong>E.g. number of pull-ups</strong> </mat-hint>
+              </mat-form-field>
+            </div>
+            <div class="input-wrap">
+                <mat-form-field>
+                  <mat-label>Measurement Type</mat-label>
+                  <mat-select name="measType" formControlName="type">
+                    <mat-option *ngFor="let option of measurementTypeOptions" [value]="option.value">
+                      {{option.displayValue}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+            </div>
+
+            <div class="input-wrap close"
+                 (click)="remove(i)"
+              >
+                <mat-icon>close</mat-icon>
+            </div>
+          </div>
+      </form>
+  </div>
+
+  <div>
+    <button mat-raised-button
+            color="secondary"
+            (click)="add()"
+      >Add
+    </button>
+  </div>
+</div>

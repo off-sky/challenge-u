@@ -1,0 +1,11 @@
+<div class="dates-wrap">
+  <div *ngFor="let l of list"
+        class="date-item"
+        [ngClass]="{
+          'selected': l.isSelected
+        }"
+        (click)="onDateClick(l)"
+    >
+      {{ l.displayDate }}
+  </div>
+</div>

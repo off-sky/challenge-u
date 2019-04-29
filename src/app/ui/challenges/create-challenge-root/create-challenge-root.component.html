@@ -4,7 +4,7 @@
     </div>
     <div class="y-columns-wrap">
 
-        <div class="y-column-left">
+        <div class="y-column y-column-left">
                 <form [formGroup]="fg">
                         <!-- Name -->
                         <div>
@@ -67,11 +67,11 @@
                     </form>
         </div>
 
-        <div class="y-column-right">
+        <div class="y-column y-column-right">
             <div class="y-challenge-schedule-wrap">
                 <div class="y-challenge-schedule__left">
                      <!-- Fill Rule -->
-                     <label id="example-radio-group-label">Select your schedule</label>
+                     <div class="sub-title">Select your schedule</div>
                      <div [formGroup]="fillRuleFg">
                          <mat-radio-group
                              aria-labelledby="example-radio-group-label"
@@ -79,7 +79,11 @@
                              formControlName="value"
                              #schedule
                              >
-                             <mat-radio-button *ngFor="let option of fillRuleOptions" class="example-radio-button" [value]="option.value">
+                             <mat-radio-button *ngFor="let option of fillRuleOptions"
+                                                class="example-radio-button"
+                                                [value]="option.value"
+                                                [disabled]="option.value === 'custom'"
+                                                >
                                  {{ option?.displayValue }}
                                  <div *ngIf="option.value === 'specific' && currentFillRule === 'specific'"
                                         [formGroup]="weekDayFg"
@@ -127,26 +131,77 @@
                 </div>
 
                 <div class="y-challenge-schedule__right">
-                        <p-calendar name="selectedDates"
-                                    [(ngModel)]="selectedDates"
-                                    selectionMode="multiple"
-                                    [inline]="true"
-                                    [monthNavigator]="true"
-                                    [yearNavigator]="true"
-                                >
-                        </p-calendar>
+                    <div *ngIf="typeControl.value === 'daily'">
+                            <p-calendar name="selectedDates"
+                                        [(ngModel)]="selectedDates"
+                                        selectionMode="multiple"
+                                        [inline]="true"
+                                        [monthNavigator]="true"
+                                        [yearNavigator]="true"
+                                    >
+                            </p-calendar>
+                    </div>
+                    <div *ngIf="typeControl.value === 'monthly'">
+                        <y-date-selector [dates]="selectedDates"
+                                         #dateSelector
+                                         (selectedChanged)="onDatesChanged($event)"
+                            
+                            >
+                        </y-date-selector>
+                    </div>
+
+                    <div *ngIf="typeControl.value === 'yearly'">
+                        <y-date-selector [dates]="selectedDates"
+                                         [dateType]="'year'"
+                                         #dateSelector
+                                         (selectedChanged)="onDatesChanged($event)"
+                                        >
+                        </y-date-selector>
+                    </div>
+                        
                 </div>
 
-            </div>
-
-            <div>
-                <button>
-                    Create
-                </button>
-            </div>
-          
+            </div>          
         </div>
 
+        <!-- EOF Center Column -->
+
+        <div class="y-column">
+            <div class="block">
+                <div class="sub-title">
+                    Invite friends
+                </div>
+                <y-user-select [control]="participantsControl"></y-user-select>
+            </div>
+           
+
+            <div class="block">
+                <div class="sub-title block">
+                    Track Progress
+                </div>
+                <div class="block">
+                    <mat-checkbox
+                            name="shouldTrackProgress"
+                            [formControl]="shouldTrackMeasurements"
+                        >
+                        I want to track progress (optional)
+                    </mat-checkbox>
+                </div>
+               
+                <div *ngIf="shouldTrackMeasurements.value">
+                    <y-measurement-editor [control]="measurementFormArray"></y-measurement-editor>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <!-- EOF Main column wrap -->
+    <div class="bottom-bar">
+        <button mat-raised-button color="primary"
+                (click)="onSubmit()"
+            >
+            Create 
+        </button>
     </div>
   
 

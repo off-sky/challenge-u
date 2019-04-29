@@ -5,12 +5,16 @@ import { environment } from "../../environments/environment"
 import { AppState } from './app.state';
 
 import { authReducer } from './auth/_auth.reducer';
+import { usersReducer } from './users/_users.reducer';
+import { challengesReducer } from './challenges/_challenges.reducer';
 
 
 
 export const appReducer: ActionReducerMap<AppState> = {
   router: routerReducer,
-  auth: authReducer
+  auth: authReducer,
+  users: usersReducer,
+  challenges: challengesReducer
 };
 
 export function logger(reducer: ActionReducer<AppState>): ActionReducer<AppState> {

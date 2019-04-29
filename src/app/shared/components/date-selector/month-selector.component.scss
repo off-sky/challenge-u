@@ -1,0 +1,19 @@
+@import '../../../ui/global-styles/variables';
+
+.dates-wrap {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.date-item {
+    width: 150px;
+    margin-right: 10px;
+    margin-bottom: 10px;
+    cursor: pointer;
+    padding: 10px;
+    border-radius: 4px;
+    &.selected {
+        background-color: $blue;
+        color: white;
+    }
+}

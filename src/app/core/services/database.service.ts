@@ -21,6 +21,11 @@ export class DatabaseService {
   }
 
 
+  public getTimestampField(): any {
+    return firebase.database.ServerValue.TIMESTAMP;
+  }
+
+
   /**
    * 
    * @param path 
@@ -42,6 +47,16 @@ export class DatabaseService {
   }
 
 
+  public listen(path: string): Observable<any> {
+    return new Observable(observer => {
+        firebase.database().ref(path)
+          .on('value', (snap) => { observer.next(snap.val()); });
+
+        return () => firebase.database().ref(path).off('value');
+    });
+  }
+
+
 
   public set(path: string, value: any): Observable<void> {
     const promise = new Promise<void>((resolve, reject) => {
@@ -49,7 +64,7 @@ export class DatabaseService {
         if (err) {
           reject(err);
         }
-        resolve(promise);
+        resolve();
       });
     });
 
@@ -75,6 +90,7 @@ export class DatabaseService {
 
     return from(promise);
   }
+
 
 
   /**
