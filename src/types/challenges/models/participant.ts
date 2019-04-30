@@ -16,10 +16,11 @@ export class Participant implements iParticipant {
                 commonDays: challDb.CommonChallengeDays,
                 userDays: challDb.UserChallengeDays,
                 challengeType: challCommon.ChallengeType,
+                challengeId: string,
                 measurements: challDb.Measurements
             ) {
         this.initUser(user);
-        this.initActivities(commonDays, userDays, challengeType, measurements);
+        this.initActivities(commonDays, userDays, challengeType, challengeId, measurements);
     }
 
 
@@ -33,6 +34,7 @@ export class Participant implements iParticipant {
     private initActivities(commonDays: challDb.CommonChallengeDays,
                            userDays: challDb.UserChallengeDays,
                            type: challCommon.ChallengeType,
+                           challengeId: string,
                            measurements: challDb.Measurements): void {
         Object.keys(commonDays).forEach(dayId => {
             const day = commonDays[dayId];
@@ -43,6 +45,7 @@ export class Participant implements iParticipant {
             this.activities.push(
                 new Activity(
                     this.id,
+                    challengeId,
                     day.timestamp,
                     type,
                     userRequirements || day.requirements,

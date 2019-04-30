@@ -16,6 +16,12 @@ export interface ChallengesState {
             error: clgu.common.Error;
             item: clgu.challenges.Challenge;
         }
+    };
+    showUp: {
+        [dayId: string]: {
+            isLoading: boolean;
+            error: clgu.common.Error;
+        }
     }
 }
 
@@ -31,5 +37,6 @@ export const challengesInitialState: ChallengesState = {
         error: null
     },
     details: {
-    }
+    },
+    showUp: {}
 }

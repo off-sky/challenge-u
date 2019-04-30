@@ -15,6 +15,11 @@ export class ChallengesActions {
     public static readonly GET_CHALLENGE_DETAILS_IF_EMPTY_FAIL = '[Challenges] GET_CHALLENGE_DETAILS_IF_EMPTY_FAIL';
 
 
+    public static readonly SHOW_UP_DATE = '[Challenges] SHOW_UP_DATE';
+    public static readonly SHOW_UP_DATE_SUCCESS = '[Challenges] SHOW_UP_DATE_SUCCESS';
+    public static readonly SHOW_UP_DATE_FAIL = '[Challenges] SHOW_UP_DATE_FAIL';
+
+
 
     public static readonly CreateChallenge = class implements Action {
         public readonly type = ChallengesActions.CREATE_CHALLENGE;
@@ -51,6 +56,23 @@ export class ChallengesActions {
         public readonly type = ChallengesActions.SAVE_CHALLENGE_LIST;
         constructor(public payload: any) {}
     }
+
+    public static readonly ShowUpDate = class implements Action {
+        public readonly type = ChallengesActions.SHOW_UP_DATE;
+        constructor(public payload?: clgu.challenges.DayShowUpRequest) {}
+    }
+
+    public static readonly ShowUpDateSuccess = class implements Action {
+        public readonly type = ChallengesActions.SHOW_UP_DATE_SUCCESS;
+        constructor(public payload?: string) {}
+    }
+
+
+    public static readonly ShowUpDateFail = class implements Action {
+        public readonly type = ChallengesActions.SHOW_UP_DATE_FAIL;
+        constructor(public payload?: clgu.common.ErrorWithId) {}
+    }
+
 
     public static readonly StartListenChallengeList = class implements Action {
         public readonly type = ChallengesActions.START_LISTEN_CHALLENGE_LIST;

@@ -23,6 +23,7 @@ export class Challenge implements iChallenge {
                     dbObj.common_days,
                     dbObj.users_days ? dbObj.users_days[user.id] : undefined,
                     dbObj.challenge.type,
+                    dbObj.challenge.id,
                     dbObj.common_measurements
                 )
             })

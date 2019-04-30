@@ -15,4 +15,12 @@ export class Requirement implements iRequirement {
             this.completed = dbObj.completed;
         }
     }
+
+    public getDbObj(): db.RequirementObj {
+        return {
+            display_name: this.displayName,
+            category: this.category,
+            completed: this.completed
+        }
+    }
 }

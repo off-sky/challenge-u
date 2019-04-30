@@ -5,8 +5,7 @@ export class Measurement implements iMeasurement {
     id?: string;
     displayName: string;
     type: "string" | "number" | "boolean";
-    value?: string | number | boolean;
-    filled = false;
+    value: any;
 
     constructor(id: string, dbObj: db.MeasurementObj) {
         this.id = id;
@@ -14,7 +13,21 @@ export class Measurement implements iMeasurement {
             this.displayName = dbObj.display_name;
             this.type = dbObj.type;
             this.value = dbObj.value;
-            this.filled = this.value !== undefined;
+        }
+    }
+
+
+    get filled(): boolean {
+        return this.value !== undefined;
+    }
+
+
+
+    public getDbObj(): db.MeasurementObj {
+        return {
+            display_name: this.displayName,
+            type: this.type,
+            value: this.value
         }
     }
 }

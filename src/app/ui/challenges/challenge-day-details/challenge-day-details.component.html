@@ -1,0 +1,43 @@
+<div class="y-section-header">
+  <div class="y-section-header__left" (click)="goBack()">
+      <div class="y-section-header__back-btn__wrap">
+          <mat-icon>keyboard_arrow_left</mat-icon>
+      </div>
+      <div class="y-section-header__title__wrap">
+        {{ activity?.displayLabel }}
+      </div>
+  </div>
+  <div class="y-section-header__right">
+    <button *ngIf="!(loading$ | async)"
+            (click)="showUpDate()"
+            mat-raised-button
+            color="primary">
+      Show Up
+    </button>
+    <div *ngIf="loading$ | async">
+      Loading...
+    </div>
+  </div>
+</div>
+
+<div class="y-measurements y-section">
+    <div class="y-title-2">
+        Measurements (optional)
+    </div>
+    <div *ngIf="!hasMeasurements" class="y-measurements__contents">
+        No measurements for this activity
+    </div>
+    <div *ngIf="hasMeasurements">
+      <y-edit-measurements [measurements]="activity?.measurements"></y-edit-measurements>
+    </div>
+</div>
+
+
+<div class="y-requirements y-section">
+    <div class="y-title-2">
+        Requirements (optional)
+    </div>
+    <div *ngIf="!hasRequirements" class="y-requirements__contents">
+        No requirements for this activity
+    </div>
+</div>

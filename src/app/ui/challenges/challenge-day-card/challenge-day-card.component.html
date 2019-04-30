@@ -1,6 +1,14 @@
-<div class="y-day-card">
+<div class="y-day-card" [ngClass]="{
+  active: isActive
+}"
+(click)="onDayClick()"
+>
   <div class="y-day-card__date">
       {{ activity.displayLabel }}
+  </div>
+
+  <div *ngIf="activity.isShowUp" class="y-day-card__completed">
+    <mat-icon>check</mat-icon>
   </div>
 
 </div>

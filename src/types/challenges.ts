@@ -1,7 +1,10 @@
 export { Activity } from './challenges/activity';
 export { CreateChallengeRequest } from './challenges/create-challenge-request';
+export { DayShowUpRequest } from './challenges/day-show-up-request';
 export { ChallengeBase } from './challenges/challenge-base';
 export { Challenge } from './challenges/challenge';
+export { Measurement } from './challenges/measurement';
+export { Requirement } from './challenges/requirement';
 import * as models from './challenges/models';
 import * as common from './challenges/common';
 export { models, common };

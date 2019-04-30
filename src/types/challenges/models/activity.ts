@@ -6,8 +6,11 @@ import { Measurement } from '../measurement';
 import { Measurement as MeasurementModel } from './measurement';
 import * as challCommon from '../common';
 import * as moment from 'moment';
+import { DayShowUpRequest } from '../day-show-up-request';
 
 export class Activity implements iActivity {
+    id: string;
+    challengeId: string;
     isFuture: boolean;
     isShowUp: boolean;
     isActive: boolean = false;
@@ -19,13 +22,16 @@ export class Activity implements iActivity {
 
     constructor(
         userId: string,
+        challengeId: string,
         ts: number,
         type: challCommon.ChallengeType,
         requirements: challDb.Requirements,
         measurements: challDb.Measurements,
         isShowUp: boolean
     ) {
+        this.id = '' + ts;
         this.userId = userId;
+        this.challengeId = challengeId;
         this.displayLabel = this.getDisplayLabel(ts, type);
         this.isShowUp = isShowUp;
         this.isFuture = this.getIsFuture(ts, type);
@@ -36,6 +42,33 @@ export class Activity implements iActivity {
         this.measurements = this.getMeasurements(measurements);
     }
 
+    public getShowUpRequest(): DayShowUpRequest {
+        const res = {
+            challengeId: this.challengeId,
+            userId: this.userId,
+            dayId: this.id,
+        } as DayShowUpRequest;
+
+        if (this.requirements && this.requirements.length > 0) {
+            const requirements = {};
+            this.requirements.forEach((r: RequirementModel) =>  {
+                requirements[r.id] = r.getDbObj();
+            });
+            res.requirements = requirements;
+        }
+
+        console.log(this.measurements);
+        const filledMeasurements = this.measurements ? this.measurements.filter(m => m.filled) : [];
+        if (filledMeasurements.length > 0) {
+            const measurements = {};
+            filledMeasurements.forEach((m: MeasurementModel) => {
+                measurements[m.id] = m.getDbObj();
+            });
+            res.measurements = measurements;
+        }
+       
+        return res;
+    }
 
     private getDisplayLabel(ts: number, type: challCommon.ChallengeType): string {
         switch(type) {

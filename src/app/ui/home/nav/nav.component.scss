@@ -28,6 +28,7 @@
     }
 
     &__content {
+        width: 100vw;
         &.opened {
             width: calc(100vw - 200px);
         }

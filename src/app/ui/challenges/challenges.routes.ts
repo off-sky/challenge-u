@@ -3,6 +3,7 @@ import { CreateChallengeRootComponent } from './create-challenge-root/create-cha
 import { ChallengeListRootComponent } from './challenge-list-root/challenge-list-root.component';
 import { DetailsRootComponent } from './details-root/details-root.component';
 import { ChallengeDetailsResolverService } from './resolvers/challenge-details.resolver.service';
+import { ChallengeDayDetailsComponent } from './challenge-day-details/challenge-day-details.component';
 
 export const challengesRoutes: Routes = [
     {
@@ -26,7 +27,21 @@ export const challengesRoutes: Routes = [
                 resolve: {
                     challenge: ChallengeDetailsResolverService
                 },
-                component: DetailsRootComponent
+                children: [
+                    {
+                        path: '',
+                        pathMatch: 'full',
+                        redirectTo: 'challenge'
+                    },
+                    {
+                        path: 'challenge',
+                        component: DetailsRootComponent
+                    },
+                    {
+                        path: 'day/:userId/:dayId',
+                        component: ChallengeDayDetailsComponent
+                    }
+                ]
             }
         ]
     }

@@ -10,6 +10,7 @@ import { ChallengeInfoService } from './services/challenge-info.service';
 import { Store } from '@ngrx/store';
 import { AppState } from '../app.state';
 import { withLatestFrom } from 'rxjs/operators';
+import { ChallengeActionService } from './services/challenge-action.service';
 
 @Injectable()
 export class ChallengesEffects {
@@ -21,6 +22,7 @@ export class ChallengesEffects {
         private actions: Actions,
         private createChallengeService: CreateChallengeService,
         private challengeInfoService: ChallengeInfoService,
+        private challengeActionService: ChallengeActionService,
         private store: Store<AppState>
     ){}
 
@@ -89,6 +91,20 @@ export class ChallengesEffects {
                         const item = items[challengeId].item;
                         return of(new ChallengesActions.GetChallengeDetailsIfEmptySuccess(item));
                     }
+                })
+            );
+
+    
+    @Effect() public showUpDate$ = this.actions
+            .pipe(
+                ofType(ChallengesActions.SHOW_UP_DATE),
+                switchMap((action: YAction<clgu.challenges.DayShowUpRequest>) => {
+                    const request = action.payload;
+                    return this.challengeActionService.showUpDate(request)
+                        .pipe(
+                            map(res => new ChallengesActions.ShowUpDateSuccess(request.dayId)),
+                            catchError(err => of(new ChallengesActions.ShowUpDateFail({ id: request.dayId, error: err })))
+                        )
                 })
             )
 

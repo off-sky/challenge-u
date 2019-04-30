@@ -57,6 +57,34 @@ export function challengesReducer(state: ChallengesState = challengesInitialStat
             return newState;
         }
 
+        case ChallengesActions.SHOW_UP_DATE: {
+            const payload = action.payload as clgu.challenges.DayShowUpRequest;
+            newState.showUp[payload.dayId] = {
+                isLoading: true,
+                error: null
+            }
+            return newState;
+        }
+
+        case ChallengesActions.SHOW_UP_DATE_SUCCESS: {
+            const payload: string = action.payload;
+            newState.showUp[payload] = {
+                isLoading: false,
+                error: null
+            }
+            return newState;
+        }
+
+
+        case ChallengesActions.SHOW_UP_DATE_FAIL: {
+            const payload: clgu.common.ErrorWithId = action.payload;
+            newState.showUp[payload.id] = {
+                isLoading: false,
+                error: payload.error
+            }
+            return newState;
+        }
+
         default: return newState;
     }
 }

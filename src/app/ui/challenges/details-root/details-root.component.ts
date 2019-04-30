@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { clgu } from '../../../../types';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'y-details-root',
@@ -12,11 +12,13 @@ export class DetailsRootComponent implements OnInit {
   public challenge: clgu.challenges.Challenge;
 
   constructor(
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private router: Router
   ) { }
 
   ngOnInit() {
     this.challenge = this.route.snapshot.data.challenge;
   }
+
 
 }
