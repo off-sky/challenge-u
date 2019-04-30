@@ -7,7 +7,7 @@
         {{ activity?.displayLabel }}
       </div>
   </div>
-  <div class="y-section-header__right">
+  <div *ngIf="isActive" class="y-section-header__right">
     <button *ngIf="!(loading$ | async)"
             (click)="showUpDate()"
             mat-raised-button
@@ -20,6 +20,18 @@
   </div>
 </div>
 
+<div class="y-activity-status" [ngClass]="{
+                  'show-up': activity.isShowUp
+                }"
+>
+    <div *ngIf="activity?.isShowUp" class="y-activity-status__show-up">
+        <div>{{ showUpText }}</div> <mat-icon *ngIf="isMine">grade</mat-icon>
+    </div>
+    <div *ngIf="activity?.isFuture">
+        Wait till {{activity.displayLabel }} to show up for this activity 
+    </div>
+</div>
+
 <div class="y-measurements y-section">
     <div class="y-title-2">
         Measurements (optional)
@@ -27,8 +39,16 @@
     <div *ngIf="!hasMeasurements" class="y-measurements__contents">
         No measurements for this activity
     </div>
+
     <div *ngIf="hasMeasurements">
-      <y-edit-measurements [measurements]="activity?.measurements"></y-edit-measurements>
+      <y-edit-measurements [measurements]="activity?.measurements"
+                           *ngIf="activity?.isActive"
+        >
+      </y-edit-measurements>
+      <y-display-measurements [measurements]="activity?.measurements"
+                            *ngIf="!activity?.isActive"
+        >
+      </y-display-measurements>
     </div>
 </div>
 

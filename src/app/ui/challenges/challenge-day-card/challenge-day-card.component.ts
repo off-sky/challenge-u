@@ -30,9 +30,7 @@ export class ChallengeDayCardComponent implements OnInit {
 
 
   public onDayClick(): void {
-    if (this.isActive) {
       this.router.navigate(['home', 'challenges', 'details', this.activity.challengeId, 'day', this.activity.userId, this.activity.id])
-    }
   }
 
 }

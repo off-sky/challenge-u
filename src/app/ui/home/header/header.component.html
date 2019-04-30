@@ -11,9 +11,8 @@
           <y-photo [data]="user?.photo?.data"></y-photo>
         </div>
         <div class="header-item">
-            <button (click)="onSignOutClick()">Sign Out</button>
-    
-            <div *ngIf="isLoading$ | async">Processing log out...</div>
+            <mat-icon (click)="onSignOutClick()" class="logout-btn">exit_to_app</mat-icon>    
+            <!-- <div *ngIf="isLoading$ | async">Processing log out...</div> -->
         </div>
     </div>
    

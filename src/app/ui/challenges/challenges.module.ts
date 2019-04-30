@@ -11,6 +11,7 @@ import { ChallengeDayCardComponent } from './challenge-day-card/challenge-day-ca
 import { ChallengeDayDetailsComponent } from './challenge-day-details/challenge-day-details.component';
 import { EditMeasurementsComponent } from './edit-measurements/edit-measurements.component';
 import { EditRequirementsComponent } from './edit-requirements/edit-requirements.component';
+import { DisplayMeasurementsComponent } from './display-measurements/display-measurements.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import { EditRequirementsComponent } from './edit-requirements/edit-requirements
     ChallengeDayCardComponent,
     ChallengeDayDetailsComponent,
     EditMeasurementsComponent,
-    EditRequirementsComponent
+    EditRequirementsComponent,
+    DisplayMeasurementsComponent
   ],
   providers: [
     ChallengeDetailsResolverService

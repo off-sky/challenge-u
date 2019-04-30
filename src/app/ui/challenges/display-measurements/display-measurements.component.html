@@ -1,0 +1,24 @@
+<div class="y-display-measurements">
+
+  <div *ngIf="empty()">
+      No measurements for this activity.
+  </div>
+
+  <div>
+      <div *ngFor="let m of filled()" class="y-display-measurements__item">
+          <div class="y-display-measurements__item__label">
+              {{ m.displayName }}
+          </div>
+          <div class="y-display-measurements__item__value">
+              <div *ngIf="m.type === 'number' || m.type === 'string'">
+                  {{ m.value }}
+              </div>
+              <div *ngIf="m.type === 'boolean'">
+                <mat-icon>done</mat-icon>
+              </div>
+          </div>
+      </div>
+
+  </div>
+
+</div>

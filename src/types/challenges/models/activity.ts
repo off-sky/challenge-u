@@ -23,10 +23,10 @@ export class Activity implements iActivity {
     constructor(
         userId: string,
         challengeId: string,
-        ts: number,
-        type: challCommon.ChallengeType,
-        requirements: challDb.Requirements,
-        measurements: challDb.Measurements,
+        private ts: number,
+        private type: challCommon.ChallengeType,
+        private requirementsDb: challDb.Requirements,
+        private measurementsDb: challDb.Measurements,
         isShowUp: boolean
     ) {
         this.id = '' + ts;
@@ -38,8 +38,20 @@ export class Activity implements iActivity {
         if (!this.isShowUp) {
             this.isActive = this.getIsActive(ts, type);
         }
-        this.requirements = this.getRequirements(requirements);
-        this.measurements = this.getMeasurements(measurements);
+        this.requirements = this.getRequirements(requirementsDb);
+        this.measurements = this.getMeasurements(measurementsDb);
+    }
+
+    public clone(): Activity {
+        return new Activity(
+            this.userId,
+            this.challengeId,
+            this.ts,
+            this.type,
+            this.requirementsDb,
+            this.measurementsDb,
+            this.isShowUp
+        );
     }
 
     public getShowUpRequest(): DayShowUpRequest {
@@ -73,7 +85,7 @@ export class Activity implements iActivity {
     private getDisplayLabel(ts: number, type: challCommon.ChallengeType): string {
         switch(type) {
             case 'daily': {
-                return moment(ts).format('MMM DD, YYYY');
+                return moment(ts).format('ddd MMM DD, YYYY');
             }
             case 'monthly': {
                 return moment(ts).format('MMM YYYY');

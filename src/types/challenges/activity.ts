@@ -17,4 +17,5 @@ export interface Activity {
     isActive: boolean;
     isFuture: boolean;
     getShowUpRequest(): DayShowUpRequest;
+    clone(): Activity;
 }

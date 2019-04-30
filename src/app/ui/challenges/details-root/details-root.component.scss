@@ -34,6 +34,12 @@
             display: flex;
             justify-content: center;
             padding: 20px 0;
+            position: sticky;
+            background-color: white;
+            top: 90px;
+            border-bottom: 1px solid gray;
+            margin: 0 -40px;
+            margin-bottom: 20px;
         }
     }
 

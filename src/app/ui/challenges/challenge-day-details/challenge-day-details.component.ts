@@ -16,6 +16,8 @@ export class ChallengeDayDetailsComponent implements OnInit {
 
   public activity: clgu.challenges.Activity;
   public loading$: Observable<boolean>;
+  public isActive: boolean;
+  public isMine: boolean;
 
   private challenge: clgu.challenges.Challenge;
 
@@ -31,10 +33,25 @@ export class ChallengeDayDetailsComponent implements OnInit {
       return;
     }
 
+    this.store.select(state => state.auth.authCheck.user.id)
+      .subscribe(currUserId => {
+        this.isMine = this.activity.userId === currUserId;
+        this.isActive = this.activity.isActive && this.isMine;
+      });
+
     this.loading$ = this.store.select(state => state.challenges.showUp)
       .pipe(
         map(showUpState => !!showUpState[this.activity.id] && showUpState[this.activity.id].isLoading)
       )
+  }
+
+
+  public get showUpText(): string {
+    if (this.isMine) {
+      return 'You have shown up for this activity';
+    } else {
+      return 'Your friend has shown up for this activity';
+    }
   }
 
 
@@ -60,7 +77,7 @@ export class ChallengeDayDetailsComponent implements OnInit {
     if (this.challenge) {
       const participant = this.challenge.participants.find(p => p.id === userId);
       if (participant) {
-        this.activity = participant.activities.find(a => a.id === dayId);
+        this.activity = participant.activities.find(a => a.id === dayId).clone();
       }
     }
   }

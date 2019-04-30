@@ -1,3 +1,5 @@
+@import '../../global-styles/variables';
+
 .y-section-header {
     display: flex;
     align-items: center;
@@ -27,4 +29,23 @@
 
 .y-section {
     margin-bottom: 20px;
+}
+
+.y-activity-status {
+    margin-bottom: 20px;
+    &.show-up {
+        margin-bottom: 20px;
+        padding: 10px $padding-side;
+        margin: 0 calc(-1 * #{$padding-side}) 20px;
+        background-color: $blue;
+        color: white;
+    }
+
+    &__show-up {
+        display: flex;
+        
+        div {
+           margin-right: 10px; 
+        }
+    }
 }

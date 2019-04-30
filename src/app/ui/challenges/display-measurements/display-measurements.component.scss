@@ -1,0 +1,8 @@
+.y-display-measurements__item {
+    display: flex;
+    justify-content: flex-start;
+    &__label {
+        margin-right: 20px;
+        font-style: italic;
+    }
+}
