@@ -1,0 +1,21 @@
+@import '../../global-styles/variables';
+
+
+.y-title-1 {
+    font-size: 25px;
+    font-weight: 500;
+    margin-bottom: 40px;
+}
+
+.create-btn-wrap {
+    position: fixed;
+    right: $padding-side;
+    top: calc($header-height + 40px);
+    z-index: 2;
+}
+
+
+.challenge-card-wrap {
+    margin-bottom: 20px;
+    cursor: pointer;
+}

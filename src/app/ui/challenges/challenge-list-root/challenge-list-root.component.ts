@@ -1,4 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { clgu } from '../../../../types';
+import { Observable } from 'rxjs';
+import { AppState } from '../../../state/app.state';
+import { Store } from '@ngrx/store';
 
 @Component({
   selector: 'y-challenge-list-root',
@@ -7,9 +11,14 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ChallengeListRootComponent implements OnInit {
 
-  constructor() { }
+  public list$: Observable<clgu.challenges.ChallengeBase[]>;
+
+  constructor(
+    private store: Store<AppState>
+  ) { }
 
   ngOnInit() {
+    this.list$ = this.store.select(state => state.challenges.list.items);
   }
 
 }

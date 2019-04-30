@@ -16,3 +16,15 @@
     z-index: 5;
     background-color: white;
 }
+
+.menu-btn {
+    cursor: pointer;
+}
+
+.right-side {
+    display: flex;
+    align-items: center;
+    .header-item:not(:last-child) {
+        margin-right: 10px;
+    }
+}

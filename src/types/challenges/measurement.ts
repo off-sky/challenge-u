@@ -6,4 +6,5 @@ export interface Measurement {
     displayName: string;
     type: 'boolean' | 'string' | 'number';
     value?: boolean | string | number;
+    filled: boolean;
 }

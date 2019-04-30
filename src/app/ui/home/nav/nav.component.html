@@ -1,2 +1,21 @@
+<div class="y-nav">
+    <div class="y-nav__menu"
+         [ngClass]="{
+             opened: opened
+         }"
+        >
+        <div class="y-nav__menu__item"
+             [routerLink]="['/home', 'challenges']"
+             routerLinkActive="active"
+            >
+            Challenges
+        </div>
 
-
+    </div>
+    <div class="y-nav__content"
+         [ngClass]="{
+                opened: opened
+            }">
+        <ng-content></ng-content>
+    </div>
+</div>

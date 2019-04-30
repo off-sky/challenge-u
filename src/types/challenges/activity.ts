@@ -6,7 +6,11 @@ import { Measurement } from "./measurement";
  * (month or year)
 */
 export interface Activity {
+    userId: string;
     displayLabel: string;
     requirements: Requirement[];
     measurements: Measurement[];
+    isShowUp: boolean;
+    isActive: boolean;
+    isFuture: boolean;
 }

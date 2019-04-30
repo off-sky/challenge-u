@@ -3,6 +3,7 @@
  * on a challenge day. 
  */
 export class Requirement {
+    id: string;
     displayName: string;
     completed: boolean;
     category: string;

@@ -23,6 +23,40 @@ export function challengesReducer(state: ChallengesState = challengesInitialStat
             return newState;
         }
 
+        case ChallengesActions.GET_CHALLENGE_DETAILS_IF_EMPTY: {
+            const challengeId = action.payload;
+            if (!newState.details[challengeId]) {
+                newState.details[challengeId] = {
+                    isLoading: true,
+                    error: null,
+                    item: null
+                }
+            }
+            newState.details[challengeId].isLoading = true;
+            return newState;
+        }
+
+
+        case ChallengesActions.GET_CHALLENGE_DETAILS_IF_EMPTY_SUCCESS: {
+            const challenge = action.payload as clgu.challenges.Challenge;
+            newState.details[challenge.id].item = challenge;
+            newState.details[challenge.id].isLoading = false;
+            return newState;
+        }
+
+        case ChallengesActions.GET_CHALLENGE_DETAILS_IF_EMPTY_FAIL: {
+            const error= action.payload as clgu.common.ErrorWithId;
+            newState.details[error.id].isLoading = false;
+            newState.details[error.id].error = error.error;
+            return newState;
+        }
+
+
+        case ChallengesActions.SAVE_CHALLENGE_LIST: {
+            newState.list.items = action.payload;
+            return newState;
+        }
+
         default: return newState;
     }
 }

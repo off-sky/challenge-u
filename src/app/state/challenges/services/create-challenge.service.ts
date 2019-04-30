@@ -25,11 +25,9 @@ export class CreateChallengeService {
           userChallenge$.push(
             this.dbService.set(`users_challenges/${req.ownerId}/${challengeId}`, this.getUserChallengeObj(challengeId))
           );
-
+          const setChallengeId$ = this.dbService.set(`challenges/${challengeId}/id`, challengeId);
           const challParticipants$ = this.dbService.set(`challenges_participants/${challengeId}`, this.getParticipantsObj(req));
           const challMeasurements$ = this.dbService.set(`challenges_measurements/${challengeId}`, this.getMeasurementsObj(req));
-          const datesObj = this.getDatesObj(req);
-          console.log({ datesObj });
           const challDates$ = req.schedule.map(ts => {
             return this.dbService.set(`challenges_dates/${challengeId}/${ts}`, { timestamp: ts });
           }) 
@@ -37,6 +35,7 @@ export class CreateChallengeService {
 
           return combineLatest(
             ...userChallenge$,
+            setChallengeId$,
             challParticipants$,
             ...challDates$,
             challMeasurements$

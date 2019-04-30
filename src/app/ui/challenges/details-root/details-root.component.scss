@@ -1,0 +1,60 @@
+.y-title-1 {
+    font-size: 25px;
+    font-weight: 500;
+    margin-bottom: 40px;
+}
+
+
+.y-participants {
+    $item-width: 150px;
+    $item-margin: 10px;
+    &__days {
+        display: flex;
+      
+        &-item {
+            &:not(:last-child) {
+                margin-right: $item-margin;
+            }
+            width: $item-width;
+            &__day {
+                margin-bottom: 10px;
+            }
+        }
+        &__wrap {
+            width: 100%;
+            overflow-y: scroll;
+            display: flex;
+            justify-content: center;
+        }
+    }
+
+    &__info {
+        display: flex;
+        &__wrap {
+            display: flex;
+            justify-content: center;
+            padding: 20px 0;
+        }
+    }
+
+    &__info-item {
+        width: $item-width;
+        &:not(:last-child) {
+            margin-right: $item-margin;
+        }
+        &__photo {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 7px; 
+        }
+        &__name {
+            text-align: center;
+            font-size: 14px;
+            font-weight: 500;
+        }
+    }
+
+    &__wrap {
+        width: 100%;
+    }
+}

@@ -1,3 +1,26 @@
-<p>
-  challenge-list-root works!
-</p>
+<div class="create-btn-wrap">
+    <button [routerLink]="['/home', 'challenges', 'create']" mat-fab color="primary">
+      <mat-icon>add</mat-icon>
+    </button>
+</div>
+
+<div>
+  <div class="y-title-1">
+    Challenges
+  </div>
+
+  <div *ngFor="let item of list$ | async">
+    <div class="challenge-card-wrap"
+         [routerLink]="['/home', 'challenges', 'details', item.id ]"
+         >
+      <mat-card>
+          <mat-card-header>
+            <mat-card-title>{{ item.name }}</mat-card-title>
+            <mat-card-subtitle *ngIf="item.description">
+              {{ item.description }}
+            </mat-card-subtitle>
+          </mat-card-header>
+      </mat-card>
+    </div>
+  </div>
+</div>

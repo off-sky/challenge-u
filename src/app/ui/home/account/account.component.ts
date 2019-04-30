@@ -13,12 +13,18 @@ import { UserActions } from 'src/app/state/users/_users.actions';
 export class AccountComponent implements OnInit {
 
 
+  public menuOpened: boolean = true;
+
+
   constructor(
     private store: Store<AppState>
   ) { }
 
   ngOnInit() {
-    this.store.dispatch(new UserActions.GetUsers());
+  }
+
+  public onMenuToggled(): void {
+    this.menuOpened = !this.menuOpened;
   }
 
 

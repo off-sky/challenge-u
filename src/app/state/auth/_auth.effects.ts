@@ -7,6 +7,10 @@ import { of } from 'rxjs';
 import { tap } from 'rxjs/internal/operators';
 import { Router } from '@angular/router';
 import { clgu } from '../../../types';
+import { Store } from '@ngrx/store';
+import { AppState } from '../app.state';
+import { UserActions } from '../users/_users.actions';
+import { ChallengesActions } from '../challenges/_challenges.actions';
 
 @Injectable()
 export class AuthEffects {
@@ -14,7 +18,8 @@ export class AuthEffects {
   constructor(
       private actions: Actions,
       private authService: AuthService,
-      private router: Router
+      private router: Router,
+      private store: Store<AppState>
     ) { }
 
 
@@ -34,6 +39,16 @@ export class AuthEffects {
                 )
         })
     );
+
+
+    @Effect() public checkAuthAuthed$ = this.actions
+        .pipe(
+            ofType(AuthActions.CHECK_AUTH_AUTHED),
+            switchMap(() => {
+                this.store.dispatch(new UserActions.GetUsers());
+                return of(new ChallengesActions.StartListenChallengeList())
+            })
+        )
 
 
     @Effect() public loginFacebook$ = this.actions

@@ -16,6 +16,12 @@ export interface Error {
 }
 
 
+export interface ErrorWithId {
+    id: string;
+    error: Error;
+}
+
+
 
 export { models };
 

@@ -1,11 +1,17 @@
-<y-header></y-header>
+<y-header
+    (menuToggled)="onMenuToggled()"
+>
+
+</y-header>
+
+<y-nav [opened]="menuOpened">
+    <div class="y-sidenav-container">
+        <router-outlet></router-outlet>
+    </div>
+</y-nav>
 
 <!-- Container for sidebar(s) + page content -->
-<div class="y-sidenav-container">
-   
-      <router-outlet></router-outlet>
 
-</div>
 
 <!-- <mat-sidenav-container class="example-container">
     <mat-sidenav mode="side" [opened]="true">

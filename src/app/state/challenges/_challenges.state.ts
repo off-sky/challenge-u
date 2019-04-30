@@ -9,6 +9,13 @@ export interface ChallengesState {
     create: {
         isLoading: boolean;
         error: clgu.common.Error;
+    };
+    details: {
+        [id: string]: {
+            isLoading: boolean;
+            error: clgu.common.Error;
+            item: clgu.challenges.Challenge;
+        }
     }
 }
 
@@ -22,5 +29,7 @@ export const challengesInitialState: ChallengesState = {
     create: {
         isLoading: false,
         error: null
+    },
+    details: {
     }
 }

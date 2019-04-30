@@ -1,0 +1,39 @@
+<div class="y-details-root">
+
+  <!-- Title -->
+  <div class="y-title-1">
+    {{ challenge?.displayName }}
+  </div>
+
+
+  <div class="y-participants__wrap">
+      <div class="y-participants__block">
+          <div class="y-participants__info__wrap">
+              <div class="y-participants__info">
+                  <div *ngFor="let p of challenge.participants" class="y-participants__info-item">
+                     <div class="y-participants__info-item__photo">
+                        <y-photo [data]="p?.photo?.data"></y-photo>
+                     </div>
+                     <div class="y-participants__info-item__name">
+                        {{ p.displayName }}
+                    </div>
+                  </div>
+              </div>
+          </div>
+        
+          <div class="y-participants__days__wrap">
+              <div class="y-participants__days">
+                  <div *ngFor="let p of challenge.participants" class="y-participants__days-item">
+                      <div *ngFor="let a of p.activities" class="y-participants__days-item__day">
+                          <y-challenge-day-card [activity]="a"
+                            >
+                          </y-challenge-day-card>
+                      </div>
+                  </div>
+              </div>
+          </div>
+       
+      </div>
+  </div>
+
+</div>

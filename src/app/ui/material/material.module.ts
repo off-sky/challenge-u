@@ -3,6 +3,7 @@ import {CalendarModule} from 'primeng/calendar';
 import { CommonModule } from '@angular/common';
 
 import {MatCheckboxModule} from '@angular/material/checkbox';
+import { MatCardModule } from '@angular/material/card';
 import { MatDatepickerModule, MatIconModule, MatButtonModule } from '@angular/material';
 import { MatInputModule } from '@angular/material/input';
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -21,6 +22,7 @@ import { SatDatepickerModule, SatNativeDateModule } from 'saturn-datepicker';
     CommonModule,
     MatAutocompleteModule,
     MatButtonModule,
+    MatCardModule,
     MatCheckboxModule,
     MatDatepickerModule,
     MatIconModule,
@@ -37,6 +39,7 @@ import { SatDatepickerModule, SatNativeDateModule } from 'saturn-datepicker';
     MatCheckboxModule,
     CalendarModule,
     MatAutocompleteModule,
+    MatCardModule,
     MatButtonModule,
     MatIconModule,
     MatInputModule,

@@ -1,0 +1,13 @@
+.y-day-card {
+    height: 100px;
+    cursor: pointer;
+    border: 1px solid grey;
+    border-radius: 4px;
+    padding: 15px;
+    &__date {
+        text-align: center;
+        font-size: 12px;
+        font-weight: 500;
+    }
+
+}

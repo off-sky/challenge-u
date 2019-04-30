@@ -3,8 +3,7 @@ import { Activity } from './activity';
 
 export interface Participant {
     id: string;
-    firstName: string;
-    lastName: string;
+    displayName: string;
     photo: Photo;
     activities: Activity[];
 }
