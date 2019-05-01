@@ -7,13 +7,15 @@ import { UserSelectComponent } from './components/user-select/user-select.compon
 import { MaterialModule } from '../ui/material/material.module';
 import { MonthSelectorComponent } from './components/date-selector/month-selector.component';
 import { MeasurementEditorComponent } from './components/measurement-editor/measurement-editor.component';
+import { MultiDatePickerComponent } from './components/multi-date-picker/multi-date-picker.component';
 
 @NgModule({
   declarations: [
     PhotoComponent,
     UserSelectComponent,
     MonthSelectorComponent,
-    MeasurementEditorComponent
+    MeasurementEditorComponent,
+    MultiDatePickerComponent
   ],
   imports: [
     CommonModule,
@@ -26,6 +28,7 @@ import { MeasurementEditorComponent } from './components/measurement-editor/meas
     FormsModule,
     MeasurementEditorComponent,
     MonthSelectorComponent,
+    MultiDatePickerComponent,
     ReactiveFormsModule,
     UserSelectComponent
   ]

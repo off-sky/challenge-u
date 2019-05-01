@@ -8,6 +8,7 @@
     padding: 15px;
     &.active {
         border: 2px solid $blue;
+        color: $blue;
         &__date {
             color: $blue;
         }

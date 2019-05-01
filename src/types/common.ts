@@ -1,5 +1,7 @@
 import * as models from './common/models';
 
+export const MAX_ACTIVITIES = 300;
+
 export interface Environment {
     apiKey: string;
     authDomain: string;

@@ -46,7 +46,8 @@ export class AuthEffects {
             ofType(AuthActions.CHECK_AUTH_AUTHED),
             switchMap(() => {
                 this.store.dispatch(new UserActions.GetUsers());
-                return of(new ChallengesActions.StartListenChallengeList())
+                this.store.dispatch(new ChallengesActions.FetchRequirementsPresets());
+                return of(new ChallengesActions.StartListenChallengeList());
             })
         )
 

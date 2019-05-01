@@ -1,0 +1,33 @@
+.y-create-schedule {
+    display: flex;
+    flex-wrap: wrap;
+    &__fill-rule {
+        margin-right: 30px;
+    }
+    &__left {
+        margin-right: 30px;
+    }
+    &__right {
+        display: flex;
+        flex-wrap: wrap; 
+    }
+}
+
+
+.y-info-block {
+    margin-bottom: 20px;
+}
+
+.y-label {
+    color: rgb(140, 140, 140);
+    margin-bottom: 10px;
+}
+
+mat-radio-button {
+    display: block;
+    margin-bottom: 6px;
+
+    /deep/ .mat-radio-label {
+        align-items: flex-start;
+    }
+}

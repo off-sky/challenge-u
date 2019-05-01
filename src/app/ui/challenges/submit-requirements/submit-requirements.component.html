@@ -1,0 +1,25 @@
+<div class="y-submit-requirements">
+    <div *ngFor="let rc of requirementCategories">
+        <div class="y-category-header">
+          {{ rc.category }}
+        </div>
+        <div>
+          <div *ngFor="let r of rc.requirements" class="y-requirement">
+              <div class="y-requirement-name">
+                {{ r.displayName }}
+              </div>
+              <div *ngIf="!readOnly" class="y-requirement-complete">
+                  <mat-checkbox
+                    name="{{r.id}}"
+                    [(ngModel)]="r.completed"
+                  >
+                </mat-checkbox>
+              </div>
+              <div *ngIf="readOnly" class="y-requirement-complete">
+                  <mat-icon *ngIf="r.completed" class="completed-icon">check</mat-icon>
+                  <mat-icon *ngIf="!r.completed">close</mat-icon>
+              </div>
+          </div>
+        </div>
+    </div>
+</div>

@@ -5,7 +5,7 @@ import { AppState } from 'src/app/state/app.state';
 import { Store } from '@ngrx/store';
 import { ChallengesActions } from 'src/app/state/challenges/_challenges.actions';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map, filter } from 'rxjs/operators';
 
 @Component({
   selector: 'y-challenge-day-details',
@@ -74,12 +74,21 @@ export class ChallengeDayDetailsComponent implements OnInit {
     const userId = this.route.snapshot.params.userId;
     const dayId = this.route.snapshot.params.dayId;
     this.challenge = this.route.snapshot.data.challenge;
-    if (this.challenge) {
-      const participant = this.challenge.participants.find(p => p.id === userId);
-      if (participant) {
-        this.activity = participant.activities.find(a => a.id === dayId).clone();
-      }
-    }
+    this.store.select(state => state.challenges.details[this.challenge.id])
+    .pipe(
+      filter(d => !!d),
+      map(d => d.item)
+    )
+   .subscribe(chall => {
+        this.challenge = chall;
+        if (this.challenge) {
+          const participant = this.challenge.participants.find(p => p.id === userId);
+          if (participant) {
+            this.activity = participant.activities.find(a => a.id === dayId).clone();
+            this.isActive = this.activity.isActive && this.isMine;
+          }
+        }
+    });
   }
 
 

@@ -4,6 +4,7 @@ import { Participant as ParticipantModel } from './participant';
 import { db } from '../db';
 
 export class Challenge implements iChallenge {
+    ownerId: string;
     id: string;
     displayName: string;
     description: string;
@@ -17,6 +18,7 @@ export class Challenge implements iChallenge {
     private init(dbObj: db.ChallengeDetails): void {
         if (dbObj) {
             this.id = dbObj.challenge.id;
+            this.ownerId = dbObj.challenge.owner_id;
             this.displayName = dbObj.challenge.name;
             this.description = dbObj.challenge.description;
             this.participants = dbObj.participants.map(user => {

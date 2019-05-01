@@ -2,7 +2,17 @@
 
   <!-- Title -->
   <div class="y-title-1">
-    {{ challenge?.displayName }}
+    <div>
+        {{ challenge?.displayName }}
+    </div>
+
+    <div *ngIf="isMine" class="y-challenge-actions">
+        <button mat-raised-button color="primary"
+                (click)="openRequirements()"
+          >
+          Add Requirements
+        </button>
+    </div>
   </div>
 
   <div >

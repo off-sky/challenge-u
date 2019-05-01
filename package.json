@@ -32,7 +32,6 @@
     "moment": "^2.24.0",
     "ng-sidebar": "^8.0.0",
     "ngrx-store-freeze": "^0.2.4",
-    "primeng": "^7.1.2",
     "rxjs": "~6.3.3",
     "saturn-datepicker": "^7.2.1",
     "tslib": "^1.9.0",

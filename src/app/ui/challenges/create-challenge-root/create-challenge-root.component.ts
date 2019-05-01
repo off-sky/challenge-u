@@ -15,6 +15,9 @@ import { ChallengesActions } from 'src/app/state/challenges/_challenges.actions'
 })
 export class CreateChallengeRootComponent implements OnInit {
 
+  /**
+   * Form
+   */
   public fg: FormGroup;
   public fillRuleFg: FormGroup;
   public weekDayFg: FormGroup;
@@ -29,15 +32,13 @@ export class CreateChallengeRootComponent implements OnInit {
   public shouldTrackMeasurements: FormControl;
   public measurementFormArray: FormArray;
 
-  public selectedDates: Date[];
-  public shouldTrackProgress: boolean = false;
-  public fillRuleOptions: clgu.challenges.common.FillRuleOption[] = [];
-  public currentFillRule: clgu.challenges.common.FillRuleType;
+  
+  /**
+   * Steps
+   */
+  public Steps = clgu.challenges.common.CreateChallengeSteps;
+  public currentStep = this.Steps.GENERAL;
 
-  private scheduler: clgu.challenges.models.CreateChallengeSchedule;
-
-
-  @ViewChild('dateSelector') private monthSelectorCmp: MonthSelectorComponent;
 
 
 
@@ -49,13 +50,42 @@ export class CreateChallengeRootComponent implements OnInit {
     this.initForm();
   }
 
-  public onDatesChanged(newDates: Date[]): void {
-    this.selectedDates = newDates;
-    this.fillRuleControl.setValue('custom');
+
+  public onNextStep(): void {
+    if (this.currentStep !== this.Steps.LAST) {
+      this.currentStep++;
+    } else {
+      this.onSubmit();
+    }
+  }
+
+  public goToStep(ind: clgu.challenges.common.CreateChallengeSteps): void {
+      this.currentStep = ind;
+  }
+
+  public get nextButtonText(): string {
+    if (!this.Steps) {
+      return 'Next';
+    }
+    if (this.currentStep === this.Steps.LAST) {
+      return 'Create';
+    }
+    return 'Next';
+  }
+
+  public onPreviousStep(): void {
+    if (this.currentStep !== this.Steps.FIRST) {
+      this.currentStep--;
+    }
   }
 
 
+
   public onSubmit(): void {
+    if (!this.fg.valid) {
+      console.log(this.fg);
+      return;
+    }
     const formValue = this.fg.value;
     // console.log('>>>>> Challenge:');
     // console.log(formValue);
@@ -70,13 +100,13 @@ export class CreateChallengeRootComponent implements OnInit {
           this.store.dispatch(new ChallengesActions.CreateChallenge({
             ownerId: userId,
             participants: formValue.participants.map(user => user.id),
-            schedule: this.selectedDates.map(d => d.getTime()),
+            schedule: this.selectedDatesControl.value.map(d => d.getTime()),
             name: formValue.name,
             description: formValue.description,
             measurements: formValue.measurements.shouldTrack ? formValue.measurements.items : null,
             type: formValue.type
           }));
-      })
+      });
    
   }
 
@@ -84,7 +114,6 @@ export class CreateChallengeRootComponent implements OnInit {
   private initForm(): void {
     const today = new Date();
     const inAWeek = new Date(today.getTime() + 789389800);
-    this.scheduler = new clgu.challenges.models.CreateChallengeSchedule(today, inAWeek, 'daily', 'every_day');
     this.nameControl = new FormControl(null, [ Validators.required ]);
     this.startDateControl = new FormControl(today, [ Validators.required ]);
     this.endDateControl = new FormControl(inAWeek, [Validators.required]);
@@ -92,14 +121,28 @@ export class CreateChallengeRootComponent implements OnInit {
     this.fillRuleControl = new FormControl('every_day', [ Validators.required ]);
     this.descriptionControl = new FormControl();
     this.participantsControl = new FormControl([], Validators.required);
-    this.selectedDatesControl = new FormControl([]);
+    this.selectedDatesControl = new FormControl([], Validators.required );
     this.measurementFormArray = new FormArray([
-      new FormGroup({
-        displayName: new FormControl(null, [ Validators.required ]),
-        type: new FormControl('number')
-      })
     ]);
     this.shouldTrackMeasurements = new FormControl(false);
+
+    this.shouldTrackMeasurements.valueChanges
+      .subscribe(val => {
+        if (val) {
+          this.measurementFormArray = new FormArray([
+            new FormGroup({
+              displayName: new FormControl(null, [ Validators.required ]),
+              type: new FormControl('number')
+            })
+          ]);
+          const fg: FormGroup = this.fg.get('measurements') as FormGroup;
+          fg.setControl('items', this.measurementFormArray);
+        } else {
+          this.measurementFormArray = new FormArray([]);
+          const fg: FormGroup = this.fg.get('measurements') as FormGroup;
+          fg.setControl('items', this.measurementFormArray);
+        }
+      });
 
     this.weekDayFg = new FormGroup({
       0: new FormControl(false),
@@ -132,49 +175,6 @@ export class CreateChallengeRootComponent implements OnInit {
       selectedDates: this.selectedDatesControl
     });
 
-
-    this.fg.get('startDate').valueChanges
-      .pipe(
-        startWith(this.startDateControl.value)
-      )
-      .subscribe(d => this.scheduler.setStartDate(d));
-
-    this.endDateControl.valueChanges
-      .pipe(
-        startWith(this.endDateControl.value)
-      )
-      .subscribe(d => this.scheduler.setEndDate(d));
-
-    this.typeControl.valueChanges
-      .pipe(
-        startWith(this.typeControl.value)
-      )
-      .subscribe(t => {
-        this.fillRuleOptions = clgu.challenges.common.getFillRuleByType(t);
-        if (this.fillRuleOptions && this.fillRuleOptions.length > 0) {
-          this.fillRuleControl.setValue(this.fillRuleOptions[0].value);
-        }
-        this.scheduler.setType(t);
-      });
-
-    this.fillRuleFg.valueChanges
-        .pipe(
-          startWith(this.fillRuleFg.value)
-        )
-        .subscribe(fr => {
-          this.currentFillRule = fr.value;
-          this.scheduler.setFillRule(fr);
-        });
-
-    this.scheduler.schedule()
-          .subscribe(dates => {
-            console.log('Schedule re-calculated:');
-            console.log(dates);
-            this.selectedDates = dates;
-            if (this.monthSelectorCmp) {
-              this.monthSelectorCmp.setDates(this.selectedDates);
-            }
-          });
   }
 
 }

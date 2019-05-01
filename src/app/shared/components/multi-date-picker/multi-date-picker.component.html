@@ -1,0 +1,69 @@
+<div class="m-multi-date-picker">
+    
+  <div class="m-multi-date-picker__header">
+    <div class="m-multi-date-picker__controls">
+      <div class="m-multi-date-picker__arrows">
+        <div class="m-multi-date-picker__arrow-wrap"
+             [ngClass]="{'disabled': disableBackButton}" 
+             (click)="changeMonth($event, disableBackButton, -1)"
+          >
+          <div class="m-arrow small text-color" 
+              [ngClass]="{'disabled': disableBackButton}" 
+            >
+          </div>
+        </div>
+        <div class="m-multi-date-picker__arrow-wrap"
+             [ngClass]="{'disabled': disableNextButton}" 
+             (click)="changeMonth($event, disableNextButton, 1)"
+          >
+          <div class="m-arrow small right text-color" 
+               [ngClass]="{'disabled': disableNextButton}" 
+            >
+          </div>
+        </div>
+      </div>
+
+      <div class="m-multi-date-picker__month">
+          {{monthToDisplay}} {{yearToDisplay}}
+      </div>
+    </div>
+
+    <div class="m-multi-date-picker__week-days">
+      <div class="m-multi-date-picker__week-day"
+        *ngFor="let weekDay of daysOfWeek"
+        [ngClass]="{'selected': weekDay.selected}"
+        (click)="weekDayClick(weekDay)"
+      >
+        {{weekDay.displayName}}
+      </div>
+    </div>
+  </div>
+  
+  <div class="m-multi-date-picker__header-divider"></div>
+
+  <div class="m-multi-date-picker__days">
+    <div class="m-multi-date-picker__day-wrap" *ngFor="let day of days"
+         
+     >
+        <div *ngIf="!day.selectable" class="day__non-selectable-mask">
+        </div>
+        <div *ngIf="day.mdp.tooltip"
+            [matTooltip]="day.mdp.tooltip"
+            class="m-multi-date-picker__day {{getDayClasses(day)}}"
+            matTooltipPosition="above"
+            (click)="dayClick($event, day)"
+          >
+          {{getDayDate(day)}}
+        </div>
+
+        <div *ngIf="!day.mdp.tooltip"
+            class="m-multi-date-picker__day {{getDayClasses(day)}}"
+            (click)="dayClick($event, day)"
+          >
+          {{getDayDate(day)}}
+        </div>
+    </div>
+    
+  </div>
+
+</div>

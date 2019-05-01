@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { FormArray, FormGroup, FormControl } from '@angular/forms';
+import { FormArray, FormGroup, FormControl, Validators } from '@angular/forms';
 
 @Component({
   selector: 'y-measurement-editor',
@@ -33,7 +33,7 @@ export class MeasurementEditorComponent implements OnInit {
 
   public add(): void {
     this.control.push(new FormGroup({
-      displayName: new FormControl(),
+      displayName: new FormControl(null, [ Validators.required ]),
       type: new FormControl('number')
     }))
   }

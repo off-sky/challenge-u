@@ -10,6 +10,16 @@ export interface FillRuleOption {
 }
 
 
+export enum CreateChallengeSteps {
+    GENERAL,
+    SCHEDULE,
+    FRIENDS,
+    MEASUREMENTS,
+    LAST = MEASUREMENTS,
+    FIRST = GENERAL
+}
+
+
 
                     
 const fillRulesByTypes: { [id: string]: FillRuleOption[] } = {

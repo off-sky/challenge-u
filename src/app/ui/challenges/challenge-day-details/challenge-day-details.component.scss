@@ -32,13 +32,21 @@
 }
 
 .y-activity-status {
-    margin-bottom: 20px;
+    padding: 10px $padding-side;
+    margin: 0 calc(-1 * #{$padding-side}) 20px;
     &.show-up {
-        margin-bottom: 20px;
-        padding: 10px $padding-side;
-        margin: 0 calc(-1 * #{$padding-side}) 20px;
         background-color: $blue;
         color: white;
+    }
+    &.future {
+        border-top: 2px solid black; 
+        border-bottom: 2px solid black; 
+    }
+
+    &.active {
+        border-top: 2px solid $blue; 
+        border-bottom: 2px solid $blue; 
+        color: $blue;
     }
 
     &__show-up {

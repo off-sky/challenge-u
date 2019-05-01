@@ -1,0 +1,130 @@
+@import './colors.scss';
+@import './styles.scss';
+@import '../../../ui/global-styles/variables';
+
+.m-multi-date-picker {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    width: 296px;
+    padding: 8px;
+    border: 1px solid #E6E6E6;
+    &__header {
+      overflow: hidden;
+      margin-top: 10px;
+    }
+    &__controls {
+      padding: 12px 0;
+      overflow: hidden;
+    }
+    &__arrows {
+      float: right;
+      margin-right: 5px;
+    }
+    &__arrow-wrap {
+      display: inline-block;
+      cursor: pointer;
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      transition: background-color 300ms ease-in;
+      &.disabled { cursor: default; }
+      &:active { background-color: grey; }
+      &.disabled:active { background-color: white; }
+      .m-arrow {
+        margin-top: 8px;
+        margin-left: 11px;
+        @include arrow(9px, 9px, 2px, $grey, left);
+      }
+      .m-arrow.right {
+        margin-left: 8px;
+        @include arrow(9px, 9px, 2px, $grey, right);
+      }
+      .m-arrow.disabled {
+        opacity: 0.5;
+      }
+    }
+    &__arrow-wrap:first-child { margin-right: 5px; }
+    &__month {
+      float: left;
+      margin-top: 4px;
+      margin-left: 15px;
+      font-size: 14px;
+    }
+    &__week-days {
+      width: 100%;
+      float: left;
+      margin-top: 5px;
+    }
+    &__week-day {
+      display: inline-block;
+      width: 14.28%;
+      padding-bottom: 8px;
+      text-align: center;
+      font-size: 11px;
+      border-top-left-radius: 2px;
+      border-top-right-radius: 2px;
+      padding-top: 4px;
+      // opacity: 0.5;
+      cursor: pointer;
+      &:hover {
+        background-color: $white-grey;
+      }
+      &.selected {
+        border-bottom: 2px solid $blue;
+      }
+    }
+    &__header-divider {
+      margin-left: -8px;
+      margin-right: -8px;
+      border-bottom: 1px solid #E6E6E6; 
+    }
+    &__days {
+      margin-top: 8px;
+    }
+    &__day {
+      box-sizing: border-box;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 30px; // 14.28%;
+      height: 30px;
+      font-size: 13px;
+      text-align: center;
+      vertical-align: middle;
+      border-radius: 50%;
+      cursor: pointer;
+      &:not(.colored):hover {
+        background-color: $white-grey; }
+      &.picker-empty { cursor: default; }
+      &.picker-empty:hover { background-color: white; }
+      &.picker-off { cursor: default; opacity: 0.5; }
+      &.picker-off:hover { background-color: white; }
+      &.today { border: 1px solid $grey; }
+      &.today.picker-empty { border: none; }
+      &.picker-selected { background-color: $blue; }
+      &.picker-selected.picker-empty { background-color: white; }
+  
+      &-wrap {
+        width: 42px; // 14.28%;
+        height: 42px;
+        box-sizing: border-box;
+        display: inline-flex;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+      }
+  
+    }
+  }
+  
+  .day__non-selectable-mask {
+    width: 42px; // 14.28%;
+    height: 42px;
+    background-color: transparent;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 10;
+  }

@@ -1,0 +1,23 @@
+@import '../../global-styles/variables';
+
+.y-review {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 0 -40px 30px;
+    padding: 20px 40px;
+
+    &__step {
+        display: flex;
+        margin-right: 20px;
+        margin-bottom: 10px;
+        cursor: pointer;
+        opacity: 0.5;
+        &.active {
+            opacity: 1;
+            border-bottom: 2px solid $blue;
+        }
+        &:hover {
+            opacity: 1;
+        }
+    }
+}

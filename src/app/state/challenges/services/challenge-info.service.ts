@@ -14,6 +14,7 @@ export class ChallengeInfoService {
   private CHALLENGES_PATH = 'challenges';
   private COMMON_CHALLENGE_DAYS_PATH = 'challenges_dates';
   private USER_CHALLENGE_DAYS_PATH = 'challenges_users_dates';
+  private USER_REQUIREMENT_PATH = 'users_requirements';
   private PARTICIPANTS_PATH = 'challenges_participants';
   private MEASUREMENTS_PATH = 'challenges_measurements';
   private USERS_PATH = 'users';
@@ -41,6 +42,11 @@ export class ChallengeInfoService {
           return of(null)
         })
       )
+  }
+
+
+  public getRequirementPresets(userId: string): Observable<clgu.challenges.db.Requirements> {
+      return this.dbService.readOnce(`${this.USER_REQUIREMENT_PATH}/${userId}`, null, null, null, null, 10);
   }
 
 

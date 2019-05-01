@@ -1,0 +1,36 @@
+.y-edit-requirements {
+    display: flex;
+    flex-wrap: wrap;
+
+    &__requirements {
+        margin-right: 15px;
+        margin-bottom: 15px;
+    }
+}
+
+.form-field {
+    margin-right: 10px;
+}
+
+.form-wrap {
+    display: flex;
+    align-items: center;
+}
+
+.action-bar {
+    margin-top: 20px;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.popup-wrap {
+    max-height: 90vh;
+}
+
+.example-full-width {
+    display: block;
+}
+
+.close-btn-wrap {
+    cursor: pointer;
+}

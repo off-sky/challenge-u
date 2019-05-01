@@ -1,5 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import * as moment from 'moment';
+import { FormControl } from '@angular/forms';
 
 interface DateListItem {
   date: Date;
@@ -16,16 +17,18 @@ interface DateListItem {
 })
 export class MonthSelectorComponent implements OnInit {
 
-  @Input() public dates: Date[] = [];
+  @Input() public control: FormControl;
   @Input() public dateType: 'month' | 'year' = 'month';
   public list: DateListItem[] = [];
-
   @Output() public selectedChanged: EventEmitter<Date[]> = new EventEmitter<Date[]>();
+
 
   constructor() { }
 
   ngOnInit() {
-    this.setDates(this.dates);
+    if (this.control) {
+      this.setDates(this.control.value);
+    }
   }
 
   public getDisplayDate(d: Date): string {
@@ -36,7 +39,6 @@ export class MonthSelectorComponent implements OnInit {
     if (this.dateType === 'year') {
       return m.format('YYYY');
     }
-   
   }
 
 
@@ -44,6 +46,7 @@ export class MonthSelectorComponent implements OnInit {
     l.isSelected = !l.isSelected;
     const newDates = this.list.filter(l => l.isSelected)
                           .map(l => l.date);
+    this.control.setValue(newDates);
     this.selectedChanged.emit(newDates);
   }
 

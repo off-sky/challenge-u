@@ -1,0 +1,37 @@
+@import '../../../ui/global-styles/variables';
+
+.grey {
+    background-color: #999999;
+    &:hover {
+        background-color: #999999;
+    }
+}
+.dark-green {
+    background-color: #618c0d;
+    &:hover {
+        background-color: #618c0d;
+    }
+}
+.green { 
+    background-color: #97CB31;
+    &:hover {
+        background-color: #97CB31;
+    }
+}
+.pink {
+    background-color: #fdafb8;
+    &:hover {
+        background-color: #fdafb8;
+    }
+}
+
+.primary {
+    background-color: $blue;
+    color: white;
+    &:hover {
+        background-color: $blue;
+    }
+}
+
+
+.grey-border { border: solid 2px #999999 }

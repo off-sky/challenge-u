@@ -1,0 +1,22 @@
+$grey:        #999999;
+$white-grey: #f5f5f5;
+
+@mixin arrow($width, $height, $border-width, $color, $direction) {
+    display: block;
+    width: $width;
+    height: $height;
+    border-top: $border-width solid $color;
+    border-left: $border-width solid $color;
+    @if $direction == left {
+      transform: rotate(-45deg);
+    }
+    @if $direction == right {
+      transform: rotate(135deg);
+    }
+    @if $direction == top {
+      transform: rotate(45deg);
+    }
+    @if $direction == bottom {
+      transform: rotate(-135deg);
+    }
+  }

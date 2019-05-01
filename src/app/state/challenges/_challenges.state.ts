@@ -17,6 +17,9 @@ export interface ChallengesState {
             item: clgu.challenges.Challenge;
         }
     };
+    requirementPresets: {
+        [id: string]: clgu.challenges.db.Requirements;
+    };
     showUp: {
         [dayId: string]: {
             isLoading: boolean;
@@ -36,6 +39,7 @@ export const challengesInitialState: ChallengesState = {
         isLoading: false,
         error: null
     },
+    requirementPresets: {},
     details: {
     },
     showUp: {}

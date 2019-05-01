@@ -2,216 +2,57 @@
     <div class="y-title-1">
         Create Challenge
     </div>
-    <div class="y-columns-wrap">
 
-        <div class="y-column y-column-left">
-                <form [formGroup]="fg">
-                        <!-- Name -->
-                        <div>
-                            <mat-form-field class="example-full-width">
-                                <input matInput
-                                        name="challengeName"
-                                        formControlName="name"
-                                        placeholder="Challenge Name">
-                            </mat-form-field>
-                        </div>
+    <div>
+        <y-create-review-bar [currentStep]="currentStep"
+                             (stepClick)="goToStep($event)"
+            >
 
-                        <!-- Description -->
-                        <div>
-                            <mat-form-field class="example-full-width">
-                                <textarea matInput
-                                        name="description"
-                                        formControlName="description"
-                                        placeholder="Description">
-                                </textarea>
-                            </mat-form-field>
-                        </div>
-                
-                        <!-- Type -->
-                        <label id="example-radio-group-label">Challenge Type</label>
-                        <div>
-                            <mat-radio-group
-                                aria-labelledby="example-radio-group-label"
-                                class="example-radio-group"
-                                formControlName="type"
-                                >
-                                <mat-radio-button class="example-radio-button" [value]="'daily'">
-                                    Daily
-                                </mat-radio-button>
-                                <mat-radio-button class="example-radio-button" [value]="'monthly'">
-                                    Monthly
-                                </mat-radio-button>
-                                <mat-radio-button class="example-radio-button" [value]="'yearly'">
-                                    Yearly
-                                </mat-radio-button>
-                            </mat-radio-group>
-                        </div>
-                    
-                        <!-- Start Date -->
-                        <div>
-                            <mat-form-field>
-                                <input matInput
-                                    placeholder="Start Date"
-                                    [satDatepicker]="picker"
-                                    formControlName="startDate"
-                                    >
-                                <sat-datepicker #picker [rangeMode]="false"></sat-datepicker>
-                                <sat-datepicker-toggle matSuffix [for]="picker"></sat-datepicker-toggle>
-                            </mat-form-field>
-                        </div>
-                
-                         <!-- End Date -->
-                         <div>
-                            <mat-form-field>
-                                <input matInput
-                                    placeholder="End Date"
-                                    [satDatepicker]="pickerEnd"
-                                    formControlName="endDate"
-                                    >
-                                <sat-datepicker #pickerEnd [rangeMode]="false"></sat-datepicker>
-                                <sat-datepicker-toggle matSuffix [for]="pickerEnd"></sat-datepicker-toggle>
-                            </mat-form-field>
-                        </div>
-                
-                      
-                        
-                    </form>
-        </div>
-
-        <div class="y-column y-column-right">
-            <div class="y-challenge-schedule-wrap">
-                <div class="y-challenge-schedule__left">
-                     <!-- Fill Rule -->
-                     <div class="sub-title">Select your schedule</div>
-                     <div [formGroup]="fillRuleFg">
-                         <mat-radio-group
-                             aria-labelledby="example-radio-group-label"
-                             class="example-radio-group"
-                             formControlName="value"
-                             #schedule
-                             >
-                             <mat-radio-button *ngFor="let option of fillRuleOptions"
-                                                class="example-radio-button"
-                                                [value]="option.value"
-                                                [disabled]="option.value === 'custom'"
-                                                >
-                                 {{ option?.displayValue }}
-                                 <div *ngIf="option.value === 'specific' && currentFillRule === 'specific'"
-                                        [formGroup]="weekDayFg"
-                                        class="y-weekday-select-wrap"
-                                    >
-                                     <div>
-                                        <mat-checkbox [formControlName]="1">
-                                            Mondays
-                                        </mat-checkbox>
-                                     </div>
-                                     <div>
-                                        <mat-checkbox [formControlName]="2">
-                                            Tuesdays
-                                        </mat-checkbox>
-                                    </div>
-                                    <div>
-                                        <mat-checkbox [formControlName]="3">
-                                            Wednesdays
-                                        </mat-checkbox>
-                                    </div>
-                                    <div>
-                                        <mat-checkbox [formControlName]="4">
-                                            Thursdays
-                                        </mat-checkbox>
-                                    </div>
-                                    <div>
-                                        <mat-checkbox [formControlName]="5">
-                                            Fridays
-                                        </mat-checkbox>
-                                    </div>
-                                    <div>
-                                        <mat-checkbox [formControlName]="6">
-                                            Saturdays
-                                        </mat-checkbox>
-                                    </div>
-                                    <div>
-                                        <mat-checkbox [formControlName]="0">
-                                            Sundays
-                                        </mat-checkbox>
-                                    </div>
-                                 </div>
-                             </mat-radio-button>
-                         </mat-radio-group>
-                     </div>
-                </div>
-
-                <div class="y-challenge-schedule__right">
-                    <div *ngIf="typeControl.value === 'daily'">
-                            <p-calendar name="selectedDates"
-                                        [(ngModel)]="selectedDates"
-                                        selectionMode="multiple"
-                                        [inline]="true"
-                                        [monthNavigator]="true"
-                                        [yearNavigator]="true"
-                                    >
-                            </p-calendar>
-                    </div>
-                    <div *ngIf="typeControl.value === 'monthly'">
-                        <y-date-selector [dates]="selectedDates"
-                                         #dateSelector
-                                         (selectedChanged)="onDatesChanged($event)"
-                            
-                            >
-                        </y-date-selector>
-                    </div>
-
-                    <div *ngIf="typeControl.value === 'yearly'">
-                        <y-date-selector [dates]="selectedDates"
-                                         [dateType]="'year'"
-                                         #dateSelector
-                                         (selectedChanged)="onDatesChanged($event)"
-                                        >
-                        </y-date-selector>
-                    </div>
-                        
-                </div>
-
-            </div>          
-        </div>
-
-        <!-- EOF Center Column -->
-
-        <div class="y-column">
-            <div class="block">
-                <div class="sub-title">
-                    Invite friends
-                </div>
-                <y-user-select [control]="participantsControl"></y-user-select>
-            </div>
-           
-
-            <div class="block">
-                <div class="sub-title block">
-                    Track Progress
-                </div>
-                <div class="block">
-                    <mat-checkbox
-                            name="shouldTrackProgress"
-                            [formControl]="shouldTrackMeasurements"
-                        >
-                        I want to track progress (optional)
-                    </mat-checkbox>
-                </div>
-               
-                <div *ngIf="shouldTrackMeasurements.value">
-                    <y-measurement-editor [control]="measurementFormArray"></y-measurement-editor>
-                </div>
-            </div>
-        </div>
-
+        </y-create-review-bar>
     </div>
+
+    <div [hidden]="currentStep !== Steps.GENERAL" class="step-wrap">
+        <y-create-general-info [challengeNameControl]="nameControl"
+                               [challengeDescriptionControl]="descriptionControl"
+                        >
+        </y-create-general-info>
+    </div>
+
+    <div [hidden]="currentStep !== Steps.SCHEDULE" class="step-wrap">
+        <y-create-schedule [typeControl]="typeControl"
+                            [startDateControl]="startDateControl"
+                            [endDateControl]="endDateControl"
+                            [selectedDatesControl]="selectedDatesControl"
+                            [fillRuleFg]="fillRuleFg"
+            >
+        </y-create-schedule>
+    </div>
+
+
+    <div [hidden]="currentStep !== Steps.FRIENDS">
+        <y-user-select [control]="participantsControl"></y-user-select>
+    </div>
+
+
+    <div [hidden]="currentStep !== Steps.MEASUREMENTS">
+        <y-create-measurements [shouldTrackControl]="shouldTrackMeasurements"
+                               [measFormArray]="measurementFormArray"
+        >
+        </y-create-measurements>
+    </div>
+
     <!-- EOF Main column wrap -->
     <div class="bottom-bar">
-        <button mat-raised-button color="primary"
-                (click)="onSubmit()"
+        <button mat-raised-button
+            *ngIf="currentStep !== Steps.GENERAL"
+            (click)="onPreviousStep()"
             >
-            Create 
+            Previous
+        </button>
+        <button mat-raised-button color="primary"
+                (click)="onNextStep()"
+            >
+            {{ nextButtonText }}
         </button>
     </div>
   

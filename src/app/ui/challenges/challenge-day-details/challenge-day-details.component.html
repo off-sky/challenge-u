@@ -21,7 +21,9 @@
 </div>
 
 <div class="y-activity-status" [ngClass]="{
-                  'show-up': activity.isShowUp
+                  'show-up': activity.isShowUp,
+                  'future': activity?.isFuture,
+                  'active': isActive
                 }"
 >
     <div *ngIf="activity?.isShowUp" class="y-activity-status__show-up">
@@ -30,17 +32,17 @@
     <div *ngIf="activity?.isFuture">
         Wait till {{activity.displayLabel }} to show up for this activity 
     </div>
+    <div *ngIf="isActive">
+        Show up and check your results
+    </div>
 </div>
 
-<div class="y-measurements y-section">
+<div *ngIf="hasMeasurements" class="y-measurements y-section">
     <div class="y-title-2">
         Measurements (optional)
     </div>
-    <div *ngIf="!hasMeasurements" class="y-measurements__contents">
-        No measurements for this activity
-    </div>
 
-    <div *ngIf="hasMeasurements">
+    <div>
       <y-edit-measurements [measurements]="activity?.measurements"
                            *ngIf="activity?.isActive"
         >
@@ -53,11 +55,12 @@
 </div>
 
 
-<div class="y-requirements y-section">
+<div *ngIf="hasRequirements" class="y-requirements y-section">
     <div class="y-title-2">
         Requirements (optional)
     </div>
-    <div *ngIf="!hasRequirements" class="y-requirements__contents">
-        No requirements for this activity
-    </div>
+    <y-submit-requirements [requirements]="activity?.requirements"
+                            [readOnly]="!activity?.isActive"
+      >
+    </y-submit-requirements>
 </div>

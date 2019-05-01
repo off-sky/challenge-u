@@ -27,7 +27,7 @@ export class LoginGuard implements CanActivate {
                 map(state => !state.user),
                 tap(requireSignIn => {
                     if (!requireSignIn) {
-                        this.router.navigate(['home'])
+                        this.router.navigate(['home', 'challenges', 'list']);
                     }
                 })
             )

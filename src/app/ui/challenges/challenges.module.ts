@@ -12,6 +12,12 @@ import { ChallengeDayDetailsComponent } from './challenge-day-details/challenge-
 import { EditMeasurementsComponent } from './edit-measurements/edit-measurements.component';
 import { EditRequirementsComponent } from './edit-requirements/edit-requirements.component';
 import { DisplayMeasurementsComponent } from './display-measurements/display-measurements.component';
+import { CreateGeneralInfoComponent } from './create-general-info/create-general-info.component';
+import { CreateScheduleComponent } from './create-schedule/create-schedule.component';
+import { CreateFriendsComponent } from './create-friends/create-friends.component';
+import { CreateMeasurementsComponent } from './create-measurements/create-measurements.component';
+import { CreateReviewBarComponent } from './create-review-bar/create-review-bar.component';
+import { SubmitRequirementsComponent } from './submit-requirements/submit-requirements.component';
 
 @NgModule({
   declarations: [
@@ -22,7 +28,13 @@ import { DisplayMeasurementsComponent } from './display-measurements/display-mea
     ChallengeDayDetailsComponent,
     EditMeasurementsComponent,
     EditRequirementsComponent,
-    DisplayMeasurementsComponent
+    DisplayMeasurementsComponent,
+    CreateGeneralInfoComponent,
+    CreateScheduleComponent,
+    CreateFriendsComponent,
+    CreateMeasurementsComponent,
+    CreateReviewBarComponent,
+    SubmitRequirementsComponent
   ],
   providers: [
     ChallengeDetailsResolverService
@@ -32,6 +44,9 @@ import { DisplayMeasurementsComponent } from './display-measurements/display-mea
     MaterialModule,
     SharedModule,
     RouterModule
+  ],
+  entryComponents: [
+    EditRequirementsComponent
   ]
 })
 export class ChallengesModule { }

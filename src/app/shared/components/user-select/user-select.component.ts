@@ -39,7 +39,6 @@ export class UserSelectComponent implements OnInit {
         map((vals: [clgu.users.User[], string]) => {
           const users = vals[0];
           const inputVal = vals[1];
-          console.log(users, inputVal);
           if (!inputVal) {
             return [];
           }

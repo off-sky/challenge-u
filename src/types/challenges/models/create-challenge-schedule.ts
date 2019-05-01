@@ -1,5 +1,6 @@
 import { CreateChallengeSchedule as iCreateChallengeSchedule } from '../create-challenge-schedule';
 import * as common from '../common';
+import * as appCommon from '../../common';
 import * as moment from 'moment';
 import { BehaviorSubject, Observable } from 'rxjs';
 
@@ -35,11 +36,11 @@ export class CreateChallengeSchedule implements iCreateChallengeSchedule {
     }
 
     setStartDate(d: Date): void {
-        this._startMoment = moment(d);
+        this._startMoment = this.getStartMoment(moment(d));
         this.emitNewSchedule();
     }
     setEndDate(d: Date): void {
-        this._endMoment = moment(d);
+        this._endMoment = this.getStartMoment(moment(d));
         this.emitNewSchedule();
     }
     setType(t: common.ChallengeType): void {
@@ -75,8 +76,9 @@ export class CreateChallengeSchedule implements iCreateChallengeSchedule {
         }
 
         const incr = this.getIncrement();
+        let counter = 0;
 
-        for(let curr = this.getStartMoment(); curr.isSameOrBefore(this._endMoment); curr = moment(curr.add(1, incr))) {
+        for(let curr = this.getStartMoment(this._startMoment); curr.isSameOrBefore(this._endMoment); curr = moment(curr.add(1, incr))) {
             if (this._type === 'daily' && !this.shouldIncludeDay(curr)) {
                 continue;
             }
@@ -87,6 +89,11 @@ export class CreateChallengeSchedule implements iCreateChallengeSchedule {
                 continue;
             }
             result.push(moment(curr).toDate());
+            counter++;
+            if (counter >= appCommon.MAX_ACTIVITIES) {
+                this._startMoment = this.getStartMoment(curr);
+                break;
+            }
         }
 
         this._scheduleEmitter.next(result);
@@ -94,16 +101,15 @@ export class CreateChallengeSchedule implements iCreateChallengeSchedule {
     }
 
 
-    private getStartMoment(): moment.Moment {
+    private getStartMoment(sm: moment.Moment): moment.Moment {
         if (this._type === 'daily') {
-            return moment(this._startMoment);
+            return moment(sm).startOf('day');
         }
         if (this._type === 'monthly') {
-            return moment(this._startMoment).startOf('month');
+            return moment(sm).startOf('month');
         }
-        
         if (this._type === 'yearly') {
-            return moment(this._startMoment).startOf('year');
+            return moment(sm).startOf('year');
         }
     }
 

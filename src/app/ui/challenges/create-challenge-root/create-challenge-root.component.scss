@@ -1,5 +1,9 @@
 @import '../../global-styles/variables';
 
+.y-create-challenge-root {
+    padding-bottom: 60px;
+}
+
 .y-title-1 {
     font-size: 25px;
     font-weight: 500;
@@ -41,9 +45,7 @@
     font-weight: 500;
 }
 
-.block {
-    margin-bottom: 30px;
-}
+
 
 .bottom-bar {
     position: fixed;
@@ -54,4 +56,8 @@
     padding: 20px $padding-side;
     display: flex;
     justify-content: flex-end;
+
+    button:not(:last-child) {
+        margin-right: 20px;
+    }
 }

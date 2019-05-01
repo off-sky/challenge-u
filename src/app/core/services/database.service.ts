@@ -127,21 +127,23 @@ export class DatabaseService {
                   endAt?: string | number,
                   limitFirst?: number,
                   limitLast?: number): firebase.database.Reference {
-    const ref = firebase.database().ref(path);
+    let ref: any = firebase.database().ref(path);
     if (orderByChild) {
-      ref.orderByChild(orderByChild);
+      ref = ref.orderByChild(orderByChild);
+    } else {
+      ref = ref.orderByKey()
     }
     if (startAt) {
-      ref.startAt(startAt);
+      ref = ref.startAt(startAt);
     }
     if (endAt) {
-      ref.endAt(endAt);
+      ref = ref.endAt(endAt);
     }
     if (limitFirst) {
-      ref.limitToFirst(limitFirst);
+      ref = ref.limitToFirst(limitFirst);
     }
     if (limitLast) {
-      ref.limitToLast(limitLast);
+      ref = ref.limitToLast(limitLast);
     }
     return ref;
   }

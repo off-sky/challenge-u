@@ -23,6 +23,10 @@ export function challengesReducer(state: ChallengesState = challengesInitialStat
             return newState;
         }
 
+        case ChallengesActions.FETCH_REQUIREMENT_PRESETS_SUCCESS: {
+            newState.requirementPresets = action.payload;
+        }
+
         case ChallengesActions.GET_CHALLENGE_DETAILS_IF_EMPTY: {
             const challengeId = action.payload;
             if (!newState.details[challengeId]) {
