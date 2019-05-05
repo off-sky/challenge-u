@@ -8,6 +8,7 @@ import { Store } from '@ngrx/store';
 import { FormGroup, FormControl, FormArray, Validators } from '@angular/forms';
 import { take, filter } from 'rxjs/operators';
 import { ChallengesActions } from 'src/app/state/challenges/_challenges.actions';
+import { ChallengesDbActions } from 'src/app/state/challenges/_challenges.db.actions';
 
 @Component({
   selector: 'y-edit-challenge-root',
@@ -36,6 +37,7 @@ export class EditChallengeRootComponent implements OnInit {
   public measurementFormArray: FormArray;
   
   private challengeId: string;
+  private initialUsers: string[] = [];
   
 
   constructor(
@@ -118,10 +120,21 @@ export class EditChallengeRootComponent implements OnInit {
       }
       
       if (this.participantsControl.touched) {
-        const updateObj = this.participantsControl.value
+        const newIds = this.participantsControl.value
                 .map(u => u.id);
 
-        this.store.dispatch(new ChallengesActions.UpdateChallengeParticipants({ id: this.challengeId, data: updateObj}));     
+        const deleted = this.initialUsers
+          .filter(uid => {
+            return !newIds.some(newId => newId === uid)
+          });
+
+        const updateObj = {
+          new: newIds,
+          deleted: deleted
+        }
+
+        this.store.dispatch(new ChallengesActions.UpdateChallengeParticipants({ id: this.challengeId, data: updateObj}));
+        this.store.dispatch(new ChallengesDbActions.ReloadChallengeParticipants({ ids: [this.challengeId], force: true }));     
       }
       if (this.measurementFormArray.controls.some(c => c.touched)) {
         const updateObj = this.measurementFormArray.value;
@@ -142,12 +155,12 @@ export class EditChallengeRootComponent implements OnInit {
 
     const participants = challengeObj.participants.map(pDb => new clgu.users.models.User(pDb));
 
+    this.initialUsers = participants.map(p => p.id);
+
     this.nameControl = new FormControl(challengeObj.challenge.name, [ Validators.required ]);
     this.descriptionControl = new FormControl(challengeObj.challenge.description);
     this.participantsControl = new FormControl(participants, Validators.required);
     this.selectedDatesControl = new FormControl(dates, Validators.required );
-    const measFormArray = this.getMeasurementsFgArray(challengeObj);
-    console.log({ measFormArray: measFormArray });
     this.measurementFormArray = new FormArray(this.getMeasurementsFgArray(challengeObj));
     this.shouldTrackMeasurements = new FormControl(!!challengeObj.common_measurements);
 
@@ -168,6 +181,7 @@ export class EditChallengeRootComponent implements OnInit {
           fg.setControl('items', this.measurementFormArray);
         }
       });
+
 
 
     this.fg = new FormGroup({

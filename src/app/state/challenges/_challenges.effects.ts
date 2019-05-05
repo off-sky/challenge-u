@@ -197,9 +197,9 @@ export class ChallengesEffects {
                 switchMap((action: YAction<clgu.common.UpdateRequest>) => {
                     const payload = action.payload;
                     const challengeId = payload.id;
-                    const data = payload.data as string[];
+                    const data = payload.data as clgu.challenges.UpdateParticipantsRequest;
 
-                    return this.challengeActionService.updateChallengeParticipants(challengeId, data)
+                    return this.challengeActionService.updateChallengeParticipants(challengeId, data.new, data.deleted)
                         .pipe(
                             map(res => new ChallengesActions.UpdateChallengeParticipantsSuccess()),
                             catchError(err => {

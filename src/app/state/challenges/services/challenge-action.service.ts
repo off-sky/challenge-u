@@ -39,14 +39,19 @@ export class ChallengeActionService {
       return  this.dbService.set(`${this.COMMON_CHALLENGE_DAYS_PATH}/${challengeId}`, updateObj);
   }
 
-  public updateChallengeParticipants(challengeId: string, userIds: string[]): Observable<any> {
+  public updateChallengeParticipants(challengeId: string, userIds: string[], deletedUsers: string[]): Observable<any> {
     const challPartObs = this.dbService.set(`${this.PARTICIPANTS_PATH}/${challengeId}`, this.getParticipantsObj(userIds));
     const userChallengesObs = userIds.map(userId => {
       return this.dbService.set(`${this.CHALLENGE_BY_USER_PATH}/${userId}/${challengeId}`, { id: challengeId, created_at: new Date().getTime() });
     });
 
-    return combineLatest(challPartObs, ...userChallengesObs);
+    const deletedObs = deletedUsers.map(userId => {
+      return this.dbService.set(`${this.CHALLENGE_BY_USER_PATH}/${userId}/${challengeId}`, null);
+    })
+
+    return combineLatest(challPartObs, ...userChallengesObs, ...deletedObs);
   }
+
 
   public updateMeasurements(challengeId: string, measurements: clgu.challenges.Measurement[]): Observable<any> {
     const measurementObj = this.getMeasurementsObj(measurements);
