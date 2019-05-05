@@ -13,9 +13,9 @@ export function usersReducer(state: UsersState = userInitialState, action: YActi
         }
 
         case UserActions.GET_USERS_SUCCESS: {
-            const users = action.payload as clgu.users.User[];
+            const users = action.payload as clgu.users.db.UsersMap;
             newState.users.isLoading = false;
-            newState.users.items = users;
+            newState.users.items = new clgu.common.UpdatableDataObject(null, users);
             return newState;
         }
 

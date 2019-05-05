@@ -4,11 +4,16 @@
 
 </y-header>
 
-<y-nav [opened]="menuOpened">
+
+<!-- Desktop -->
+
+<y-nav [opened]="true" #nav>
     <div class="y-sidenav-container">
         <router-outlet></router-outlet>
     </div>
 </y-nav>
+
+
 
 <!-- Container for sidebar(s) + page content -->
 

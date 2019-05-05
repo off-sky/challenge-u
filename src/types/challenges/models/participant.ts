@@ -4,6 +4,7 @@ import { db as userDb } from '../../users/db';
 import { db as challDb } from '../db';
 import * as common from '../../common';
 import * as challCommon from '../common';
+import * as moment from 'moment';
 import { Activity } from './activity';
 
 export class Participant implements iParticipant {
@@ -17,10 +18,11 @@ export class Participant implements iParticipant {
                 userDays: challDb.UserChallengeDays,
                 challengeType: challCommon.ChallengeType,
                 challengeId: string,
-                measurements: challDb.Measurements
+                measurements: challDb.Measurements,
+                challRequirements: challDb.ChallengeRequirements
             ) {
         this.initUser(user);
-        this.initActivities(commonDays, userDays, challengeType, challengeId, measurements);
+        this.initActivities(commonDays, userDays, challengeType, challengeId, measurements, challRequirements);
     }
 
 
@@ -35,12 +37,21 @@ export class Participant implements iParticipant {
                            userDays: challDb.UserChallengeDays,
                            type: challCommon.ChallengeType,
                            challengeId: string,
-                           measurements: challDb.Measurements): void {
+                           measurements: challDb.Measurements,
+                           challRequirements: challDb.ChallengeRequirements): void {
+        let nextClosest: boolean;
+        const today = moment();
         Object.keys(commonDays).forEach(dayId => {
             const day = commonDays[dayId];
+            const m = moment(day.timestamp);
+            const isAfterToday = m.isSameOrAfter(today);
+            if (isAfterToday && !nextClosest) {
+                
+            }
             const userDay = userDays ? userDays[dayId] : undefined;
             const userMeasurements = userDay ? userDay.measurements : undefined;
             const userRequirements = userDay ? userDay.requirements : undefined;
+            const requirements =  challRequirements ? challRequirements[dayId] : undefined;
 
             this.activities.push(
                 new Activity(
@@ -48,7 +59,7 @@ export class Participant implements iParticipant {
                     challengeId,
                     day.timestamp,
                     type,
-                    userRequirements || day.requirements,
+                    userRequirements || requirements,
                     userMeasurements || measurements,
                     !!userDay
                 )

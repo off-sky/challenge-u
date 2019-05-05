@@ -1,0 +1,17 @@
+
+<div>
+  <div class="y-title-1">
+      Friends
+    </div>
+
+    <div *ngFor="let user of users$ | async" class="y-card-wrap">
+      <mat-card>
+          <mat-card-header>
+            <div mat-card-avatar>
+              <img src="{{user?.photo?.data}}" class="y-avatar">
+            </div>
+            <mat-card-title>{{ user.displayName }}</mat-card-title>
+          </mat-card-header>
+      </mat-card>
+    </div>
+</div>

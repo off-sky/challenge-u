@@ -3,6 +3,8 @@ import { clgu } from 'src/types';
 
 export class ChallengesActions {
 
+
+
     public static readonly ADD_REQUIREMENTS = '[Challenges] ADD_REQUIREMENTS';
     public static readonly ADD_REQUIREMENTS_SUCCESS = '[Challenges] ADD_REQUIREMENTS_SUCCESS';
     public static readonly ADD_REQUIREMENTS_FAIL = '[Challenges] ADD_REQUIREMENTS_FAIL';
@@ -28,6 +30,22 @@ export class ChallengesActions {
     public static readonly SHOW_UP_DATE = '[Challenges] SHOW_UP_DATE';
     public static readonly SHOW_UP_DATE_SUCCESS = '[Challenges] SHOW_UP_DATE_SUCCESS';
     public static readonly SHOW_UP_DATE_FAIL = '[Challenges] SHOW_UP_DATE_FAIL';
+
+    public static readonly UPDATE_CHALLENGE_BASIC_INFO = `[Challenges] UPDATE_CHALLENGE_BASIC_INFO`;
+    public static readonly UPDATE_CHALLENGE_BASIC_INFO_SUCCESS = `[Challenges] UPDATE_CHALLENGE_BASIC_INFO_SUCCESS`;
+    public static readonly UPDATE_CHALLENGE_BASIC_INFO_FAIL = `[Challenges] UPDATE_CHALLENGE_BASIC_INFO_FAIL`;
+
+    public static readonly UPDATE_CHALLENGE_DATES = `[Challenges] UPDATE_CHALLENGE_DATES`;
+    public static readonly UPDATE_CHALLENGE_DATES_SUCCESS = `[Challenges] UPDATE_CHALLENGE_DATES_SUCCESS`;
+    public static readonly UPDATE_CHALLENGE_DATES_FAIL = `[Challenges] UPDATE_CHALLENGE_DATES_FAIL`;
+
+    public static readonly UPDATE_CHALLENGE_PARTICIPANTS = `[Challenges] UPDATE_CHALLENGE_PARTICIPANTS`;
+    public static readonly UPDATE_CHALLENGE_PARTICIPANTS_SUCCESS = `[Challenges] UPDATE_CHALLENGE_PARTICIPANTS_SUCCESS`;
+    public static readonly UPDATE_CHALLENGE_PARTICIPANTS_FAIL = `[Challenges] UPDATE_CHALLENGE_PARTICIPANTS_FAIL`;
+
+    public static readonly UPDATE_CHALLENGE_MEASUREMENTS = `[Challenges] UPDATE_CHALLENGE_MEASUREMENTS`;
+    public static readonly UPDATE_CHALLENGE_MEASUREMENTS_SUCCESS = `[Challenges] UPDATE_CHALLENGE_MEASUREMENTS_SUCCESS`;
+    public static readonly UPDATE_CHALLENGE_MEASUREMENTS_FAIL = `[Challenges] UPDATE_CHALLENGE_MEASUREMENTS_FAIL`;
 
 
     public static readonly AddRequirements = class implements Action {
@@ -89,7 +107,7 @@ export class ChallengesActions {
 
     public static readonly GetChallengeDetailsIfEmptySuccess = class implements Action {
         public readonly type = ChallengesActions.GET_CHALLENGE_DETAILS_IF_EMPTY_SUCCESS;
-        constructor(public payload: clgu.challenges.Challenge) {}
+        constructor(public payload?: any) {}
     }
 
     public static readonly GetChallengeDetailsIfEmptyFail = class implements Action {
@@ -118,14 +136,83 @@ export class ChallengesActions {
         constructor(public payload?: clgu.common.ErrorWithId) {}
     }
 
+    /**
+     * Update actions
+     */
 
-    public static readonly StartListenChallengeList = class implements Action {
-        public readonly type = ChallengesActions.START_LISTEN_CHALLENGE_LIST;
+    /**
+     * Basic info
+     */
+    public static readonly UpdateBasicInfo = class implements Action {
+        public readonly type = ChallengesActions.UPDATE_CHALLENGE_BASIC_INFO;
+        constructor(public payload: clgu.common.UpdateRequest) {}
+    }
+
+    public static readonly UpdateBasicInfoSuccess = class implements Action {
+        public readonly type = ChallengesActions.UPDATE_CHALLENGE_BASIC_INFO_SUCCESS;
         constructor(public payload?: any) {}
     }
 
-    public static readonly StopListenChallengeList = class implements Action {
-        public readonly type = ChallengesActions.STOP_LISTEN_CHALLENGE_LIST;
-        constructor(public payload: any) {}
+    public static readonly UpdateBasicInfoFail = class implements Action {
+        public readonly type = ChallengesActions.UPDATE_CHALLENGE_BASIC_INFO_FAIL;
+        constructor(public payload?: clgu.common.ErrorWithId) {}
     }
+
+
+    /**
+     * Dates
+     */
+    public static readonly UpdateChallengeDates = class implements Action {
+        public readonly type = ChallengesActions.UPDATE_CHALLENGE_DATES;
+        constructor(public payload: clgu.common.UpdateRequest) {}
+    }
+
+    public static readonly UpdateChallengeDatesSuccess = class implements Action {
+        public readonly type = ChallengesActions.UPDATE_CHALLENGE_DATES_SUCCESS;
+        constructor(public payload?: any) {}
+    }
+
+    public static readonly UpdateChallengeDatesFail = class implements Action {
+        public readonly type = ChallengesActions.UPDATE_CHALLENGE_DATES_FAIL;
+        constructor(public payload?: clgu.common.ErrorWithId) {}
+    }
+
+    /**
+     * Participants
+     */
+    public static readonly UpdateChallengeParticipants = class implements Action {
+        public readonly type = ChallengesActions.UPDATE_CHALLENGE_PARTICIPANTS;
+        constructor(public payload: clgu.common.UpdateRequest) {}
+    }
+
+    public static readonly UpdateChallengeParticipantsSuccess = class implements Action {
+        public readonly type = ChallengesActions.UPDATE_CHALLENGE_PARTICIPANTS_SUCCESS;
+        constructor(public payload?: any) {}
+    }
+
+    public static readonly UpdateChallengeParticipantsFail = class implements Action {
+        public readonly type = ChallengesActions.UPDATE_CHALLENGE_PARTICIPANTS_FAIL;
+        constructor(public payload?: any) {}
+    }
+
+    /**
+     * Measurements
+     */
+    public static readonly UpdateChallengeMeasurements = class implements Action {
+        public readonly type = ChallengesActions.UPDATE_CHALLENGE_MEASUREMENTS;
+        constructor(public payload: clgu.common.UpdateRequest) {}
+    }
+
+    public static readonly UpdateChallengeMeasurementsSuccess = class implements Action {
+        public readonly type = ChallengesActions.UPDATE_CHALLENGE_MEASUREMENTS_SUCCESS;
+        constructor(public payload?: any) {}
+    }
+
+    public static readonly UpdateChallengeMeasurementsFail = class implements Action {
+        public readonly type = ChallengesActions.UPDATE_CHALLENGE_MEASUREMENTS_FAIL;
+        constructor(public payload?: clgu.common.ErrorWithId) {}
+    }
+
+
+
 }

@@ -19,12 +19,14 @@
 
 .action-bar {
     margin-top: 20px;
+    padding: 20px 0;
     display: flex;
     justify-content: flex-end;
 }
 
 .popup-wrap {
-    max-height: 90vh;
+    max-height: 70vh;
+    padding: 40px 20px;
 }
 
 .example-full-width {

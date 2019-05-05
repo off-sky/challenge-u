@@ -1,0 +1,67 @@
+<div class="y-edit-challenge-root">
+
+  <div class="y-section-header">
+    <div class="y-section-header__left" (click)="goBack()">
+        <div class="y-section-header__back-btn__wrap">
+            <mat-icon>keyboard_arrow_left</mat-icon>
+        </div>
+        <div class="y-section-header__title__wrap">
+          {{ challengeName }}
+        </div>
+    </div>
+  </div>
+  
+  <div>
+      <y-create-review-bar [currentStep]="currentStep"
+                           (stepClick)="goToStep($event)"
+          >
+
+      </y-create-review-bar>
+  </div>
+
+  <div *ngIf="initted" class="y-edit-challenge__steps">
+      <div [hidden]="currentStep !== Steps.GENERAL">
+        <y-create-general-info [challengeNameControl]="nameControl"
+                               [challengeDescriptionControl]="descriptionControl"
+                        >
+        </y-create-general-info>
+      </div>
+
+      <div [hidden]="currentStep !== Steps.SCHEDULE">
+        <y-multi-date-picker [control]="selectedDatesControl"
+                            [defaultBehavior]="true"
+            >
+        </y-multi-date-picker>
+      </div>
+
+
+      <div [hidden]="currentStep !== Steps.FRIENDS">
+        <y-user-select [control]="participantsControl"></y-user-select>
+      </div>
+
+      <div [hidden]="currentStep !== Steps.MEASUREMENTS">
+        <y-create-measurements [shouldTrackControl]="shouldTrackMeasurements"
+                               [measFormArray]="measurementFormArray"
+        >
+        </y-create-measurements>
+      </div>
+
+
+
+  </div>
+
+</div>
+
+<div class="bottom-bar">
+  <button mat-raised-button
+      *ngIf="currentStep !== Steps.GENERAL"
+      (click)="onPreviousStep()"
+      >
+      Previous
+  </button>
+  <button mat-raised-button color="primary"
+          (click)="onNextStep()"
+      >
+      {{ nextButtonText }}
+  </button>
+</div>

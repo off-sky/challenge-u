@@ -5,6 +5,7 @@ import { AccountComponent } from './account/account.component';
 import { HomeGuard } from './home.guard';
 
 import { challengesRoutes } from '../challenges/challenges.routes';
+import { usersRoutes } from '../users/users.routes';
 
 const homeRoutes: Routes = [
   {
@@ -14,7 +15,8 @@ const homeRoutes: Routes = [
     ],
     component: AccountComponent,
     children: [
-      ...challengesRoutes
+      ...challengesRoutes,
+      ...usersRoutes
     ]
   }
 ]

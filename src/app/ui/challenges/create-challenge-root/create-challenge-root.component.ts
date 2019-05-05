@@ -122,8 +122,7 @@ export class CreateChallengeRootComponent implements OnInit {
     this.descriptionControl = new FormControl();
     this.participantsControl = new FormControl([], Validators.required);
     this.selectedDatesControl = new FormControl([], Validators.required );
-    this.measurementFormArray = new FormArray([
-    ]);
+    this.measurementFormArray = new FormArray([]);
     this.shouldTrackMeasurements = new FormControl(false);
 
     this.shouldTrackMeasurements.valueChanges

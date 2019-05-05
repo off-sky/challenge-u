@@ -1,2 +1,10 @@
 
-<router-outlet></router-outlet>
+<router-outlet>
+</router-outlet>
+
+<y-section-spinner *ngIf="isInitialLoading$ | async"></y-section-spinner>
+
+
+<y-screen-size></y-screen-size>
+
+

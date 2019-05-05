@@ -8,6 +8,7 @@ import { MaterialModule } from '../ui/material/material.module';
 import { MonthSelectorComponent } from './components/date-selector/month-selector.component';
 import { MeasurementEditorComponent } from './components/measurement-editor/measurement-editor.component';
 import { MultiDatePickerComponent } from './components/multi-date-picker/multi-date-picker.component';
+import { SectionSpinnerComponent } from './components/section-spinner/section-spinner.component';
 
 @NgModule({
   declarations: [
@@ -15,7 +16,8 @@ import { MultiDatePickerComponent } from './components/multi-date-picker/multi-d
     UserSelectComponent,
     MonthSelectorComponent,
     MeasurementEditorComponent,
-    MultiDatePickerComponent
+    MultiDatePickerComponent,
+    SectionSpinnerComponent
   ],
   imports: [
     CommonModule,
@@ -30,6 +32,7 @@ import { MultiDatePickerComponent } from './components/multi-date-picker/multi-d
     MonthSelectorComponent,
     MultiDatePickerComponent,
     ReactiveFormsModule,
+    SectionSpinnerComponent,
     UserSelectComponent
   ]
 })

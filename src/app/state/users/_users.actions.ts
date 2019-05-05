@@ -15,9 +15,7 @@ export class UserActions {
 
     public static readonly GetUsersSuccess = class implements Action {
         readonly type: string = UserActions.GET_USERS_SUCCESS;
-        constructor(public payload: clgu.users.User[]) {
-
-        }
+        constructor(public payload: clgu.users.db.UsersMap) {}
     }
 
 

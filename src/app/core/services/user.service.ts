@@ -27,11 +27,8 @@ export class UserService {
   }
 
 
-  public getUsers(): Observable<clgu.users.db.UserLike[]> {
+  public getUsers(): Observable<{ [userId: string]: clgu.users.db.UserLike}> {
       return this.dbService.readOnce(this.USER_REF)
-        .pipe(
-          map(userObj => Object.keys(userObj).map(id => userObj[id]))
-        )
   }
 
 

@@ -11,6 +11,7 @@ import { MaterialModule } from '../material/material.module';
 import { SharedModule } from '../../shared/shared.module';
 import { RouterModule } from '@angular/router';
 import { SidebarModule } from 'ng-sidebar';
+import { UsersModule } from '../users/users.module';
 
 @NgModule({
   declarations: [
@@ -24,6 +25,7 @@ import { SidebarModule } from 'ng-sidebar';
     HomeRoutingModule,
     MaterialModule,
     ChallengesModule,
+    UsersModule,
     SharedModule,
     RouterModule,
     SidebarModule.forRoot()

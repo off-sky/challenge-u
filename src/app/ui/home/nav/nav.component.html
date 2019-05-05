@@ -11,11 +11,19 @@
             Challenges
         </div>
 
+        <div class="y-nav__menu__item"
+             [routerLink]="['/home', 'users']"
+             routerLinkActive="active"
+            >
+            Friends
+        </div>
+
     </div>
     <div class="y-nav__content"
          [ngClass]="{
                 opened: opened
             }">
-        <ng-content></ng-content>
+        <ng-content *ngIf="!(isRouteLoading$ | async)" ></ng-content>
+        <y-section-spinner *ngIf="isRouteLoading$ | async"></y-section-spinner>
     </div>
 </div>

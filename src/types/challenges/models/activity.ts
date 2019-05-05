@@ -69,7 +69,6 @@ export class Activity implements iActivity {
             res.requirements = requirements;
         }
 
-        console.log(this.measurements);
         const filledMeasurements = this.measurements ? this.measurements.filter(m => m.filled) : [];
         if (filledMeasurements.length > 0) {
             const measurements = {};

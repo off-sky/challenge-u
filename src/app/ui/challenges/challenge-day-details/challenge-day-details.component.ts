@@ -4,8 +4,9 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { AppState } from 'src/app/state/app.state';
 import { Store } from '@ngrx/store';
 import { ChallengesActions } from 'src/app/state/challenges/_challenges.actions';
-import { Observable } from 'rxjs';
-import { map, filter } from 'rxjs/operators';
+import { Observable, combineLatest } from 'rxjs';
+import { map, filter, take, shareReplay } from 'rxjs/operators';
+import { ChallengesSelectors } from 'src/app/state/challenges/_challenges.selectors';
 
 @Component({
   selector: 'y-challenge-day-details',
@@ -14,12 +15,21 @@ import { map, filter } from 'rxjs/operators';
 })
 export class ChallengeDayDetailsComponent implements OnInit {
 
-  public activity: clgu.challenges.Activity;
-  public loading$: Observable<boolean>;
-  public isActive: boolean;
-  public isMine: boolean;
 
-  private challenge: clgu.challenges.Challenge;
+  public activity$: Observable<clgu.challenges.Activity>;
+  public loading$: Observable<boolean>;
+  public isActive: Observable<boolean>;
+  public isMine: Observable<boolean>;
+  public hasMeasurements$: Observable<boolean>;
+  public hasRequirements$: Observable<boolean>;
+
+  private currentUser$: Observable<clgu.users.User>;
+
+  private dayId: string;
+  private challengeId: string;
+  private userId: string;
+
+ 
 
   constructor(
     private route: ActivatedRoute,
@@ -29,20 +39,49 @@ export class ChallengeDayDetailsComponent implements OnInit {
 
   ngOnInit() {
     this.initActivity();
-    if (!this.activity) {
+    if (!this.activity$) {
       return;
     }
 
-    this.store.select(state => state.auth.authCheck.user.id)
-      .subscribe(currUserId => {
-        this.isMine = this.activity.userId === currUserId;
-        this.isActive = this.activity.isActive && this.isMine;
-      });
+    this.currentUser$ = this.store.select(state => state.auth.authCheck.user)
+      .pipe(
+        filter(u => !!u)
+      );
+
+    this.isMine = this.currentUser$
+        .pipe(
+          map(currUser => currUser.id === this.userId)
+        );
+
+    this.isActive = combineLatest(this.activity$, this.isMine)
+          .pipe(
+            map((vals) => {
+              const activity = vals[0],
+                    isMine = vals[1];
+
+              return activity.isActive && isMine;
+            })
+          )
+
 
     this.loading$ = this.store.select(state => state.challenges.showUp)
       .pipe(
-        map(showUpState => !!showUpState[this.activity.id] && showUpState[this.activity.id].isLoading)
-      )
+        map(showUpState => !!showUpState[this.dayId] && showUpState[this.dayId].isLoading)
+      );
+
+    this.hasMeasurements$ = this.activity$
+        .pipe(
+          map(activity => {
+            return !!activity && !!activity.measurements && activity.measurements.length > 0;
+          })
+        );
+
+    this.hasRequirements$ = this.activity$
+        .pipe(
+          map(activity => {
+            return !!activity && !!activity.requirements && activity.requirements.length > 0;
+          })
+        );
   }
 
 
@@ -56,48 +95,60 @@ export class ChallengeDayDetailsComponent implements OnInit {
 
 
   public showUpDate(): void {
-    if (this.activity) {
-      const request = this.activity.getShowUpRequest();
-      this.store.dispatch(new ChallengesActions.ShowUpDate(request));
+    if (this.activity$) {
+      this.activity$
+        .pipe(
+          take(1)
+        )
+        .subscribe(activity => {
+          const request = activity.getShowUpRequest();
+          this.store.dispatch(new ChallengesActions.ShowUpDate(request));
+        })
+   
     }
   }
 
 
   public goBack(): void {
-    if (this.challenge) {
-      this.router.navigate(['home', 'challenges', 'details', this.challenge.id])
-    }
+      this.router.navigate(['home', 'challenges', 'details', this.challengeId ])
   }
 
 
   private initActivity(): void {
-    const userId = this.route.snapshot.params.userId;
-    const dayId = this.route.snapshot.params.dayId;
-    this.challenge = this.route.snapshot.data.challenge;
-    this.store.select(state => state.challenges.details[this.challenge.id])
-    .pipe(
-      filter(d => !!d),
-      map(d => d.item)
-    )
-   .subscribe(chall => {
-        this.challenge = chall;
-        if (this.challenge) {
-          const participant = this.challenge.participants.find(p => p.id === userId);
-          if (participant) {
-            this.activity = participant.activities.find(a => a.id === dayId).clone();
-            this.isActive = this.activity.isActive && this.isMine;
-          }
-        }
-    });
+    this.userId = this.route.snapshot.params.userId;
+    this.dayId = this.route.snapshot.params.dayId;
+    this.challengeId =  this.route.snapshot.params.id;
+    /**
+     * userId: string,
+        challengeId: string,
+        private ts: number,
+        private type: challCommon.ChallengeType,
+        private requirementsDb: challDb.Requirements,
+        private measurementsDb: challDb.Measurements,
+        isShowUp: boolean
+     */
+    this.activity$ = ChallengesSelectors.challengeDetails$(this.store, this.challengeId)
+      .pipe(
+        map(detailsObj => {
+            const ts = detailsObj.common_days[this.dayId].timestamp;
+            const type = detailsObj.challenge.type;
+            const userDay = !!detailsObj.users_days && !!detailsObj.users_days[this.userId] ? detailsObj.users_days[this.userId][this.dayId] : null;
+            const requirementsDb = !!userDay ? userDay.requirements : !!detailsObj.days_requirements ?  detailsObj.days_requirements[this.dayId] : null;
+            const measurementsDb = !!userDay ? userDay.measurements : detailsObj.common_measurements;
+            const isShowUp = !!userDay;
+            return new clgu.challenges.models.Activity(
+              this.userId,
+              this.challengeId,
+              ts,
+              type,
+              requirementsDb,
+              measurementsDb,
+              isShowUp
+            );
+        }),
+        shareReplay(1)
+      );
   }
 
-
-  public get hasMeasurements(): boolean {
-    return !!this.activity && !!this.activity.measurements && this.activity.measurements.length > 0;
-  }
-
-  public get hasRequirements(): boolean {
-    return !!this.activity && !!this.activity.requirements && this.activity.requirements.length > 0;
-  }
 
 }

@@ -12,6 +12,8 @@ import { AppState } from '../app.state';
 import { withLatestFrom } from 'rxjs/operators';
 import { ChallengeActionService } from './services/challenge-action.service';
 import { Router } from '@angular/router';
+import { ChallengesDbActions } from './_challenges.db.actions';
+import { ChallengesSelectors } from './_challenges.selectors';
 
 @Injectable()
 export class ChallengesEffects {
@@ -93,24 +95,7 @@ export class ChallengesEffects {
             );
 
 
-    @Effect({ dispatch: false }) public startListenChallengeList$ = this.actions
-            .pipe(
-                ofType(ChallengesActions.START_LISTEN_CHALLENGE_LIST),
-                withLatestFrom(this.store.select(state => state.auth.authCheck.user)),
-                map((vals) => {
-                    const user = vals[1];
-                    if (this.challengeListSub) {
-                        this.challengeListSub.unsubscribe();
-                    }
-                    this.challengeListSub = this.challengeInfoService.getChallengeList(user.id)
-                            .subscribe((res: clgu.challenges.db.ChallengeObj[]) => {
-                                if (res) {
-                                    const listItems = res.map(dbItem => new clgu.challenges.models.ChallengeListItem(dbItem));
-                                    this.store.dispatch(new ChallengesActions.SaveChallengeList(listItems));
-                                }
-                            });
-                })
-            );
+
 
 
     @Effect() public getChallengeDetails$ = this.actions
@@ -118,50 +103,24 @@ export class ChallengesEffects {
                 ofType(ChallengesActions.GET_CHALLENGE_DETAILS),
                 switchMap((action: YAction<string>) => {
                     const challengeId = action.payload;
-                    return this.challengeInfoService.getChallengeDetails(challengeId)
-                            .pipe(
-                                map(dbChallenge => {
-                                    const challenge = new clgu.challenges.models.Challenge(dbChallenge);
-                                    return new ChallengesActions.GetChallengeDetailsIfEmptySuccess(challenge);
-                                }),
-                                catchError(err => {
-                                    const errWithId = {
-                                        id: challengeId,
-                                        error: err
-                                    };
-                                    return of(new ChallengesActions.GetChallengeDetailsIfEmptyFail(errWithId));
-                                })
-                            );
-                })
-            );
+                    this.store.dispatch(new ChallengesDbActions.ReloadChallengeBasicInfo({ ids: [ challengeId]}));
+                    this.store.dispatch(new ChallengesDbActions.ReloadChallengeDates({ ids: [ challengeId]}));
+                    this.store.dispatch(new ChallengesDbActions.StartListenUserChallengeDates(challengeId));
+                    this.store.dispatch(new ChallengesDbActions.StartListenChallengeParticipants(challengeId));
+                    this.store.dispatch(new ChallengesDbActions.StartListenChallengesMeasurements(challengeId));
+                    this.store.dispatch(new ChallengesDbActions.StartListenChallengesRequirements(challengeId));
 
-    @Effect() public getChallengeDetailsIfEmpty$ = this.actions
-            .pipe(
-                ofType(ChallengesActions.GET_CHALLENGE_DETAILS_IF_EMPTY),
-                withLatestFrom(this.store.select(state => state.challenges.details)),
-                switchMap(vals => {
-                    const action = vals[0] as YAction<string>;
-                    const items = vals[1];
-                    const challengeId = action.payload;
-                    if (!items[challengeId].item) {
-                        return this.challengeInfoService.getChallengeDetails(challengeId)
-                            .pipe(
-                                map(dbChallenge => {
-                                    const challenge = new clgu.challenges.models.Challenge(dbChallenge);
-                                    return new ChallengesActions.GetChallengeDetailsIfEmptySuccess(challenge);
-                                }),
-                                catchError(err => {
-                                    const errWithId = {
-                                        id: challengeId,
-                                        error: err
-                                    };
-                                    return of(new ChallengesActions.GetChallengeDetailsIfEmptyFail(errWithId));
-                                })
-                            );
-                    } else {
-                        const item = items[challengeId].item;
-                        return of(new ChallengesActions.GetChallengeDetailsIfEmptySuccess(item));
-                    }
+                    return ChallengesSelectors.challengeDetails$(this.store, challengeId)
+                        .pipe(
+                            filter(dbObj => {
+                                return !!dbObj.challenge && !!dbObj.common_days && !!dbObj.participants;
+                            }),
+                            map(() => new ChallengesActions.GetChallengeDetailsIfEmptySuccess()),
+                            catchError(err => {
+                                return of(new ChallengesActions.GetChallengeDetailsIfEmptyFail({ id: challengeId, error: err}));
+                            })
+                        )
+                        
                 })
             );
 
@@ -179,6 +138,101 @@ export class ChallengesEffects {
                             }),
                             catchError(err => of(new ChallengesActions.ShowUpDateFail({ id: request.dayId, error: err })))
                         );
+                })
+            );
+
+
+    /**
+     * Update
+     */
+    @Effect() public updateBasicInfo$ = this.actions
+            .pipe(
+                ofType(ChallengesActions.UPDATE_CHALLENGE_BASIC_INFO),
+                switchMap((action: YAction<clgu.common.UpdateRequest>) => {
+                    const payload = action.payload;
+                    const challengeId = payload.id;
+                    const data = payload.data as clgu.challenges.UpdateBasicInfoRequest;
+
+                    return this.challengeActionService.updateBasicChallengeInfo(challengeId, data)
+                        .pipe(
+                            map(res => new ChallengesActions.UpdateBasicInfoSuccess()),
+                            catchError(err => {
+                                const errWithId = {
+                                    id: challengeId,
+                                    error: err
+                                };
+                                return of(new ChallengesActions.UpdateBasicInfoFail(errWithId))
+                            })
+                        )
+                })
+            );
+
+
+        @Effect() public updateDates$ = this.actions
+            .pipe(
+                ofType(ChallengesActions.UPDATE_CHALLENGE_DATES),
+                switchMap((action: YAction<clgu.common.UpdateRequest>) => {
+                    const payload = action.payload;
+                    const challengeId = payload.id;
+                    const data = payload.data as number[];
+
+                    return this.challengeActionService.updateChallengeDates(challengeId, data)
+                        .pipe(
+                            map(res => new ChallengesActions.UpdateChallengeDatesSuccess()),
+                            catchError(err => {
+                                const errWithId = {
+                                    id: challengeId,
+                                    error: err
+                                };
+                                return of(new ChallengesActions.UpdateChallengeDatesFail(errWithId))
+                            })
+                        )
+                })
+            );
+
+
+        @Effect() public updateParticipants$ = this.actions
+            .pipe(
+                ofType(ChallengesActions.UPDATE_CHALLENGE_PARTICIPANTS),
+                switchMap((action: YAction<clgu.common.UpdateRequest>) => {
+                    const payload = action.payload;
+                    const challengeId = payload.id;
+                    const data = payload.data as string[];
+
+                    return this.challengeActionService.updateChallengeParticipants(challengeId, data)
+                        .pipe(
+                            map(res => new ChallengesActions.UpdateChallengeParticipantsSuccess()),
+                            catchError(err => {
+                                const errWithId = {
+                                    id: challengeId,
+                                    error: err
+                                };
+                                return of(new ChallengesActions.UpdateChallengeParticipantsFail(errWithId))
+                            })
+                        )
+                })
+            );
+
+
+        @Effect() public updateMeasurements$ = this.actions
+            .pipe(
+                ofType(ChallengesActions.UPDATE_CHALLENGE_MEASUREMENTS),
+                switchMap((action: YAction<clgu.common.UpdateRequest>) => {
+                    const payload = action.payload;
+                    const challengeId = payload.id;
+                    const data = payload.data as clgu.challenges.Measurement[];
+
+                    return this.challengeActionService.updateMeasurements(challengeId, data)
+                        .pipe(
+                            map(res => new ChallengesActions.UpdateChallengeMeasurementsSuccess()),
+                            catchError(err => {
+                                const errWithId = {
+                                    id: challengeId,
+                                    error: err
+                                };
+                                return of(new ChallengesActions.UpdateChallengeMeasurementsFail(errWithId))
+                            })
+                        )
                 })
             );
 

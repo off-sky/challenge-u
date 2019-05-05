@@ -11,6 +11,8 @@ import { Store } from '@ngrx/store';
 import { AppState } from '../app.state';
 import { UserActions } from '../users/_users.actions';
 import { ChallengesActions } from '../challenges/_challenges.actions';
+import { ChallengesDbActions } from '../challenges/_challenges.db.actions';
+import { YAction } from 'src/types/store';
 
 @Injectable()
 export class AuthEffects {
@@ -44,10 +46,10 @@ export class AuthEffects {
     @Effect() public checkAuthAuthed$ = this.actions
         .pipe(
             ofType(AuthActions.CHECK_AUTH_AUTHED),
-            switchMap(() => {
+            switchMap((action: YAction<clgu.users.User>) => {
                 this.store.dispatch(new UserActions.GetUsers());
                 this.store.dispatch(new ChallengesActions.FetchRequirementsPresets());
-                return of(new ChallengesActions.StartListenChallengeList());
+                return of(new ChallengesDbActions.StartListenUserChallenges(action.payload.id));
             })
         )
 

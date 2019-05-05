@@ -1,22 +1,43 @@
-<div class="y-details-root">
+<div *ngIf="challenge$ | async; let challenge;" class="y-details-root">
 
   <!-- Title -->
   <div class="y-title-1">
-    <div>
+    <div class="challenge-name">
         {{ challenge?.displayName }}
     </div>
 
-    <div *ngIf="isMine" class="y-challenge-actions">
+    <div *ngIf="isMine | async" class="y-challenge-actions">
         <button mat-raised-button color="primary"
                 (click)="openRequirements()"
           >
           Add Requirements
         </button>
+        <button mat-raised-button color="primary"
+                (click)="openEdit()"
+          >
+          Edit
+        </button>
     </div>
   </div>
 
-  <div >
+  <div class="y-challenge-decription">
       {{ challenge?.description }}
+  </div>
+
+  <div class="show-control-wrap">
+    <div class="y-label">
+      Show
+    </div>
+    <form [formGroup]="showFormGroup">
+        <mat-checkbox *ngFor="let participant of challenge?.participants"
+              class="y-checkbox"
+              [formControlName]="participant.id"
+          >
+          {{ participant.displayName }}
+        </mat-checkbox>
+    </form>
+    
+    
   </div>
 
 
@@ -24,27 +45,35 @@
       <div class="y-participants__block">
           <div class="y-participants__info__wrap">
               <div class="y-participants__info">
-                  <div *ngFor="let p of challenge.participants" class="y-participants__info-item">
-                     <div class="y-participants__info-item__photo">
-                        <y-photo [data]="p?.photo?.data"></y-photo>
-                     </div>
-                     <div class="y-participants__info-item__name">
-                        {{ p.displayName }}
+                <ng-container *ngFor="let p of challenge.participants">
+                    <div *ngIf="showFormGroup.get(p.id).value" class="y-participants__info-item">
+              
+                          <div class="y-participants__info-item__photo">
+                              <y-photo [data]="p?.photo?.data"></y-photo>
+                          </div>
+                          <div class="y-participants__info-item__name">
+                              {{ p.displayName }}
+                          </div>
                     </div>
-                  </div>
+                </ng-container>
+                 
               </div>
           </div>
         
           <div class="y-participants__days__wrap">
               <div class="y-participants__days">
-                  <div *ngFor="let p of challenge.participants" class="y-participants__days-item">
-                      <div *ngFor="let a of p.activities" class="y-participants__days-item__day"
-                        >
-                          <y-challenge-day-card [activity]="a"
-                            >
-                          </y-challenge-day-card>
-                      </div>
-                  </div>
+                <ng-container *ngFor="let p of challenge.participants">
+                    <div *ngIf="showFormGroup.get(p.id).value" class="y-participants__days-item">
+                        <div *ngFor="let a of p.activities" class="y-participants__days-item__day"
+                          >
+                              <y-challenge-day-card [activity]="a"
+                                                    [nextClosestId]="challenge?.nextClosestDateId"
+                                                    (scrollMe)="onScrollDayIntoView($event)"
+                                >
+                              </y-challenge-day-card>
+                          </div>
+                    </div>
+                </ng-container>
               </div>
           </div>
        

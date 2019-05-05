@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { clgu } from '../../../../types';
-import { Observable } from 'rxjs';
+import { Observable, combineLatest, of } from 'rxjs';
 import { AppState } from '../../../state/app.state';
 import { Store } from '@ngrx/store';
+import { map } from 'rxjs/operators';
+import { ChallengesSelectors } from 'src/app/state/challenges/_challenges.selectors';
 
 @Component({
   selector: 'y-challenge-list-root',
@@ -18,7 +20,12 @@ export class ChallengeListRootComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.list$ = this.store.select(state => state.challenges.list.items);
+    this.list$ = ChallengesSelectors.listForCurrUser$(this.store)
+      .pipe(
+        map(listDb => {
+          return listDb.map(ldb => new clgu.challenges.models.ChallengeListItem(ldb))
+        })
+      )
   }
 
 }

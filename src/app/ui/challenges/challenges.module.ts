@@ -18,6 +18,8 @@ import { CreateFriendsComponent } from './create-friends/create-friends.componen
 import { CreateMeasurementsComponent } from './create-measurements/create-measurements.component';
 import { CreateReviewBarComponent } from './create-review-bar/create-review-bar.component';
 import { SubmitRequirementsComponent } from './submit-requirements/submit-requirements.component';
+import { EditChallengeRootComponent } from './edit-challenge-root/edit-challenge-root.component';
+import { EditChallengeParticipantsComponent } from './edit-challenge-participants/edit-challenge-participants.component';
 
 @NgModule({
   declarations: [
@@ -34,7 +36,9 @@ import { SubmitRequirementsComponent } from './submit-requirements/submit-requir
     CreateFriendsComponent,
     CreateMeasurementsComponent,
     CreateReviewBarComponent,
-    SubmitRequirementsComponent
+    SubmitRequirementsComponent,
+    EditChallengeRootComponent,
+    EditChallengeParticipantsComponent
   ],
   providers: [
     ChallengeDetailsResolverService

@@ -6,4 +6,5 @@ export interface Challenge {
     displayName: string;
     description: string;
     participants: Participant[];
+    nextClosestDateId: string;
 }

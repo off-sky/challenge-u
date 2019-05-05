@@ -7,6 +7,10 @@
     align-items: center;
 }
 
+.challenge-name {
+    margin-right: 20px;
+}
+
 
 .y-participants {
     $item-width: 150px;
@@ -66,4 +70,27 @@
     &__wrap {
         width: 100%;
     }
+}
+
+.y-challenge-actions {
+    display:  flex;
+    flex-wrap: wrap;
+    button {
+        margin: 5px 0;
+    }
+    button:not(:last-child) {
+        margin-right: 10px;
+    }
+}
+
+.y-checkbox {
+    margin-right: 10px;
+}
+
+.y-label {
+    font-size: 12px;
+}
+
+.y-challenge-decription {
+    margin-bottom: 20px;
 }

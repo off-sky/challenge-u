@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import { MatCardModule } from '@angular/material/card';
-import { MatDatepickerModule, MatIconModule, MatButtonModule, MatTooltipModule, MatDialogModule } from '@angular/material';
+import { MatDatepickerModule, MatIconModule, MatButtonModule, MatTooltipModule, MatDialogModule, MatProgressSpinnerModule } from '@angular/material';
 import { MatInputModule } from '@angular/material/input';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import {MatSelectModule} from '@angular/material/select';
@@ -32,6 +32,7 @@ import { SatDatepickerModule, SatNativeDateModule } from 'saturn-datepicker';
     MatRadioModule,
     MatSelectModule,
     MatSidenavModule,
+    MatProgressSpinnerModule,
     SatDatepickerModule,
     SatNativeDateModule
   ],
@@ -44,6 +45,7 @@ import { SatDatepickerModule, SatNativeDateModule } from 'saturn-datepicker';
     MatIconModule,
     MatInputModule,
     MatListModule,
+    MatProgressSpinnerModule,
     MatToolbarModule,
     MatTooltipModule,
     MatRadioModule,

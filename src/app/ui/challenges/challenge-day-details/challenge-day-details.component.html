@@ -1,3 +1,5 @@
+<ng-container *ngIf="activity$ | async; let activity;">
+
 <div class="y-section-header">
   <div class="y-section-header__left" (click)="goBack()">
       <div class="y-section-header__back-btn__wrap">
@@ -7,7 +9,7 @@
         {{ activity?.displayLabel }}
       </div>
   </div>
-  <div *ngIf="isActive" class="y-section-header__right">
+  <div *ngIf="isActive | async" class="y-section-header__right">
     <button *ngIf="!(loading$ | async)"
             (click)="showUpDate()"
             mat-raised-button
@@ -23,7 +25,7 @@
 <div class="y-activity-status" [ngClass]="{
                   'show-up': activity.isShowUp,
                   'future': activity?.isFuture,
-                  'active': isActive
+                  'active': isActive | async
                 }"
 >
     <div *ngIf="activity?.isShowUp" class="y-activity-status__show-up">
@@ -32,12 +34,12 @@
     <div *ngIf="activity?.isFuture">
         Wait till {{activity.displayLabel }} to show up for this activity 
     </div>
-    <div *ngIf="isActive">
-        Show up and check your results
+    <div *ngIf="isActive | async">
+        Show up till the end of {{ activity?.displayLabel }}
     </div>
 </div>
 
-<div *ngIf="hasMeasurements" class="y-measurements y-section">
+<div *ngIf="hasMeasurements$ | async" class="y-measurements y-section">
     <div class="y-title-2">
         Measurements (optional)
     </div>
@@ -55,7 +57,7 @@
 </div>
 
 
-<div *ngIf="hasRequirements" class="y-requirements y-section">
+<div *ngIf="hasRequirements$ | async" class="y-requirements y-section">
     <div class="y-title-2">
         Requirements (optional)
     </div>
@@ -64,3 +66,4 @@
       >
     </y-submit-requirements>
 </div>
+</ng-container>

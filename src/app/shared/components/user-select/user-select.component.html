@@ -16,7 +16,7 @@
   </mat-form-field>
 </form>
 <div class="selected-items">
-    <div class="selected-item" *ngFor="let user of selectedUsers">
+    <div class="selected-item" *ngFor="let user of selectedUsers$ | async">
         <div>
           {{ user.displayName }}
         </div>

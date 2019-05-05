@@ -22,8 +22,7 @@ export class UserEffects {
                 return this.userService.getUsers()
                     .pipe(
                         map(dbUsers => {
-                            const users = dbUsers.map(db => new clgu.users.models.User(db));
-                            return new UserActions.GetUsersSuccess(users);
+                            return new UserActions.GetUsersSuccess(dbUsers);
                         }),
                         catchError(err => {
                             return of(new UserActions.GetUsersFail(err));

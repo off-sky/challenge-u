@@ -20,6 +20,16 @@ export enum CreateChallengeSteps {
 }
 
 
+export enum EditChallengeSteps {
+    GENERAL,
+    SCHEDULE,
+    FRIENDS,
+    MEASUREMENTS,
+    LAST = MEASUREMENTS,
+    FIRST = GENERAL
+}
+
+
 
                     
 const fillRulesByTypes: { [id: string]: FillRuleOption[] } = {

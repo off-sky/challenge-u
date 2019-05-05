@@ -1,5 +1,9 @@
 export module db {
 
+    export interface UsersMap {
+        [userId: string]: UserLike;
+    }
+
     export interface UserLike {
         id: string;
         display_name?: string;

@@ -12,6 +12,13 @@ export module db {
         created_at: number;
     }
 
+    export interface ChallengeParticipants {
+        [userId: string]: string;
+    }
+
+    export interface ChallengesByUser {
+        [challengeId: string]: ChallengeByUserObj;
+    }
 
     export interface ChallengeByUserObj {
         id: string;
@@ -21,9 +28,6 @@ export module db {
 
     export interface CommonChallengeDay {
         timestamp: number;
-        requirements?: {
-            [id: string]: RequirementObj
-        }
     }
 
     export interface CommonChallengeDays {
@@ -41,8 +45,16 @@ export module db {
         comment: string;
     }
 
+    export interface UserChallengeDayMap {
+        [userId: string]: UserChallengeDays;
+    }
+
     export interface UserChallengeDays {
-        [id: string]: UserChallengeDay;
+        [dayId: string]: UserChallengeDay;
+    }
+
+    export interface ChallengeRequirements {
+        [dayId: string]: Requirements;
     }
 
     export interface Requirements {
@@ -75,6 +87,7 @@ export module db {
             [user_id: string]: UserChallengeDays;
         };
         common_measurements: Measurements;
+        days_requirements: ChallengeRequirements;
         participants: userDb.UserLike[];
     }
 

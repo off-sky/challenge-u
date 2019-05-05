@@ -316,6 +316,7 @@ export class MultiDatePickerComponent implements OnInit {
       this.dayClickMulti(event, day);
     }
     if (this.control) {
+      this.control.markAsTouched({ onlySelf: true });
       this.control.setValue(this.selected.map(m => m.toDate()));
     }
   }
@@ -395,6 +396,7 @@ export class MultiDatePickerComponent implements OnInit {
     weekDay.selected = !weekDay.selected;
     this.generate();
     if (this.control) {
+      this.control.markAsTouched({ onlySelf: true });
       this.control.setValue(this.selected.map(m => m.toDate()));
     }
     this.selectedChanged.emit(this.selected);
