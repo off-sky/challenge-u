@@ -8,6 +8,7 @@ import { clgu } from 'src/types';
 })
 export class DisplayMeasurementsComponent implements OnInit {
 
+  @Input() public showAll: boolean;
   @Input() public measurements: clgu.challenges.Measurement[];
 
   constructor() { }
@@ -23,6 +24,9 @@ export class DisplayMeasurementsComponent implements OnInit {
   public filled(): clgu.challenges.Measurement[] {
     if (!this.measurements) {
       return [];
+    }
+    if (this.showAll) {
+      return this.measurements;
     }
     return this.measurements.filter(m => m.filled);
   }

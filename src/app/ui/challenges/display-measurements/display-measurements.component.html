@@ -13,7 +13,7 @@
               <div *ngIf="m.type === 'number' || m.type === 'string'">
                   {{ m.value }}
               </div>
-              <div *ngIf="m.type === 'boolean'">
+              <div *ngIf="m.type === 'boolean' && m.value">
                 <mat-icon>done</mat-icon>
               </div>
           </div>

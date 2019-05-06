@@ -29,28 +29,36 @@
                 }"
 >
     <div *ngIf="activity?.isShowUp" class="y-activity-status__show-up">
-        <div>{{ showUpText }}</div> <mat-icon *ngIf="isMine">grade</mat-icon>
+        <div *ngIf="showUpText$ | async; let showUpText;">
+          {{ showUpText }}. <span *ngIf="isMine | async">
+            <ng-container *ngIf="cheerUpText$ | async; let cheerUpText">
+                {{ cheerUpText }}
+            </ng-container>
+          
+          </span>
+        </div> <mat-icon *ngIf="isMine">grade</mat-icon>
     </div>
     <div *ngIf="activity?.isFuture">
         Wait till {{activity.displayLabel }} to show up for this activity 
     </div>
     <div *ngIf="isActive | async">
-        Show up till the end of {{ activity?.displayLabel }}
+        Show up for this activity
     </div>
 </div>
 
 <div *ngIf="hasMeasurements$ | async" class="y-measurements y-section">
     <div class="y-title-2">
-        Measurements (optional)
+        Measurements <span *ngIf="isActive | async">(optional)</span>
     </div>
 
     <div>
       <y-edit-measurements [measurements]="activity?.measurements"
-                           *ngIf="activity?.isActive"
+                           *ngIf="(isActive | async)"
         >
       </y-edit-measurements>
-      <y-display-measurements [measurements]="activity?.measurements"
-                            *ngIf="!activity?.isActive"
+      <y-display-measurements [showAll]="activity?.isFuture"
+                            [measurements]="activity?.measurements"
+                            *ngIf="!(isActive | async)"
         >
       </y-display-measurements>
     </div>
@@ -59,10 +67,11 @@
 
 <div *ngIf="hasRequirements$ | async" class="y-requirements y-section">
     <div class="y-title-2">
-        Requirements (optional)
+        Requirements <span *ngIf="isActive | async">(optional)</span>
     </div>
     <y-submit-requirements [requirements]="activity?.requirements"
-                            [readOnly]="!activity?.isActive"
+                            [readOnly]="!(isActive | async)"
+                            [supressNegative]="activity.isFuture"
       >
     </y-submit-requirements>
 </div>

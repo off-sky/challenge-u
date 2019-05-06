@@ -4,7 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { AppState } from 'src/app/state/app.state';
 import { Store } from '@ngrx/store';
 import { ChallengesActions } from 'src/app/state/challenges/_challenges.actions';
-import { Observable, combineLatest } from 'rxjs';
+import { Observable, combineLatest, of } from 'rxjs';
 import { map, filter, take, shareReplay } from 'rxjs/operators';
 import { ChallengesSelectors } from 'src/app/state/challenges/_challenges.selectors';
 
@@ -20,6 +20,8 @@ export class ChallengeDayDetailsComponent implements OnInit {
   public loading$: Observable<boolean>;
   public isActive: Observable<boolean>;
   public isMine: Observable<boolean>;
+  public showUpText$: Observable<string>;
+  public cheerUpText$: Observable<string>;
   public hasMeasurements$: Observable<boolean>;
   public hasRequirements$: Observable<boolean>;
 
@@ -28,6 +30,19 @@ export class ChallengeDayDetailsComponent implements OnInit {
   private dayId: string;
   private challengeId: string;
   private userId: string;
+
+
+  public cheerUpTexts = [
+    'Great job!',
+    'Good for you!',
+    'Superb!',
+    'Keep rocking!',
+    'Keep pushing!',
+    'You\'re a hero!',
+    'You\'re a rising star!',
+    'Give yourself a pat on the back!',
+    'Enjoy your day!'
+  ]
 
  
 
@@ -59,7 +74,7 @@ export class ChallengeDayDetailsComponent implements OnInit {
               const activity = vals[0],
                     isMine = vals[1];
 
-              return activity.isActive && isMine;
+              return (!activity.isShowUp && !activity.isFuture) && isMine;
             })
           )
 
@@ -82,16 +97,25 @@ export class ChallengeDayDetailsComponent implements OnInit {
             return !!activity && !!activity.requirements && activity.requirements.length > 0;
           })
         );
-  }
 
 
-  public get showUpText(): string {
-    if (this.isMine) {
-      return 'You have shown up for this activity';
-    } else {
-      return 'Your friend has shown up for this activity';
-    }
+      this.showUpText$ = this.isMine
+          .pipe(
+            map(isMine => {
+              if (isMine) {
+                return 'You have shown up for this activity';
+              } else {
+                return 'Your friend has shown up for this activity';
+              }
+            })
+          );
+
+      const rand = Math.floor(Math.random() * this.cheerUpTexts.length);
+      this.cheerUpText$ = of(this.cheerUpTexts[rand]);
+
+    
   }
+
 
 
   public showUpDate(): void {

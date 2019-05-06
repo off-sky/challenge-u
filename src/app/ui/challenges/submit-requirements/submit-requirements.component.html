@@ -17,7 +17,7 @@
               </div>
               <div *ngIf="readOnly" class="y-requirement-complete">
                   <mat-icon *ngIf="r.completed" class="completed-icon">check</mat-icon>
-                  <mat-icon *ngIf="!r.completed">close</mat-icon>
+                  <mat-icon *ngIf="r.completed === false && !supressNegative">close</mat-icon>
               </div>
           </div>
         </div>

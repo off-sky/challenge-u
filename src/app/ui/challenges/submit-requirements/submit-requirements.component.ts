@@ -15,6 +15,8 @@ export class SubmitRequirementsComponent implements OnInit {
 
   @Input() public requirements: clgu.challenges.Requirement[];
   @Input() public readOnly: boolean;
+  @Input() public supressNegative: boolean;
+
   public requirementCategories: RequirementCategory[] = [];
   
   constructor() { }
