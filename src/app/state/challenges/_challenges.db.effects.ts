@@ -364,18 +364,22 @@ export class ChallengesDbEffects {
     @Effect() public reloadMeasurements$ = this.actions
         .pipe(
             ofType(ChallengesDbActions.RELOAD_CHALLENGES_MEASUREMENTS),
-            withLatestFrom(this.store.select(state => state.challenges)),
-            flatMap((values: [YAction<clgu.common.ReloadInfoRequest>, ChallengesState]) => {
-                const action = values[0];
-                const challengeId = action.payload.ids[0];
-                const challState = values[1];
+            flatMap((action: YAction<clgu.challenges.ReloadMeasurementsRequest>) => {
+                const p = action.payload;
+                const challengeId = p.challengeId;
+                const dayId = p.dayId;
+                const userId = p.userId;
 
-                if (challState.challengesMeasurements[challengeId] === undefined) {
-                    return this.challengeInfoService.getMeasurements(challengeId)
+ 
+                return this.challengeInfoService.getMeasurements(challengeId, dayId, userId)
                         .pipe(
                             map(res => {
-                                const result = new clgu.common.UpdatableDataObject<clgu.challenges.db.Measurements>(challengeId, res);
-                                return new ChallengesDbActions.ReloadChallengesMeasurementsSuccess(result);
+                                return new ChallengesDbActions.ReloadChallengesMeasurementsSuccess({
+                                    challengeId,
+                                    dayId,
+                                    userId,
+                                    measurements: res
+                                });
                             }),
                             catchError(err => {
                                 console.log(err);
@@ -383,9 +387,7 @@ export class ChallengesDbEffects {
                                 return of(new ChallengesDbActions.ReloadChallengesMeasurementsFail(result));
                             })
                         );
-                } else {
-                    return of(new AppActions.IdleAction());
-                }
+    
             })
         );
 
@@ -393,18 +395,22 @@ export class ChallengesDbEffects {
     @Effect({ dispatch: false }) public startListenMeasurements$ = this.actions
             .pipe(
                 ofType(ChallengesDbActions.START_LISTEN_CHALLENGES_MEASUREMENTS),
-                map((action: YAction<string>) => {
-                    const challengeId = action.payload;
+                map((action: YAction<clgu.challenges.ReloadMeasurementsRequest>) => {
+                    const {challengeId, dayId, userId } = action.payload;
                     if (this.measurementSubs[challengeId]) {
                         this.measurementSubs[challengeId].unsubscribe();
                     }
-                    this.measurementSubs[challengeId] = this.challengeInfoService.listenMeasurements(challengeId)
+                    this.measurementSubs[challengeId] = this.challengeInfoService.listenMeasurements(challengeId, dayId, userId)
                         .pipe(
                             debounceTime(200)
                         )
                         .subscribe(res => {
-                            const update = new clgu.common.UpdatableDataObject<clgu.challenges.db.Measurements>(challengeId, res);
-                            this.store.dispatch(new ChallengesDbActions.ReloadChallengesMeasurementsSuccess(update));
+                            this.store.dispatch(new ChallengesDbActions.ReloadChallengesMeasurementsSuccess({
+                                challengeId,
+                                dayId,
+                                userId,
+                                measurements: res
+                            }));
                         });
                 })
             );

@@ -36,7 +36,10 @@
 
   <!-- Measurements Step -->
   <div [hidden]="activeStep !== 0">
-    <y-create-measurements [measFormArray]="measurementsFormControl"></y-create-measurements>
+      <y-measurement-editor [control]="measurementsFormControl"
+                            [challengeId]="challengeId"
+        >
+      </y-measurement-editor>
   </div>
 
 
@@ -60,4 +63,18 @@
 
 
   <!-- Action bar -->
+  <div class="bottom-bar">
+      <button mat-raised-button
+          *ngIf="currentStep !== 0"
+          (click)="onPreviousStep()"
+          >
+          Previous
+      </button>
+      <button mat-raised-button color="primary"
+              (click)="nextStep()"
+          >
+          {{ nextButtonText }}
+      </button>
+  </div>
+
 </div>

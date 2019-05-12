@@ -9,12 +9,16 @@
                       (optionSelected)="onOptionSelected($event)"
       >
       <mat-option *ngFor="let option of filteredOptions$ | async" [value]="option">
-        {{ option.displayName }}
+        {{ option.display }}
       </mat-option>
-      <mat-option *ngIf="showDefultOption$ | async" (click)="onDefaultOptionClicked(input, $event)">
-        <div *ngIf="inputControl.valueChanges | async; let input;">
-            {{defaultStr}}<span>&nbsp;"</span><span >{{input}}"</span>
-        </div>  
-      </mat-option>
+      <div *ngIf="inputControl.valueChanges | async; let input;">
+        <mat-option *ngIf="showDefultOption$ | async" (click)="onDefaultOptionClicked(input, $event)"
+          [value]="input"
+          >
+          
+              {{defaultStr}}<span>&nbsp;"</span><span >{{input}}"</span>
+          
+        </mat-option>
+      </div> 
     </mat-autocomplete>
   </mat-form-field>

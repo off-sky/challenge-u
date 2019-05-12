@@ -3,6 +3,7 @@ import { FormControl } from '@angular/forms';
 import { Observable, BehaviorSubject, combineLatest } from 'rxjs';
 import { filter, startWith, map, tap, take, switchMap } from 'rxjs/operators';
 import { MatAutocompleteSelectedEvent } from '@angular/material';
+import { clgu } from 'src/types';
 
 interface Option {
   name: string;
@@ -16,7 +17,7 @@ interface Option {
 })
 export class AutocompleteDefOptionComponent implements OnChanges, OnInit {
 
-  @Input() public options: Option[] = [];
+  @Input() public options: clgu.common.Option[] = [];
   @Input() public placeholder: string = 'Start typing';
   @Input() public control: FormControl;
   @Input() public defaultStr: string = 'Create';
@@ -26,10 +27,10 @@ export class AutocompleteDefOptionComponent implements OnChanges, OnInit {
   public inputControl: FormControl;
   private control$: BehaviorSubject<FormControl> = new BehaviorSubject<FormControl>(null);
 
-  public filteredOptions$: Observable<Option[]>;
-  public selectedOptions$: Observable<Option[]>;
+  public filteredOptions$: Observable<clgu.common.Option[]>;
+  public selectedOptions$: Observable<clgu.common.Option[]>;
 
-  private options$: BehaviorSubject<Option[]> = new BehaviorSubject<Option[]>(this.options);
+  private options$: BehaviorSubject<clgu.common.Option[]> = new BehaviorSubject<clgu.common.Option[]>(this.options);
 
   private selectedOptions: {
     [userId: string]: string;
@@ -44,6 +45,9 @@ export class AutocompleteDefOptionComponent implements OnChanges, OnInit {
     if (changes.control) {
       this.control$.next(this.control);
     }
+    if (changes.options) {
+      this.options$.next(this.options || []);
+    }
   }
 
   ngOnInit() {
@@ -57,15 +61,15 @@ export class AutocompleteDefOptionComponent implements OnChanges, OnInit {
 
     this.filteredOptions$ = combineLatest(options$, inputValChanges$)
       .pipe(
-        map((vals: [Option[], string]) => {
+        map((vals: [clgu.common.Option[], string]) => {
           const users = vals[0];
           const inputVal = vals[1];
           if (!inputVal) {
             return [];
           }
           return users.filter(u => {
-            const alreadySelected = this.selectedOptions[u.name];
-            return !alreadySelected && u.name.toLowerCase().includes(inputVal.toLowerCase());
+            const alreadySelected = this.selectedOptions[u.display];
+            return !alreadySelected && u.display.toLowerCase().includes(inputVal.toLowerCase());
           });
         })
       );
@@ -84,15 +88,21 @@ export class AutocompleteDefOptionComponent implements OnChanges, OnInit {
    
     this.showDefultOption$ = this.filteredOptions$
           .pipe(
-            map(opts => this.defOption && (!opts || opts.length === 0))
+            tap(ops => console.log(ops)),
+            map(opts => this.defOption && (!!opts || opts.length === 0))
           )
   }
 
   public displayFn(opt): string | null {
+    console.log('Display fn:');
+    console.log(opt);
     if (this.multi) {
       return null;
     } else {
-      return !!opt && opt.name ? opt.name : null
+      if (typeof opt === 'string') {
+        return opt;
+      }
+      return !!opt && opt.display ? opt.display : null
     }
   }
 
@@ -102,17 +112,20 @@ export class AutocompleteDefOptionComponent implements OnChanges, OnInit {
   }
 
   public onOptionSelected(event: MatAutocompleteSelectedEvent): void {
-    const user = event.option.value;
-    this.selectedOptions$
-      .pipe(
-        take(1)
-      ).subscribe(users => {
-        users.push(user);
-        if (this.control) {
-          this.control.setValue(users);
-          this.control.markAsTouched({ onlySelf: true });
-        }
-      });
+    const user = event.option.value as clgu.common.Option;
+    if (this.multi) {
+      const users = this.control.value;
+      users.push(user);
+      if (this.control) {
+        this.control.setValue(users);
+        this.control.markAsTouched({ onlySelf: true });
+      }
+    } else {
+      if (this.control) {
+        this.control.setValue([user]);
+        this.control.markAsTouched({ onlySelf: true });
+      }
+    }
    
   }
 
@@ -121,7 +134,7 @@ export class AutocompleteDefOptionComponent implements OnChanges, OnInit {
         .pipe(
           take(1)
         ).subscribe(users => {
-          let f = users.filter(u => u.name !== name);
+          let f = users.filter(u => u.display !== name);
           if (this.control) {
             this.control.setValue(f);
             this.control.markAsTouched({ onlySelf: true });

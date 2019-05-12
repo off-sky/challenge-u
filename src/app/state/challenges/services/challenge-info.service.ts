@@ -17,6 +17,8 @@ export class ChallengeInfoService {
   private USER_REQUIREMENT_PATH = 'users_requirements';
   private PARTICIPANTS_PATH = 'challenges_participants';
   private MEASUREMENTS_PATH = 'challenges_measurements';
+  private CHALLENGES_CATEGORIES_PATH = 'challenges_categories';
+  private PRESETS_PATH = 'challenges_measurements_presets';
   private REQUIREMENTS_PATH = 'challenges_days_requirements';
 
   constructor(
@@ -70,12 +72,23 @@ export class ChallengeInfoService {
     return  this.dbService.listen(`${this.USER_CHALLENGE_DAYS_PATH}/${challengeId}`);
   }
 
-  public getMeasurements(challengeId: string): Observable<clgu.challenges.db.Measurements> {
-    return this.dbService.readOnce(`${this.MEASUREMENTS_PATH}/${challengeId}`);
+  public getMeasurements(challengeId: string, dayId: string, userId: string): Observable<clgu.challenges.db.Measurements> {
+    return this.dbService.readOnce(`${this.MEASUREMENTS_PATH}/${challengeId}/${dayId}/${userId}`);
   }
 
-  public listenMeasurements(challengeId: string): Observable<clgu.challenges.db.Measurements> {
-    return this.dbService.listen(`${this.MEASUREMENTS_PATH}/${challengeId}`);
+  
+  public getMeasurementCategories(challengeId: string): Observable<{ [id: string]: string}> {
+    const ref = `${this.CHALLENGES_CATEGORIES_PATH}/${challengeId}`;
+    return this.dbService.readOnce(ref);
+  }
+
+  public getMeasurementsPresets(challengeId: string): Observable<clgu.challenges.db.Presets> {
+    return this.dbService.readOnce(`${this.PRESETS_PATH}/${challengeId}`);
+  }
+  
+
+  public listenMeasurements(challengeId: string, dayId: string, userId: string): Observable<clgu.challenges.db.Measurements> {
+    return this.dbService.listen(`${this.MEASUREMENTS_PATH}/${challengeId}/${dayId}/${userId}`);
   }
 
 

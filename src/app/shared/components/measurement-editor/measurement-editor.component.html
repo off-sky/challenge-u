@@ -15,8 +15,10 @@
                 <div class="inputs">
                     <div class="input-wrap">
                         <y-autocomplete
+                           [options]="categoryOptions$ | async"
                            [placeholder]="'Category'"
                            [control]="fg.get('category')"
+                           (defOptionSelected)="onAddCategory($event)"
                          >
                         </y-autocomplete>
                      </div>

@@ -197,12 +197,12 @@ export class ChallengesDbActions {
      */
     public static readonly ReloadChallengesMeasurements = class implements Action {
         public readonly type = ChallengesDbActions.RELOAD_CHALLENGES_MEASUREMENTS;
-        constructor(public payload: clgu.common.ReloadInfoRequest) {}
+        constructor(public payload: clgu.challenges.ReloadMeasurementsRequest) {}
     };
 
     public static readonly ReloadChallengesMeasurementsSuccess = class implements Action {
         public readonly type = ChallengesDbActions.RELOAD_CHALLENGES_MEASUREMENTS_SUCCESS;
-        constructor(public payload: clgu.common.UpdatableDataObject<clgu.challenges.db.Measurements>) {}
+        constructor(public payload: clgu.challenges.ReloadMeasurementResult) {}
     };
 
     public static readonly ReloadChallengesMeasurementsFail = class implements Action {
@@ -212,12 +212,12 @@ export class ChallengesDbActions {
 
     public static readonly StartListenChallengesMeasurements = class implements Action {
         public readonly type = ChallengesDbActions.START_LISTEN_CHALLENGES_MEASUREMENTS;
-        constructor(public payload: string) {}
+        constructor(public payload: clgu.challenges.ReloadMeasurementsRequest) {}
     };
 
     public static readonly StopListenChallengesMeasurements = class implements Action {
         public readonly type = ChallengesDbActions.STOP_LISTEN_CHALLENGES_MEASUREMENTS;
-        constructor(public payload?: any) {}
+        constructor(public payload?: clgu.challenges.ReloadMeasurementsRequest) {}
     };
 
 }

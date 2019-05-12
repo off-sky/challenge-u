@@ -1,12 +1,13 @@
 import { Activity as iActivity } from '../activity';
 import { db as challDb } from '../db';
-import { Requirement } from '../requirement';
-import { Requirement as RequirementModel } from './requirement';
 import { Measurement } from '../measurement';
 import { Measurement as MeasurementModel } from './measurement';
+import { CombinedMeasurement } from './combined-measurement';
 import * as challCommon from '../common';
 import * as moment from 'moment';
 import { DayShowUpRequest } from '../day-show-up-request';
+import { FormGroup, FormControl } from '@angular/forms';
+import { startWith } from 'rxjs/operators';
 
 export class Activity implements iActivity {
     id: string;
@@ -15,7 +16,6 @@ export class Activity implements iActivity {
     isShowUp: boolean;
     isActive: boolean = false;
     displayLabel: string;
-    requirements: Requirement[];
     measurements: Measurement[];
     userId: string;
     
@@ -25,7 +25,6 @@ export class Activity implements iActivity {
         challengeId: string,
         private ts: number,
         private type: challCommon.ChallengeType,
-        private requirementsDb: challDb.Requirements,
         private measurementsDb: challDb.Measurements,
         isShowUp: boolean
     ) {
@@ -38,7 +37,6 @@ export class Activity implements iActivity {
         if (!this.isShowUp) {
             this.isActive = this.getIsActive(ts, type);
         }
-        this.requirements = this.getRequirements(requirementsDb);
         this.measurements = this.getMeasurements(measurementsDb);
     }
 
@@ -48,7 +46,6 @@ export class Activity implements iActivity {
             this.challengeId,
             this.ts,
             this.type,
-            this.requirementsDb,
             this.measurementsDb,
             this.isShowUp
         );
@@ -60,15 +57,7 @@ export class Activity implements iActivity {
             userId: this.userId,
             dayId: this.id,
         } as DayShowUpRequest;
-
-        if (this.requirements && this.requirements.length > 0) {
-            const requirements = {};
-            this.requirements.forEach((r: RequirementModel) =>  {
-                requirements[r.id] = r.getDbObj();
-            });
-            res.requirements = requirements;
-        }
-
+    
         const filledMeasurements = this.measurements ? this.measurements.filter(m => m.filled) : [];
         if (filledMeasurements.length > 0) {
             const measurements = {};
@@ -130,19 +119,42 @@ export class Activity implements iActivity {
     }
 
 
-    private getRequirements(reqDbObj: challDb.Requirements): Requirement[] {
-        if (reqDbObj) {
-            return Object.keys(reqDbObj)
-                .map(reqId => new RequirementModel(reqId, reqDbObj[reqId]))
-        }
-        return [];
-    }
-
 
     private getMeasurements(measDbObj: challDb.Measurements): Measurement[] {
         if (measDbObj) {
-            return Object.keys(measDbObj)
-                .map(measId => new MeasurementModel(measId, measDbObj[measId]));
+            const measMap = {} as { [id: string]: MeasurementModel |  CombinedMeasurement };
+            const measKeys = Object.keys(measDbObj);
+            measKeys.forEach(mKey => {
+                const measDb = measDbObj[mKey];
+                if (measDb.type !== 'combine') {
+                    const meas = new MeasurementModel(mKey, measDb);
+                    measMap[mKey] = meas;
+                } else {
+                    const meas = new CombinedMeasurement(mKey, measDb);
+                    measMap[mKey] = meas;
+                }
+            })
+            measKeys.forEach(mKey => {
+                const meas = measMap[mKey];
+                if (meas.type === 'combine') {
+                    const measC = meas as CombinedMeasurement;
+                    const formGroupObj = {};
+                    measC.formula.forEach(option => {
+                        if (option.metadata === 'measurement') {
+                            const fc = new FormControl();
+                            measMap[option.value].formControl.valueChanges
+                                .pipe(startWith(measMap[option.value].formControl.value))
+                                .subscribe(val => fc.setValue(val));
+                            formGroupObj[option.value] = fc;
+                        }
+                    });
+                    measC.setFormGroup(new FormGroup(formGroupObj));
+                }
+            });
+
+            const res = Object.keys(measMap).map(id => measMap[id]);
+            res.sort((a, b) => a.orderNo - b.orderNo);
+            return res;
         }
         return [];
     }

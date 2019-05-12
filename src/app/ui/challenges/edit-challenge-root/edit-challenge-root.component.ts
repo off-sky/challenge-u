@@ -136,10 +136,10 @@ export class EditChallengeRootComponent implements OnInit {
         this.store.dispatch(new ChallengesActions.UpdateChallengeParticipants({ id: this.challengeId, data: updateObj}));
         this.store.dispatch(new ChallengesDbActions.ReloadChallengeParticipants({ ids: [this.challengeId], force: true }));     
       }
-      if (this.measurementFormArray.controls.some(c => c.touched)) {
-        const updateObj = this.measurementFormArray.value;
-        this.store.dispatch(new ChallengesActions.UpdateChallengeMeasurements({ id: this.challengeId, data: updateObj}));
-      }
+      // if (this.measurementFormArray.controls.some(c => c.touched)) {
+      //   const updateObj = this.measurementFormArray.value;
+      //   this.store.dispatch(new ChallengesActions.UpdateChallengeMeasurements({ id: this.challengeId, data: updateObj}));
+      // }
       this.goBack();
   }
 

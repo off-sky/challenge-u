@@ -1,3 +1,11 @@
 .y-edit-measurements__item {
     margin-bottom: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+
+    &__name {
+        margin-right: 15px;
+    }
 }

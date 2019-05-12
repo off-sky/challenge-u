@@ -1,4 +1,5 @@
 import { FormControl } from '@angular/forms';
+import { Option } from '../common';
 
 /**
  * Measurement is what the activity has to be tracked by.
@@ -6,7 +7,11 @@ import { FormControl } from '@angular/forms';
 export interface Measurement {
     id?: string;
     displayName: string;
-    type: 'boolean' | 'string' | 'number';
+    category: string;
+    orderNo: number;
+    type: 'boolean' | 'string' | 'number' | 'combine';
+    formula?: Option[];
     value?: any;
     filled: boolean;
+    formControl?: FormControl
 }

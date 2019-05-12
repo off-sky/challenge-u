@@ -11,7 +11,6 @@ export interface Activity {
     userId: string;
     challengeId: string;
     displayLabel: string;
-    requirements: Requirement[];
     measurements: Measurement[];
     isShowUp: boolean;
     isActive: boolean;

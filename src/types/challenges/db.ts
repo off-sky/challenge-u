@@ -1,5 +1,6 @@
 import * as common from './common';
 import { db as userDb } from '../users/db';
+import { Option } from '../common';
 
 export module db {
 
@@ -74,9 +75,24 @@ export module db {
 
 
     export interface MeasurementObj {
+        id: string;
+        formula?: {
+            [id: string]: Option;
+        };
+        order_no: number;
         display_name: string;
-        type: 'number' | 'string' | 'boolean';
+        category: string;
+        type: 'number' | 'string' | 'boolean' | 'combine';
         value?: number | string | boolean;
+    }
+
+    export interface Preset {
+        name: string;
+        measurements: Measurements;
+    }
+
+    export interface Presets {
+        [id: string]: Preset;
     }
 
 
@@ -89,6 +105,11 @@ export module db {
         common_measurements: Measurements;
         days_requirements: ChallengeRequirements;
         participants: userDb.UserLike[];
+    }
+
+
+    export interface ActivityDetails {
+        
     }
 
 }

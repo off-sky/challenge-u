@@ -19,11 +19,10 @@ export class CreateChallengeSchedule implements iCreateChallengeSchedule {
     };
 
     // weekday indices
-    private _limitDaysTo: any;
+    private _limitDaysTo: any = {}
 
-    private _limitDatesTo = {
-
-    }
+    // date stamps, include all if empty
+    private _limitDatesTo: any;
 
     constructor(startDate: Date, endDate: Date, type: common.ChallengeType, fillRule: common.FillRuleType) {
         this._startMoment = moment(startDate);

@@ -1,9 +1,12 @@
 import { Component, OnInit, Input, ChangeDetectorRef, OnDestroy } from '@angular/core';
 import { FormArray, FormGroup, FormControl, Validators } from '@angular/forms';
 import { Observable, combineLatest, BehaviorSubject, Subscription } from 'rxjs';
-import { map, startWith, tap, switchMap, debounceTime } from 'rxjs/operators';
+import { map, startWith, tap, switchMap, debounceTime, filter } from 'rxjs/operators';
 import { clgu } from 'src/types';
 import { DragulaService } from 'ng2-dragula';
+import { AppState } from 'src/app/state/app.state';
+import { Store } from '@ngrx/store';
+import { ChallengesActions } from 'src/app/state/challenges/_challenges.actions';
 
 @Component({
   selector: 'y-measurement-editor',
@@ -12,8 +15,11 @@ import { DragulaService } from 'ng2-dragula';
 })
 export class MeasurementEditorComponent implements OnDestroy, OnInit {
 
+  @Input() public challengeId: string;
   @Input() public control: FormArray;
   @Input() public isCombinedSelected$: Observable<boolean>;
+
+  public categoryOptions$: Observable<clgu.common.Option[]>;
 
   public measurementTypeOptions = [
     {
@@ -78,10 +84,29 @@ export class MeasurementEditorComponent implements OnDestroy, OnInit {
   private updateOptionSub: Subscription;
 
   constructor(
-    private cd: ChangeDetectorRef
+    private cd: ChangeDetectorRef,
+    private store: Store<AppState>
   ) { }
 
   ngOnInit() {
+
+    this.store.dispatch(new ChallengesActions.ReloadCategories(this.challengeId))
+
+    this.categoryOptions$ = this.store.select(state => state.challenges.challengesCategories[this.challengeId])
+      .pipe(
+        filter(c => !!c && !!c.data),
+        map(catObj => {
+          return Object.keys(catObj.data)
+            .map(catId => {
+              const category = catObj.data[catId];
+              return {
+                display: category,
+                value: category,
+                displayLong: category
+              }
+            })
+        })
+      )
     
     this.updateOptionSub = this.controls$
       .pipe(
@@ -132,7 +157,7 @@ export class MeasurementEditorComponent implements OnDestroy, OnInit {
   public add(): void {
     this.control.push(new FormGroup({
       id: new FormControl(clgu.utils.getRandomStr(11)),
-      category: new FormControl(),
+      category: new FormControl([]),
       displayName: new FormControl(null, [ Validators.required ]),
       type: new FormControl('number'),
       formula: new FormControl(''),
@@ -140,6 +165,10 @@ export class MeasurementEditorComponent implements OnDestroy, OnInit {
     }));
 
     this.updateInputControls();
+  }
+
+  public onAddCategory(name: string): void {
+    this.store.dispatch(new ChallengesActions.AddCategory({ id: this.challengeId, data: name }));
   }
 
 
@@ -165,7 +194,7 @@ export class MeasurementEditorComponent implements OnDestroy, OnInit {
     this.control.controls.forEach((fg, ind) => {
       if (fg.get('type').value === 'combine' || fg.get('type').value === 'number') {
         const orderNo = fg.get('orderNo').value;
-        this.totalCombineOptions.push({ display: `M_${orderNo}`, value: fg.get('id').value});
+        this.totalCombineOptions.push({ display: `M_${orderNo}`, metadata: 'measurement', value: fg.get('id').value});
       }
     });
   }

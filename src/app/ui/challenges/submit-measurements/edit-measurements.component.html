@@ -4,37 +4,47 @@
 
     <div *ngFor="let m of measurements" class="y-edit-measurements__item">
         <div class="y-edit-measurements__item">
-          <div *ngIf="m.type === 'number'">
-              <mat-form-field class="example-full-width">
-                <input matInput
-                       name="{{m.id}}"
-                       type="number"
-                       placeholder="{{m.displayName}}"
-                       ngModel
-                       (ngModelChange)="onModelChanges($event, m)"
-                >
-              </mat-form-field>
+          <div class="y-edit-measurements__item__name">
+              {{ m.displayName }}
           </div>
-          <div *ngIf="m.type === 'boolean'">
-                <mat-checkbox
-                    name="{{m.id}}"
-                    ngModel
-                    (ngModelChange)="onModelChanges($event, m)"
-                  >
-                  {{ m.displayName }}
-                </mat-checkbox>
+          <div class="y-edit-measurements__item__value">
+              <div *ngIf="m.type === 'number'">
+                  <mat-form-field class="example-full-width">
+                    <input matInput
+                           name="{{m.id}}"
+                           type="number"
+                           [formControl]="m.formControl"
+                    >
+                  </mat-form-field>
+              </div>
+              <div *ngIf="m.type === 'boolean'">
+                    <mat-checkbox
+                        name="{{m.id}}"
+                        [formControl]="m.formControl"
+                      >
+                    </mat-checkbox>
+              </div>
+              <div *ngIf="m.type === 'string'">
+                  <mat-form-field class="example-full-width">
+                    <textarea name="{{m.id}}"
+                              matInput
+                              [formControl]="m.formControl"
+                      >   
+                    </textarea>
+                  </mat-form-field>
+              </div>
+
+              <div *ngIf="m.type === 'combine'">
+                  <mat-form-field class="example-full-width">
+                    <input matInput
+                           name="{{m.id}}"
+                           type="number"
+                           [formControl]="m.formControl"
+                    >
+                  </mat-form-field>
+              </div>
           </div>
-          <div *ngIf="m.type === 'string'">
-              <mat-form-field class="example-full-width">
-                <textarea name="{{m.id}}"
-                          matInput
-                          placeholder="{{m.displayName}}"
-                          ngModel
-                          (ngModelChange)="onModelChanges($event, m)"
-                  >   
-                </textarea>
-              </mat-form-field>
-          </div>
+          
         </div>
     </div>
 

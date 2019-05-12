@@ -36,10 +36,7 @@ export class CombineEditorComponent implements OnInit {
   }
 
   public onExpressionChange(): void {
-    const str = this.currExpression.map(e => e.value)
-      .join('');
-    console.log('Current formula: ', str);
-    this.control.setValue(str);
+    this.control.setValue(this.currExpression);
   }
 
 

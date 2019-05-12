@@ -7,6 +7,35 @@ import { UsersSelectors } from '../users/_users.selectors';
 import { AuthSelectors } from '../auth/_auth.selectors';
 
 export class ChallengesSelectors {
+
+    public static readonly activity$ = function(store: Store<AppState>, challengeId: string, dayId: string, userId: string, wait?: boolean): Observable<clgu.challenges.Activity> {
+        return combineLatest(
+            ChallengesSelectors.basicChallengeInfo$(store, challengeId),
+            ChallengesSelectors.usersChallengeDates$(store, challengeId),
+            ChallengesSelectors.challengeMeasurements$(store, challengeId, dayId, userId, wait),
+        )
+        .pipe(
+            map(vals => {
+                const basicInfo = vals[0] as clgu.challenges.db.ChallengeObj;
+                const userChalDays = vals[1] as clgu.challenges.db.UserChallengeDayMap;
+                const measurements = vals[2] as clgu.challenges.db.Measurements;
+                const ts = parseInt(dayId, 10);
+                const type = basicInfo.type;
+                const userDay = !!userChalDays && !!userChalDays[userId] ? userChalDays[userId][dayId] : null;
+                const measurementsDb = !!userDay ? userDay.measurements : measurements;
+                const isShowUp = !!userDay;
+                return new clgu.challenges.models.Activity(
+                    userId,
+                    challengeId,
+                    ts,
+                    type,
+                    measurementsDb,
+                    isShowUp
+                );
+            })
+        )
+    }
+
     /**
      * wait - optional - if true, waits until all pieces of data arrive before first emit
      */
@@ -15,8 +44,8 @@ export class ChallengesSelectors {
             ChallengesSelectors.basicChallengeInfo$(store, challengeId),
             ChallengesSelectors.commonChallengeDates$(store, challengeId),
             ChallengesSelectors.usersChallengeDates$(store, challengeId),
-            ChallengesSelectors.challengeMeasurements$(store, challengeId, wait),
-            ChallengesSelectors.challengeRequirements$(store, challengeId),
+            of(null),
+            of(null),
             ChallengesSelectors.challengeParticipantProfiles$(store, challengeId),
             AuthSelectors.currentUser$(store)
         )
@@ -157,9 +186,15 @@ export class ChallengesSelectors {
             )
     }
 
-    public static readonly challengeMeasurements$ = function(store: Store<AppState>, challengeId: string, wait?: boolean): Observable<clgu.challenges.db.Measurements> {
+    public static readonly challengeMeasurements$ = function(store: Store<AppState>, challengeId: string, dayId: string, userId: string, wait?: boolean): Observable<clgu.challenges.db.Measurements> {
         return store.select(state => state.challenges.challengesMeasurements[challengeId])
             .pipe(
+                map(byChall => {
+                    if (!!byChall && !!byChall[dayId]) {
+                        return byChall[dayId][userId]
+                    }
+                    return undefined;
+                }),
                 wait ? filter(udo => !!udo) : map(udo => udo),
                 clgu.common.untilDataObjectChanged(),
                 map(udo => !!udo ? udo.data : null)

@@ -57,6 +57,18 @@ export class DatabaseService {
   }
 
 
+  public update(ref: string, updateObj: any): Observable<any> {
+    return new Observable(observer => {
+      firebase.database().ref(ref).update(updateObj, (err) => {
+        if (err) {
+          return observer.error(err);
+        }
+        observer.complete();
+      });
+    });
+  }
+
+
 
   public set(path: string, value: any): Observable<void> {
     const promise = new Promise<void>((resolve, reject) => {

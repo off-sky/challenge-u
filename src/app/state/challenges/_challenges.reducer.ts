@@ -3,6 +3,7 @@ import { YAction } from 'src/types/store';
 import { clgu } from 'src/types';
 import { ChallengesActions } from './_challenges.actions';
 import { ChallengesDbActions } from './_challenges.db.actions';
+import { UpdatableDataObject } from 'src/types/common';
 
 export function challengesReducer(state: ChallengesState = challengesInitialState, action: YAction<any>): ChallengesState {
     const newState = challengesDbReducer(state, action) as ChallengesState;
@@ -42,6 +43,12 @@ export function challengesReducer(state: ChallengesState = challengesInitialStat
             const error= action.payload as clgu.common.ErrorWithId;
             newState.details.isLoading = false;
             newState.details.error = error.error;
+            return newState;
+        }
+
+        case ChallengesActions.RELOAD_CATEGORIES_SUCCESS: {
+            const res = action.payload as clgu.common.DataWithId;
+            newState.challengesCategories[res.id] = new UpdatableDataObject<{ [id: string]: string}>(res.id, res.data);
             return newState;
         }
 
@@ -254,8 +261,18 @@ function challengesDbReducer(state: ChallengesState, action: YAction<any>): Chal
 
         case ChallengesDbActions.RELOAD_CHALLENGES_MEASUREMENTS_SUCCESS:
         case ChallengesDbActions.RELOAD_CHALLENGES_MEASUREMENTS_FAIL: {
-            const payload = action.payload as clgu.common.UpdatableDataObject<clgu.challenges.db.Measurements>;
-            newState.challengesMeasurements[payload.id] = payload;
+            const payload = action.payload as clgu.challenges.ReloadMeasurementResult;
+            if (!newState.challengesMeasurements[payload.challengeId]) {
+                newState.challengesMeasurements[payload.challengeId] = {};
+            }
+            if (!newState.challengesMeasurements[payload.challengeId][payload.dayId]) {
+                newState.challengesMeasurements[payload.challengeId][payload.dayId] = {}
+            }
+        
+            newState.challengesMeasurements[payload.challengeId][payload.dayId][payload.userId] =
+                new clgu.common.UpdatableDataObject<clgu.challenges.db.Measurements>(null, payload.measurements);
+
+            return newState;
         }
 
         default: return newState;

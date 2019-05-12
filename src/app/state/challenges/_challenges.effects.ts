@@ -31,6 +31,48 @@ export class ChallengesEffects {
     ) {}
 
 
+    @Effect() public addCategory$ = this.actions
+    .pipe(
+        ofType(ChallengesActions.ADD_CATEGORY),
+        switchMap((a: YAction<clgu.common.UpdateRequest>) => {
+            const request = a.payload;
+            return this.challengeActionService.addCategory(request.id, request.data)
+                .pipe(
+                    map(res => new ChallengesActions.AddCategorySuccess(request.id)),
+                    catchError(err => {
+                        console.log(err);
+                        return of(new ChallengesActions.AddCategoryFail(err));
+                    })
+                );
+
+        })
+    );
+
+    @Effect() public addCategorySuccess$ = this.actions
+        .pipe(
+            ofType(ChallengesActions.ADD_CATEGORY_SUCCESS),
+            switchMap((a: YAction<string>) => of(new ChallengesActions.ReloadCategories(a.payload)))
+        )
+
+
+    @Effect() public getCategories$ = this.actions
+        .pipe(
+            ofType(ChallengesActions.RELOAD_CATEGORIES),
+            switchMap((a: YAction<string>) => {
+                const request = a.payload;
+                return this.challengeInfoService.getMeasurementCategories(request)
+                    .pipe(
+                        map(res => new ChallengesActions.ReloadCategoriesSuccess({ id: request, data: res})),
+                        catchError(err => {
+                            console.log(err);
+                            return of(new ChallengesActions.ReloadCategoriesFail(err));
+                        })
+                    );
+
+            })
+        );
+
+
     @Effect() public addRequirements$ = this.actions
         .pipe(
             ofType(ChallengesActions.ADD_REQUIREMENTS),
@@ -107,7 +149,6 @@ export class ChallengesEffects {
                     this.store.dispatch(new ChallengesDbActions.ReloadChallengeDates({ ids: [ challengeId]}));
                     this.store.dispatch(new ChallengesDbActions.StartListenUserChallengeDates(challengeId));
                     this.store.dispatch(new ChallengesDbActions.StartListenChallengeParticipants(challengeId));
-                    this.store.dispatch(new ChallengesDbActions.StartListenChallengesMeasurements(challengeId));
                     this.store.dispatch(new ChallengesDbActions.StartListenChallengesRequirements(challengeId));
 
                     return ChallengesSelectors.challengeDetails$(this.store, challengeId)
@@ -217,17 +258,15 @@ export class ChallengesEffects {
         @Effect() public updateMeasurements$ = this.actions
             .pipe(
                 ofType(ChallengesActions.UPDATE_CHALLENGE_MEASUREMENTS),
-                switchMap((action: YAction<clgu.common.UpdateRequest>) => {
-                    const payload = action.payload;
-                    const challengeId = payload.id;
-                    const data = payload.data as clgu.challenges.Measurement[];
+                switchMap((action: YAction<clgu.challenges.EditMeasurementsRequest>) => {
+                    const payload = action.payload as clgu.challenges.EditMeasurementsRequest;
 
-                    return this.challengeActionService.updateMeasurements(challengeId, data)
+                    return this.challengeActionService.updateMeasurements(payload)
                         .pipe(
                             map(res => new ChallengesActions.UpdateChallengeMeasurementsSuccess()),
                             catchError(err => {
                                 const errWithId = {
-                                    id: challengeId,
+                                    id: payload.challengeId,
                                     error: err
                                 };
                                 return of(new ChallengesActions.UpdateChallengeMeasurementsFail(errWithId))

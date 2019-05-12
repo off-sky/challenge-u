@@ -77,4 +77,7 @@ export class EditMeasurementsScheduleComponent implements OnInit {
   
   }
 
+  public onDatesManuallyChanged(newDates: Date[]): void {
+    this.fillRuleFg.get('value').setValue('custom');
+  }
 }

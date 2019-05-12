@@ -11,16 +11,23 @@ export class ChallengeActionService {
 
   private CHALLENGES_PATH = 'challenges';
   private CHALLENGE_USER_DATE_PATH = 'challenges_users_dates';
+  private CHALLENGES_CATEGORIES_PATH = 'challenges_categories';
   private CHALLENGE_BY_USER_PATH = 'users_challenges';
   private COMMON_CHALLENGE_DAYS_PATH = 'challenges_dates';
   private MEASUREMENTS_PATH = 'challenges_measurements';
   private PARTICIPANTS_PATH = 'challenges_participants';
-  private USERS_REQUIREMENTS_PATH = 'users_requirements';
+  private PRESETS_PATH = 'challenges_measurements_presets';
   private REQUIREMENTS_PATH = 'challenges_days_requirements';
 
   constructor(
     private dbService: DatabaseService
   ) { }
+
+
+  public addCategory(challengeId: string, category: string): Observable<any> {
+    const ref = `${this.CHALLENGES_CATEGORIES_PATH}/${challengeId}`;
+    return this.dbService.push(ref, category);
+  }
 
   public showUpDate(request: clgu.challenges.DayShowUpRequest): Observable<void> {
       const obj = this.getShowUpObject(request);
@@ -53,18 +60,30 @@ export class ChallengeActionService {
   }
 
 
-  public updateMeasurements(challengeId: string, measurements: clgu.challenges.Measurement[]): Observable<any> {
-    const measurementObj = this.getMeasurementsObj(measurements);
-    return this.dbService.set(`${this.MEASUREMENTS_PATH}/${challengeId}`, measurementObj);
+  public updateMeasurements(request: clgu.challenges.EditMeasurementsRequest): Observable<any> {
+    const updateObj = {};
+    const measurementObj = this.getMeasurementsObj(request.measurements)
+    request.userIds.forEach(userId => {
+      request.stamps.forEach(stamp => {
+          const ref = `${request.challengeId}/${stamp}/${userId}` 
+          updateObj[ref] = measurementObj;
+      });
+    })
+    return this.dbService.update(this.MEASUREMENTS_PATH, updateObj);
+  }
+
+  public addMeasurementPresets(challengeId: string, req: clgu.challenges.db.Preset): Observable<any> {
+      const ref = `${this.PRESETS_PATH}/${challengeId}`;
+      return this.dbService.push(ref, req);
   }
 
   public addRequirements(request: clgu.challenges.AddRequirementsRequest): Observable<any[]> {
     const obs: Observable<any>[] = request.dates.map(ts => {
       return this.dbService.set(`${this.REQUIREMENTS_PATH}/${request.challengeId}/${ts}`, request.requirements);
     });
-    obs.push(
-      this.dbService.push(`${this.USERS_REQUIREMENTS_PATH}/${request.userId}`, request.requirements)
-    );
+    // obs.push(
+    //   this.dbService.push(`${this.USERS_REQUIREMENTS_PATH}/${request.userId}`, request.requirements)
+    // );
     return combineLatest(...obs);
   }
 
@@ -97,10 +116,23 @@ export class ChallengeActionService {
     if (req) {
   
       req.forEach((m, ind) => {
-        measurements[`measurement_${ind}`] = {
+        const res = {
+          id: m.id,
           display_name: m.displayName,
-          type: m.type
+          type: m.type,
+          order_no: m.orderNo
         }
+        if (m.formula) {
+          const formula = {};
+          m.formula.forEach((f, ind) => {
+            formula['' + ind] = f;
+          })
+          res['formula'] = formula;
+        }
+        if (m.category) {
+          res['category'] = m.category;
+        }
+        measurements[m.id] = res;
       });
     }
     return measurements;

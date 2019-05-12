@@ -7,6 +7,7 @@ import { ChallengesActions } from 'src/app/state/challenges/_challenges.actions'
 import { Observable, combineLatest, of } from 'rxjs';
 import { map, filter, take, shareReplay } from 'rxjs/operators';
 import { ChallengesSelectors } from 'src/app/state/challenges/_challenges.selectors';
+import { ChallengesDbActions } from 'src/app/state/challenges/_challenges.db.actions';
 
 @Component({
   selector: 'y-challenge-day-details',
@@ -91,12 +92,7 @@ export class ChallengeDayDetailsComponent implements OnInit {
           })
         );
 
-    this.hasRequirements$ = this.activity$
-        .pipe(
-          map(activity => {
-            return !!activity && !!activity.requirements && activity.requirements.length > 0;
-          })
-        );
+ 
 
 
       this.showUpText$ = this.isMine
@@ -142,34 +138,14 @@ export class ChallengeDayDetailsComponent implements OnInit {
     this.userId = this.route.snapshot.params.userId;
     this.dayId = this.route.snapshot.params.dayId;
     this.challengeId =  this.route.snapshot.params.id;
-    /**
-     * userId: string,
-        challengeId: string,
-        private ts: number,
-        private type: challCommon.ChallengeType,
-        private requirementsDb: challDb.Requirements,
-        private measurementsDb: challDb.Measurements,
-        isShowUp: boolean
-     */
-    this.activity$ = ChallengesSelectors.challengeDetails$(this.store, this.challengeId)
+    this.store.dispatch(new ChallengesDbActions.ReloadChallengesMeasurements({
+      challengeId: this.challengeId,
+      dayId: this.dayId,
+      userId: this.userId
+    }))
+
+    this.activity$ = ChallengesSelectors.activity$(this.store, this.challengeId, this.dayId, this.userId)
       .pipe(
-        map(detailsObj => {
-            const ts = detailsObj.common_days[this.dayId].timestamp;
-            const type = detailsObj.challenge.type;
-            const userDay = !!detailsObj.users_days && !!detailsObj.users_days[this.userId] ? detailsObj.users_days[this.userId][this.dayId] : null;
-            const requirementsDb = !!userDay ? userDay.requirements : !!detailsObj.days_requirements ?  detailsObj.days_requirements[this.dayId] : null;
-            const measurementsDb = !!userDay ? userDay.measurements : detailsObj.common_measurements;
-            const isShowUp = !!userDay;
-            return new clgu.challenges.models.Activity(
-              this.userId,
-              this.challengeId,
-              ts,
-              type,
-              requirementsDb,
-              measurementsDb,
-              isShowUp
-            );
-        }),
         shareReplay(1)
       );
   }

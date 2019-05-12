@@ -20,11 +20,21 @@ export interface ChallengesState {
         [userId: string]: clgu.common.UpdatableDataObject<clgu.challenges.db.ChallengesByUser>;
     }
     challengesMeasurements: {
-        [challengeId: string]: clgu.common.UpdatableDataObject<clgu.challenges.db.Measurements>;
+        [challengeId: string]: {
+            [dayId: string]: {
+                [userId: string]: clgu.common.UpdatableDataObject<clgu.challenges.db.Measurements>
+            }
+        };
     };
     challengesRequirements: {
         [challengeId: string]: clgu.common.UpdatableDataObject<{ [dateId: string]: clgu.challenges.db.Requirements }>;
     };
+    challengesCategories: {
+        [challengeId: string]: clgu.common.UpdatableDataObject<{ [id: string]: string}>;
+    };
+    challengesMeasurementsPresets: {
+        [challengeId: string]: clgu.common.UpdatableDataObject<clgu.challenges.db.Presets>;
+    }
     list: {
         isLoading: boolean;
         error: clgu.common.Error;
@@ -41,7 +51,6 @@ export interface ChallengesState {
         isLoading: boolean;
         error: clgu.common.Error;
     };
-
     requirementPresets: {
         [id: string]: clgu.challenges.db.Requirements;
     };
@@ -62,6 +71,8 @@ export const challengesInitialState: ChallengesState = {
     userChallengeDates: {},
     usersChallenges: {},
     challengesMeasurements: {},
+    challengesCategories: {},
+    challengesMeasurementsPresets: {},
     list: {
         isLoading: false,
         error: null

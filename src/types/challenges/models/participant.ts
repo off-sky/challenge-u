@@ -50,8 +50,6 @@ export class Participant implements iParticipant {
             }
             const userDay = userDays ? userDays[dayId] : undefined;
             const userMeasurements = userDay ? userDay.measurements : undefined;
-            const userRequirements = userDay ? userDay.requirements : undefined;
-            const requirements =  challRequirements ? challRequirements[dayId] : undefined;
 
             this.activities.push(
                 new Activity(
@@ -59,7 +57,6 @@ export class Participant implements iParticipant {
                     challengeId,
                     day.timestamp,
                     type,
-                    userRequirements || requirements,
                     userMeasurements || measurements,
                     !!userDay
                 )

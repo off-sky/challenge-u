@@ -36,9 +36,15 @@ export function untilDataObjectChanged() {
     }));
 }
 
+export interface DataWithId {
+    id: string;
+    data?: any;
+}
+
 export interface Option {
     display: string;
     value: any;
+    metadata?: any;
     displayLong?: string;
 }
 
