@@ -5,6 +5,7 @@ import { DetailsRootComponent } from './details-root/details-root.component';
 import { ChallengeDetailsResolverService } from './resolvers/challenge-details.resolver.service';
 import { ChallengeDayDetailsComponent } from './challenge-day-details/challenge-day-details.component';
 import { EditChallengeRootComponent } from './edit-challenge-root/edit-challenge-root.component';
+import { EditMeasurementsRootComponent } from './edit-measurements-root/edit-measurements-root.component';
 
 export const challengesRoutes: Routes = [
     {
@@ -41,6 +42,10 @@ export const challengesRoutes: Routes = [
                     {
                         path: 'edit',
                         component: EditChallengeRootComponent
+                    },
+                    {
+                        path: 'measurements',
+                        component: EditMeasurementsRootComponent
                     },
                     {
                         path: 'day/:userId/:dayId',

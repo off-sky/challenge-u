@@ -15,3 +15,9 @@ export function removeUndefined(obj: any): any {
 
     return obj;
 }
+
+
+export function getRandomStr(length: number = 5): string {
+    const instr =  Math.random().toString(36) + new Date().getTime()
+    return instr.substring(0, length);
+}

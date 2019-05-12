@@ -1,0 +1,157 @@
+<div class="y-create-schedule">
+    <div class="y-create-schedule__left">
+
+        <div class="y-create-schedule__limits">
+             <!-- Start Date -->
+            <!-- <div>
+                <mat-form-field>
+                    <input matInput
+                        placeholder="Start Date"
+                        [satDatepicker]="picker"
+                        [formControl]="startDateControl"
+                        >
+                    <sat-datepicker #picker [rangeMode]="false"></sat-datepicker>
+                    <sat-datepicker-toggle matSuffix [for]="picker"></sat-datepicker-toggle>
+                </mat-form-field>
+            </div> -->
+
+            <!-- End Date -->
+            <!-- <div>
+                <mat-form-field>
+                    <input matInput
+                        placeholder="End Date"
+                        [satDatepicker]="pickerEnd"
+                        [formControl]="endDateControl"
+                        >
+                    <sat-datepicker #pickerEnd [rangeMode]="false"></sat-datepicker>
+                    <sat-datepicker-toggle matSuffix [for]="pickerEnd"></sat-datepicker-toggle>
+                </mat-form-field>
+            </div> -->
+        </div>
+
+
+          <!-- Type -->
+
+        <div class="y-create-schedule__type y-info-block ">
+            <!-- <div class="y-label">Challenge Type</div>
+            <div>
+                <mat-radio-group
+                    aria-labelledby="example-radio-group-label"
+                    class="example-radio-group"
+                    [formControl]="typeControl"
+                    >
+                    <mat-radio-button class="example-radio-button" [value]="'daily'">
+                        Daily
+                    </mat-radio-button>
+                    <mat-radio-button class="example-radio-button" [value]="'monthly'">
+                        Monthly
+                    </mat-radio-button>
+                    <mat-radio-button class="example-radio-button" [value]="'yearly'">
+                        Yearly
+                    </mat-radio-button>
+                </mat-radio-group>
+            </div> -->
+        </div>
+
+    </div>
+
+
+    <div class="y-create-schedule__right">
+
+        <!-- Fill Rule -->
+        <div class="y-create-schedule__fill-rule y-info-block ">
+     
+            <div class="sub-title y-label">Pick dates</div>
+            <div [formGroup]="fillRuleFg">
+                <mat-radio-group
+                    aria-labelledby="example-radio-group-label"
+                    class="example-radio-group"
+                    formControlName="value"
+                    #schedule
+                    >
+                    <mat-radio-button *ngFor="let option of fillRuleOptions"
+                                       class="example-radio-button"
+                                       [value]="option.value"
+                                       [disabled]="option.value === 'custom'"
+                                       >
+                        {{ option?.displayValue }}
+                        <div *ngIf="option.value === 'specific' && currentFillRule === 'specific'"
+                               [formGroup]="weekDayFg"
+                               class="y-weekday-select-wrap"
+                           >
+                            <div>
+                               <mat-checkbox [formControlName]="1">
+                                   Mondays
+                               </mat-checkbox>
+                            </div>
+                            <div>
+                               <mat-checkbox [formControlName]="2">
+                                   Tuesdays
+                               </mat-checkbox>
+                           </div>
+                           <div>
+                               <mat-checkbox [formControlName]="3">
+                                   Wednesdays
+                               </mat-checkbox>
+                           </div>
+                           <div>
+                               <mat-checkbox [formControlName]="4">
+                                   Thursdays
+                               </mat-checkbox>
+                           </div>
+                           <div>
+                               <mat-checkbox [formControlName]="5">
+                                   Fridays
+                               </mat-checkbox>
+                           </div>
+                           <div>
+                               <mat-checkbox [formControlName]="6">
+                                   Saturdays
+                               </mat-checkbox>
+                           </div>
+                           <div>
+                               <mat-checkbox [formControlName]="0">
+                                   Sundays
+                               </mat-checkbox>
+                           </div>
+                        </div>
+                    </mat-radio-button>
+                </mat-radio-group>
+            </div>
+       </div>
+       <!-- EOF Fill rule -->
+
+       <!-- Date pickers -->
+       <div class="y-challenge-schedule__right">
+            <div *ngIf="type === 'daily'">
+                    <y-multi-date-picker [control]="control"
+                                        [defaultBehavior]="true"
+                                        [daysAllowed]="allowed"
+                                        (selectedChanged)="onDatesManuallyChanged($event)"
+                        >
+                    </y-multi-date-picker>
+            </div>
+            <div *ngIf="type === 'monthly'">
+                <y-date-selector [control]="control"
+                                #dateSelector
+                                (selectedChanged)="onDatesManuallyChanged($event)"
+                    
+                    >
+                </y-date-selector>
+            </div>
+    
+            <div *ngIf="type === 'yearly'">
+                <y-date-selector [control]="control"
+                                [dateType]="'year'"
+                                #dateSelector
+                                (selectedChanged)="onDatesManuallyChanged($event)"
+                                >
+                </y-date-selector>
+            </div>
+                
+        </div>
+
+        <!-- EOF Date Pickers -->
+
+    </div>
+  </div>

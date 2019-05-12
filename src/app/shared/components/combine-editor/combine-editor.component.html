@@ -1,0 +1,41 @@
+<div class="y-combine-editor">
+  <div data-type="options" class="y-combine-editor__stardard-signs"  [dragula]="bagName" [dragulaModel]="options">
+      <div *ngFor="let s of options" class="y-combine-editor__stardard-signs__item"
+        >
+          <ng-container *ngIf="s.displayLong !== 'Number'">
+              {{ s.display }}
+          </ng-container>
+
+          <ng-container *ngIf="s.displayLong === 'Number'">
+              Number
+          </ng-container>
+
+      </div>
+  </div>
+
+  <div id="{{id}}"
+      class="y-combine-editor__field"
+      data-type="field"
+      [dragula]="bagName"
+      [(dragulaModel)]="currExpression"
+      (dragulaModelChange)="onExpressionChange()"
+      >
+    <div *ngFor="let e of currExpression; let i = index;" class="y-combine-editor__field__item" >
+      <div class="y-combine-editor__field__value">
+          <ng-container *ngIf="e.displayLong !== 'Number'">
+              {{e.display}}
+          </ng-container>
+          <ng-container *ngIf="e.displayLong === 'Number'">
+              <input name="numbah"
+                class="numbah-input"
+                [(ngModel)]="e.value"
+                (ngModelChange)="onExpressionChange()"
+                type="number"
+                value="1"
+                >
+          </ng-container>
+      </div>
+    </div>
+  </div>
+
+</div>

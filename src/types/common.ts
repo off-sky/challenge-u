@@ -36,6 +36,12 @@ export function untilDataObjectChanged() {
     }));
 }
 
+export interface Option {
+    display: string;
+    value: any;
+    displayLong?: string;
+}
+
 export interface ReloadInfoRequest {
     ids: string[];
     force?: boolean;

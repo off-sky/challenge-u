@@ -1,35 +1,62 @@
 <div>
-  <div *ngFor="let fg of control.controls; let i = index">
-      <form [formGroup]="fg">
-          <div class="form-wrap">
-            <div class="input-wrap">
-              <mat-form-field class="example-full-width">
-                  <input matInput
-                          name="measName"
-                          formControlName="displayName"
-                          placeholder="Measurement Name">
-                  <mat-hint align="start"><strong>E.g. number of pull-ups</strong> </mat-hint>
-              </mat-form-field>
-            </div>
-            <div class="input-wrap">
-                <mat-form-field>
-                  <mat-label>Measurement Type</mat-label>
-                  <mat-select name="measType" formControlName="type">
-                    <mat-option *ngFor="let option of measurementTypeOptions" [value]="option.value">
-                      {{option.displayValue}}
-                    </mat-option>
-                  </mat-select>
-                </mat-form-field>
-            </div>
-
-            <div class="input-wrap close"
-                 (click)="remove(i)"
-              >
-                <mat-icon>close</mat-icon>
-            </div>
-          </div>
-      </form>
+  <div>
+    <y-autocomplete [placeholder]="'Select from presets'"></y-autocomplete>
   </div>
+  <div>
+      <div *ngFor="let fg of control.controls; let i = index">
+          <form [formGroup]="fg">
+              <div class="form-wrap" [ngClass]="{
+                'draggable': isCombinedSelected$ | async
+              }"
+                >
+                <div *ngIf="fg.get('orderNo').value; let id" class="id-display">
+                    M_{{ id }}
+                </div>
+                <div class="inputs">
+                    <div class="input-wrap">
+                        <y-autocomplete
+                           [placeholder]="'Category'"
+                           [control]="fg.get('category')"
+                         >
+                        </y-autocomplete>
+                     </div>
+                     <div class="input-wrap">
+                       <mat-form-field class="example-full-width">
+                           <input matInput
+                                   name="measName"
+                                   formControlName="displayName"
+                                   placeholder="Measurement Name">
+                           <mat-hint align="start"><strong>E.g. number of pull-ups</strong> </mat-hint>
+                       </mat-form-field>
+                     </div>
+                     <div class="input-wrap">
+                         <mat-form-field>
+                           <mat-label>Measurement Type</mat-label>
+                           <mat-select name="measType" formControlName="type">
+                             <mat-option *ngFor="let option of measurementTypeOptions" [value]="option.value">
+                               {{option.displayValue}}
+                             </mat-option>
+                           </mat-select>
+                         </mat-form-field>
+                     </div>
+                     <div *ngIf="fg.get('type').value === 'combine'" class="input-wrap combine-wrap">
+                        <y-combine-editor [control]="fg.get('formula')"
+                                          [options]="getOptions(fg.get('id').value)"
+                                          [id]="fg.get('id').value"
+                          >
+                        </y-combine-editor>
+                      </div>
+                </div>
+                <div class="input-wrap close"
+                     (click)="remove(i)"
+                  >
+                    <mat-icon>close</mat-icon>
+                </div>
+              </div>
+          </form>
+      </div>
+  </div>
+  
 
   <div>
     <button mat-raised-button

@@ -16,12 +16,14 @@ import { UsersSelectors } from 'src/app/state/users/_users.selectors';
 export class UserSelectComponent implements OnInit {
 
   @Input() public control: FormControl;
+  @Input() public limitTo: string[];
   public inputControl: FormControl;
   public filteredUsers$: Observable<clgu.users.User[]>;
   public selectedUsers$: Observable<clgu.users.User[]>;
   private selectedUserIds: {
     [userId: string]: string;
-  } = {}
+  } = {};
+  private limitToUserIds;
 
   @Output() public selectedChanged: EventEmitter<clgu.users.User[]> = new EventEmitter<clgu.users.User[]>();
 
@@ -30,6 +32,10 @@ export class UserSelectComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    if (this.limitTo) {
+      this.limitToUserIds = {};
+      this.limitTo.forEach(id => this.limitToUserIds[id] = true);
+    }
     this.inputControl = new FormControl();
     const inputValChanges$ = this.inputControl.valueChanges
       .pipe(
@@ -38,6 +44,12 @@ export class UserSelectComponent implements OnInit {
       )
     const users$ = UsersSelectors.userProfiles$(this.store)
               .pipe(
+                map(usersDb => {
+                  if (!this.limitToUserIds) {
+                    return usersDb;
+                  }
+                  return usersDb.filter(uDb => !!this.limitToUserIds[uDb.id]);
+                }),
                 map(usersDb => {
                   return usersDb.map(udb => new clgu.users.models.User(udb))
                 })
@@ -60,14 +72,12 @@ export class UserSelectComponent implements OnInit {
 
       this.selectedUsers$ = this.control.valueChanges
         .pipe(
-          startWith(this.control.value),
-          tap(users => {
-            this.selectedUserIds = {};
-            users.forEach(u => {
-              this.selectedUserIds[u.id] = u.id;
-            })
-          })
+          startWith(this.control.value)
         );
+
+      if (this.control.value) {
+        this.control.value.forEach(u => this.selectedUserIds[u.id] = u.id);
+      }
    
   }
 
@@ -77,30 +87,23 @@ export class UserSelectComponent implements OnInit {
 
   public onOptionSelected(event: MatAutocompleteSelectedEvent): void {
     const user = event.option.value;
-    this.selectedUsers$
-      .pipe(
-        take(1)
-      ).subscribe(users => {
-        users.push(user);
-        if (this.control) {
-          this.control.setValue(users);
-          this.control.markAsTouched({ onlySelf: true });
-        }
-      });
-   
+    const users = this.control.value;
+    users.push(user);
+    this.selectedUserIds[user.id] = user.id;
+    if (this.control) {
+      this.control.setValue(users);
+      this.control.markAsTouched({ onlySelf: true });
+    }
   }
 
   public onUserDeselect(userId: string): void {
-    this.selectedUsers$
-        .pipe(
-          take(1)
-        ).subscribe(users => {
-          let f = users.filter(u => u.id !== userId);
-          if (this.control) {
-            this.control.setValue(f);
-            this.control.markAsTouched({ onlySelf: true });
-          }
-        });
+    const users = this.control.value;
+    let f = users.filter(u => u.id !== userId);
+    delete this.selectedUserIds[userId]
+    if (this.control) {
+      this.control.setValue(f);
+      this.control.markAsTouched({ onlySelf: true });
+    }
   }
 
 

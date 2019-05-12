@@ -1,0 +1,20 @@
+<mat-form-field class="example-full-width">
+    <input type="text"
+           placeholder="{{placeholder}}"
+           matInput
+           [formControl]="inputControl"
+           [matAutocomplete]="auto">
+    <mat-autocomplete #auto="matAutocomplete"
+                      [displayWith]="displayFn"
+                      (optionSelected)="onOptionSelected($event)"
+      >
+      <mat-option *ngFor="let option of filteredOptions$ | async" [value]="option">
+        {{ option.displayName }}
+      </mat-option>
+      <mat-option *ngIf="showDefultOption$ | async" (click)="onDefaultOptionClicked(input, $event)">
+        <div *ngIf="inputControl.valueChanges | async; let input;">
+            {{defaultStr}}<span>&nbsp;"</span><span >{{input}}"</span>
+        </div>  
+      </mat-option>
+    </mat-autocomplete>
+  </mat-form-field>

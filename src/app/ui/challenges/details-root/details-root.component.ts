@@ -47,23 +47,25 @@ export class DetailsRootComponent implements OnInit {
   }
 
 
-  public openRequirements(): void {
-      this.challenge$
-        .pipe(
-          take(1)
-        )
-        .subscribe(challenge => {
-          const ref = this.matDialogue.open(EditRequirementsComponent, { data: challenge.participants[0].activities });
-          ref.afterClosed()
-            .subscribe((res: clgu.challenges.AddRequirementsRequest)=> {
-              if (!res) {
-                return;
-              }
-              res.challengeId = challenge.id;
-              res.userId = challenge.ownerId;
-              this.store.dispatch(new ChallengesActions.AddRequirements(res));
-            });
-        })
+  public openMeasurements(): void {
+      // this.challenge$
+      //   .pipe(
+      //     take(1)
+      //   )
+      //   .subscribe(challenge => {
+      //     const ref = this.matDialogue.open(EditRequirementsComponent, { data: challenge.participants[0].activities });
+      //     ref.afterClosed()
+      //       .subscribe((res: clgu.challenges.AddRequirementsRequest)=> {
+      //         if (!res) {
+      //           return;
+      //         }
+      //         res.challengeId = challenge.id;
+      //         res.userId = challenge.ownerId;
+      //         this.store.dispatch(new ChallengesActions.AddRequirements(res));
+      //       });
+      //   })
+
+      this.router.navigate(['home', 'challenges', 'details', this.route.snapshot.params.id, 'measurements']);
       
   }
 

@@ -1,12 +1,37 @@
+@import '../../../ui/global-styles/variables';
+
+
 .form-wrap {
     display: flex;
     align-items: center;
-    margin-bottom: 15px;
+    margin-bottom: 25px;
     .input-wrap:not(:last-child) {
         margin-right: 15px;
+    }
+    .id-display {
+        padding: 3px;
+        color: white;
+        background-color: $blue;
+        margin-right: 20px;
+        display: none;
+    }
+    &.draggable {
+        .id-display {
+            display: block;
+        }
     }
 }
 
 .close {
     cursor: pointer;
+}
+
+.inputs {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.combine-wrap {
+    width: 100%;
+    margin-top: 10px;
 }

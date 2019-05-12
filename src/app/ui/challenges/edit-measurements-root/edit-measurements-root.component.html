@@ -1,0 +1,63 @@
+<div class="m-edit-measurements-root">
+
+  <!-- Header -->
+  <div class="m-edit-measurements-root__header">
+      <div class="y-section-header">
+        <div class="y-section-header__left" (click)="goBack()">
+            <div class="y-section-header__back-btn__wrap">
+                <mat-icon>keyboard_arrow_left</mat-icon>
+            </div>
+            <div class="y-section-header__title__wrap">
+              Edit Measurements
+            </div>
+        </div>
+      </div>
+  </div>
+
+
+  <!-- Steps -->
+  <div class="y-review">
+      <div *ngFor="let step of steps" class="y-review__step"
+                [ngClass]="{
+                  active: isStepActive(step.ind)
+                }"
+                (click)="goToStep(step.ind)"
+        >
+          <div class="y-review-step__number">
+              {{ step.ind + 1 }}.
+          </div>
+          <div class="y-review-step__name">
+              {{ step.name }}
+          </div>
+      </div>
+  </div>
+
+  <!-- Body -->
+
+  <!-- Measurements Step -->
+  <div [hidden]="activeStep !== 0">
+    <y-create-measurements [measFormArray]="measurementsFormControl"></y-create-measurements>
+  </div>
+
+
+  <!-- Participants step -->
+  <div [hidden]="activeStep !== 1">
+    <y-user-select [control]="userControl"
+                  [limitTo]="participantIds$ | async"
+      >
+    </y-user-select>
+  </div>
+
+
+  <!-- Dates Step -->
+  <div [hidden]="activeStep !== 2">
+    <y-edit-measurements-schedule [control]="datesControl"
+                                  [type]="type$ | async"
+                                  [stamps]="stamps$ | async"
+      >
+    </y-edit-measurements-schedule>
+  </div>
+
+
+  <!-- Action bar -->
+</div>

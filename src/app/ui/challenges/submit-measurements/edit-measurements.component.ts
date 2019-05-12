@@ -22,9 +22,7 @@ export class EditMeasurementsComponent implements OnInit {
   }
 
   onModelChanges(val: any, meas: clgu.challenges.Measurement): void {
-    console.log(val, meas);
     meas.value = val;
-    console.log(meas);
   }
 
 

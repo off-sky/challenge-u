@@ -19,7 +19,9 @@ export class CreateChallengeSchedule implements iCreateChallengeSchedule {
     };
 
     // weekday indices
-    private _limitDaysTo = {
+    private _limitDaysTo: any;
+
+    private _limitDatesTo = {
 
     }
 
@@ -31,8 +33,15 @@ export class CreateChallengeSchedule implements iCreateChallengeSchedule {
         this.emitNewSchedule();
     }
 
-    setDates(dd: Date[]): void {
+    limitDatesTo(dd: Date[]): void {
+        if (dd) {
+            this._limitDatesTo = {};
+            dd.forEach(d => this._limitDatesTo[d.getTime()] = true);
+        }
+    }
 
+    setDates(dd: Date[]): void {
+       
     }
 
     setStartDate(d: Date): void {
@@ -116,13 +125,20 @@ export class CreateChallengeSchedule implements iCreateChallengeSchedule {
 
     private shouldIncludeDay(m: moment.Moment): boolean {
         if (this._fillRule === 'working_days') {
-            return this._dayOffIndexes[m.weekday()] === undefined;
+            return this.isDateInLimits(m) && this._dayOffIndexes[m.weekday()] === undefined;
         }
         if (this._fillRule === 'specific') {
-            return this._limitDaysTo[m.weekday()];
+            return this.isDateInLimits(m) && this._limitDaysTo[m.weekday()];
         }
 
-        return true;
+        return this.isDateInLimits(m);
+    }
+
+    private isDateInLimits(m: moment.Moment) {
+        if (!this._limitDatesTo) {
+            return true;
+        }
+        return !!this._limitDatesTo[m.toDate().getTime()];
     }
 
     private shouldIncludeMonth(m: moment.Moment): boolean {

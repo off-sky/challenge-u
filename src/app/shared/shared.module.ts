@@ -9,23 +9,36 @@ import { MonthSelectorComponent } from './components/date-selector/month-selecto
 import { MeasurementEditorComponent } from './components/measurement-editor/measurement-editor.component';
 import { MultiDatePickerComponent } from './components/multi-date-picker/multi-date-picker.component';
 import { SectionSpinnerComponent } from './components/section-spinner/section-spinner.component';
+import { StepsBarComponent } from './components/steps-bar/steps-bar.component';
+import { StepsItemComponent } from './components/steps-item/steps-item.component';
+import { AutocompleteDefOptionComponent } from './components/autocomplete-def-option/autocomplete-def-option.component';
+import { CombineEditorComponent } from './components/combine-editor/combine-editor.component';
+import { DragulaModule } from 'ng2-dragula';
 
 @NgModule({
   declarations: [
+    AutocompleteDefOptionComponent,
+    CombineEditorComponent,
     PhotoComponent,
     UserSelectComponent,
     MonthSelectorComponent,
     MeasurementEditorComponent,
     MultiDatePickerComponent,
-    SectionSpinnerComponent
+    SectionSpinnerComponent,
+    StepsBarComponent,
+    StepsItemComponent,
   ],
   imports: [
     CommonModule,
     FormsModule,
     MaterialModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    DragulaModule.forRoot(),
   ],
   exports: [
+    AutocompleteDefOptionComponent,
+    CombineEditorComponent,
+    DragulaModule,
     PhotoComponent,
     FormsModule,
     MeasurementEditorComponent,
@@ -33,6 +46,8 @@ import { SectionSpinnerComponent } from './components/section-spinner/section-sp
     MultiDatePickerComponent,
     ReactiveFormsModule,
     SectionSpinnerComponent,
+    StepsBarComponent,
+    StepsItemComponent,
     UserSelectComponent
   ]
 })

@@ -9,7 +9,7 @@ import { MaterialModule } from '../material/material.module';
 import { DetailsRootComponent } from './details-root/details-root.component';
 import { ChallengeDayCardComponent } from './challenge-day-card/challenge-day-card.component';
 import { ChallengeDayDetailsComponent } from './challenge-day-details/challenge-day-details.component';
-import { EditMeasurementsComponent } from './edit-measurements/edit-measurements.component';
+import { EditMeasurementsComponent } from './submit-measurements/edit-measurements.component';
 import { EditRequirementsComponent } from './edit-requirements/edit-requirements.component';
 import { DisplayMeasurementsComponent } from './display-measurements/display-measurements.component';
 import { CreateGeneralInfoComponent } from './create-general-info/create-general-info.component';
@@ -20,6 +20,8 @@ import { CreateReviewBarComponent } from './create-review-bar/create-review-bar.
 import { SubmitRequirementsComponent } from './submit-requirements/submit-requirements.component';
 import { EditChallengeRootComponent } from './edit-challenge-root/edit-challenge-root.component';
 import { EditChallengeParticipantsComponent } from './edit-challenge-participants/edit-challenge-participants.component';
+import { EditMeasurementsRootComponent } from './edit-measurements-root/edit-measurements-root.component';
+import { EditMeasurementsScheduleComponent } from './edit-measurements-schedule/edit-measurements-schedule.component';
 
 @NgModule({
   declarations: [
@@ -38,7 +40,9 @@ import { EditChallengeParticipantsComponent } from './edit-challenge-participant
     CreateReviewBarComponent,
     SubmitRequirementsComponent,
     EditChallengeRootComponent,
-    EditChallengeParticipantsComponent
+    EditChallengeParticipantsComponent,
+    EditMeasurementsRootComponent,
+    EditMeasurementsScheduleComponent
   ],
   providers: [
     ChallengeDetailsResolverService

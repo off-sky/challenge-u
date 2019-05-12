@@ -14,8 +14,8 @@ export enum CreateChallengeSteps {
     GENERAL,
     SCHEDULE,
     FRIENDS,
-    MEASUREMENTS,
-    LAST = MEASUREMENTS,
+    // MEASUREMENTS,
+    LAST = FRIENDS,
     FIRST = GENERAL
 }
 
@@ -24,8 +24,8 @@ export enum EditChallengeSteps {
     GENERAL,
     SCHEDULE,
     FRIENDS,
-    MEASUREMENTS,
-    LAST = MEASUREMENTS,
+    // MEASUREMENTS,
+    LAST = FRIENDS,
     FIRST = GENERAL
 }
 

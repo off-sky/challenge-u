@@ -31,12 +31,12 @@ export class CreateReviewBarComponent implements OnChanges, OnInit {
       active: false,
       data: ''
     },
-    {
-      ind: this.Steps.MEASUREMENTS,
-      name: 'Track Progress',
-      active: false,
-      data: ''
-    }
+    // {
+    //   ind: this.Steps.MEASUREMENTS,
+    //   name: 'Track Progress',
+    //   active: false,
+    //   data: ''
+    // }
   ];
 
   constructor() { }

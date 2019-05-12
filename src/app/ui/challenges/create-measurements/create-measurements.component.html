@@ -1,12 +1,3 @@
 <div class="block">
-  <mat-checkbox
-          name="shouldTrackProgress"
-          [formControl]="shouldTrackControl"
-      >
-      I want to track progress (optional)
-  </mat-checkbox>
-</div>
-
-<div *ngIf="shouldTrackControl.value">
   <y-measurement-editor [control]="measFormArray"></y-measurement-editor>
 </div>
