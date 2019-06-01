@@ -1,0 +1,29 @@
+<div class="y-save-preset">
+    <div class="y-save-preset__info">
+        Would you like to save these measurements as a template?
+    </div>
+    <form [formGroup]="fg">
+        <div class="y-save-preset__form">
+            <mat-form-field class="example-full-width">
+                <input matInput
+                        name="measName"
+                        formControlName="name"
+                        placeholder="Name">
+            </mat-form-field>
+        </div>
+    </form>
+   
+</div>
+
+<div class="y-save-preset__actions">
+    <button mat-raised-button
+            (click)="onCancel()"
+     >
+        NO
+    </button>
+    <button mat-raised-button color="primary"
+            (click)="onSubmit()"
+      >
+        YES
+    </button>
+</div>

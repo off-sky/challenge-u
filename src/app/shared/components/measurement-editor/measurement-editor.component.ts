@@ -18,6 +18,9 @@ export class MeasurementEditorComponent implements OnDestroy, OnInit {
   @Input() public challengeId: string;
   @Input() public control: FormArray;
   @Input() public isCombinedSelected$: Observable<boolean>;
+  public presetControl = new FormControl();
+
+  public presetOptions$: Observable<clgu.common.Option[]>;
 
   public categoryOptions$: Observable<clgu.common.Option[]>;
 
@@ -90,7 +93,8 @@ export class MeasurementEditorComponent implements OnDestroy, OnInit {
 
   ngOnInit() {
 
-    this.store.dispatch(new ChallengesActions.ReloadCategories(this.challengeId))
+    this.store.dispatch(new ChallengesActions.ReloadCategories(this.challengeId));
+    this.store.dispatch(new ChallengesActions.FetchMeasurementsPresets({ challengeId: this.challengeId}))
 
     this.categoryOptions$ = this.store.select(state => state.challenges.challengesCategories[this.challengeId])
       .pipe(
@@ -139,6 +143,24 @@ export class MeasurementEditorComponent implements OnDestroy, OnInit {
         })
       );
 
+    this.presetOptions$ = this.store.select(state => state.challenges.challengesMeasurementsPresets[this.challengeId])
+      .pipe(
+          filter(obj => !!obj),
+          map(obj => obj.data),
+          filter(d => !!d),
+          map(presetObj => {
+            return Object.keys(presetObj)
+              .map(key => presetObj[key])
+              .map((preset: clgu.challenges.db.MeasurementPreset) => ({
+                display: preset.name,
+                value: preset.measurements
+              }));
+          })
+      );
+
+    this.presetControl.valueChanges
+      .subscribe(val => this.onPresetSelect(val))
+
   }
 
 
@@ -151,6 +173,34 @@ export class MeasurementEditorComponent implements OnDestroy, OnInit {
 
   public getOptions(id: string): clgu.common.Option[] {
     return this.totalCombineOptions.filter(o => o.value !== id);
+  }
+
+
+  public onPresetSelect(event: clgu.common.Option[]): void {
+    if (event && event.length > 0) {
+      const option = event[0];
+      const val = option.value;
+      const dbMeasurements = Object.keys(val)
+        .map(key => val[key]);
+
+      dbMeasurements.forEach((m, i) => {
+        console.log(m);
+        const fc =  new FormGroup({
+          id: new FormControl(m.id),
+          category: new FormControl([m.category]),
+          displayName: new FormControl(m.display_name, [ Validators.required ]),
+          type: new FormControl(m.type),
+          formula: new FormControl(m.formula),
+          orderNo: new FormControl(i),
+        });
+        this.control.push(fc);
+        const typeOption = this.measurementTypeOptions.find(o => o.value === m.type);
+        // fc.get('type').setValue(typeOption);
+      });
+
+      this.updateInputControls();
+    }
+
   }
 
 
@@ -178,7 +228,6 @@ export class MeasurementEditorComponent implements OnDestroy, OnInit {
   }
 
   private updateInputControls(): void {
-    console.log('On update input contorls');
     this.control.controls.forEach((fg, ind) => {
       const orderNo = ind + 1;
       fg.get('orderNo').setValue(orderNo);
@@ -189,7 +238,6 @@ export class MeasurementEditorComponent implements OnDestroy, OnInit {
 
 
   private updateTotalCombineOptions(): void {
-    console.log('Updating total combine options');
     this.totalCombineOptions = [ ...this.standardCombineOptions ];
     this.control.controls.forEach((fg, ind) => {
       if (fg.get('type').value === 'combine' || fg.get('type').value === 'number') {

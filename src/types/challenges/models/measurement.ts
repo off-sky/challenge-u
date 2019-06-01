@@ -27,7 +27,7 @@ export class Measurement implements iMeasurement {
 
 
     get filled(): boolean {
-        return this.value !== undefined && this.formControl.value !== null;
+        return this.formControl.value !== null;
     }
 
 

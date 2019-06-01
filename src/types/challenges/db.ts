@@ -86,13 +86,14 @@ export module db {
         value?: number | string | boolean;
     }
 
-    export interface Preset {
+    export interface MeasurementPreset {
         name: string;
         measurements: Measurements;
+        created_at: number;
     }
 
-    export interface Presets {
-        [id: string]: Preset;
+    export interface MeasurementPresets {
+        [id: string]: MeasurementPreset;
     }
 
 

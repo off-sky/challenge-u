@@ -22,6 +22,7 @@ import { EditChallengeRootComponent } from './edit-challenge-root/edit-challenge
 import { EditChallengeParticipantsComponent } from './edit-challenge-participants/edit-challenge-participants.component';
 import { EditMeasurementsRootComponent } from './edit-measurements-root/edit-measurements-root.component';
 import { EditMeasurementsScheduleComponent } from './edit-measurements-schedule/edit-measurements-schedule.component';
+import { EditMeasPresetPopupComponent } from './edit-meas-preset-popup/edit-meas-preset-popup.component';
 
 @NgModule({
   declarations: [
@@ -42,7 +43,8 @@ import { EditMeasurementsScheduleComponent } from './edit-measurements-schedule/
     EditChallengeRootComponent,
     EditChallengeParticipantsComponent,
     EditMeasurementsRootComponent,
-    EditMeasurementsScheduleComponent
+    EditMeasurementsScheduleComponent,
+    EditMeasPresetPopupComponent
   ],
   providers: [
     ChallengeDetailsResolverService
@@ -54,7 +56,8 @@ import { EditMeasurementsScheduleComponent } from './edit-measurements-schedule/
     RouterModule
   ],
   entryComponents: [
-    EditRequirementsComponent
+    EditRequirementsComponent,
+    EditMeasPresetPopupComponent
   ]
 })
 export class ChallengesModule { }

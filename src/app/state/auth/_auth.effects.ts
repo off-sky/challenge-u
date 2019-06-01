@@ -48,7 +48,6 @@ export class AuthEffects {
             ofType(AuthActions.CHECK_AUTH_AUTHED),
             switchMap((action: YAction<clgu.users.User>) => {
                 this.store.dispatch(new UserActions.GetUsers());
-                this.store.dispatch(new ChallengesActions.FetchRequirementsPresets());
                 return of(new ChallengesDbActions.StartListenUserChallenges(action.payload.id));
             })
         )

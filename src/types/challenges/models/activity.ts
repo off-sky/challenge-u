@@ -8,6 +8,7 @@ import * as moment from 'moment';
 import { DayShowUpRequest } from '../day-show-up-request';
 import { FormGroup, FormControl } from '@angular/forms';
 import { startWith } from 'rxjs/operators';
+import { MeasurementList } from '../measurement-list';
 
 export class Activity implements iActivity {
     id: string;
@@ -16,7 +17,7 @@ export class Activity implements iActivity {
     isShowUp: boolean;
     isActive: boolean = false;
     displayLabel: string;
-    measurements: Measurement[];
+    measurements: MeasurementList;
     userId: string;
     
 
@@ -37,7 +38,7 @@ export class Activity implements iActivity {
         if (!this.isShowUp) {
             this.isActive = this.getIsActive(ts, type);
         }
-        this.measurements = this.getMeasurements(measurementsDb);
+        this.measurements = new MeasurementList(measurementsDb);
     }
 
     public clone(): Activity {
@@ -58,7 +59,7 @@ export class Activity implements iActivity {
             dayId: this.id,
         } as DayShowUpRequest;
     
-        const filledMeasurements = this.measurements ? this.measurements.filter(m => m.filled) : [];
+        const filledMeasurements = this.measurements ? this.measurements.measurements().filter(m => m.filled) : [];
         if (filledMeasurements.length > 0) {
             const measurements = {};
             filledMeasurements.forEach((m: MeasurementModel) => {

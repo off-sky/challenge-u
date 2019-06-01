@@ -110,11 +110,49 @@ export class ChallengesEffects {
             })
         );
 
+    @Effect() public addMeasurementPreset$ = this.actions
+        .pipe(
+            ofType(ChallengesActions.ADD_MEASUREMENT_PRESET),
+            withLatestFrom(
+                this.store.select(state => state.auth.authCheck.user)
+                    .pipe(
+                        filter(u => !!u),
+                        map(u => u.id)
+                    )
+            ),
+            switchMap((vals: [ YAction<any>, string]) => {
+                const userId = vals[1];
+                const payload = vals[0].payload as clgu.challenges.MeasurementPresetSaveRequest;
 
-    @Effect() public fetchRequirementPresets$ = this.actions
+                return this.challengeActionService.addMeasurementPresets(
+                    payload.challengeId,
+                    userId,
+                    payload.preset
+                )
+                .pipe(
+                    map(res => new ChallengesActions.AddMeasurementPresetSuccess({
+                        challengeId: payload.challengeId
+                    })),
+                    catchError(err => {
+                        return of(new ChallengesActions.AddMeasurementPresetFail(err))
+                    })
+                )
+            })
+        );
+
+
+    @Effect({ dispatch: false }) public onAddPreset$ = this.actions
+        .pipe(
+            ofType(ChallengesActions.ADD_MEASUREMENT_PRESET_SUCCESS),
+            map((a: YAction<string>) => this.store.dispatch(new ChallengesActions.FetchMeasurementsPresets({
+                challengeId: a.payload
+            })))
+        )
+
+
+    @Effect() public fetchMeasurementsPresets$ = this.actions
             .pipe(
-                ofType(ChallengesActions.FETCH_REQUIREMENT_PRESETS),
-                tap(() => console.log('Fetching presets')),
+                ofType(ChallengesActions.FETCH_MEASUREMENT_PRESETS),
                 withLatestFrom(
                     this.store.select(state => state.auth.authCheck.user)
                         .pipe(
@@ -122,15 +160,20 @@ export class ChallengesEffects {
                             map(u => u.id)
                         )
                 ),
-                switchMap((vals) => {
+                switchMap((vals: [ YAction<any>, string]) => {
                     const userId = vals[1];
+                    const payload = vals[0].payload as clgu.challenges.MeasurementPresetGetRequest;
+                    const challengeId = payload.challengeId;
 
-                    return this.challengeInfoService.getRequirementPresets(userId)
+                    return this.challengeInfoService.getMeasurementPresets(challengeId, userId)
                         .pipe(
-                            map(res => new ChallengesActions.FetchRequirementsPresetsSuccess(res)),
+                            map(res => new ChallengesActions.FetchMeasurementsPresetsSuccess({
+                                id: challengeId,
+                                data: res
+                            })),
                             catchError(err => {
                                 console.log(err);
-                                return of(new ChallengesActions.FetchRequirementsPresetsFail(err));
+                                return of(new ChallengesActions.FetchMeasurementsPresetsFail(err));
                             })
                         );
                 })

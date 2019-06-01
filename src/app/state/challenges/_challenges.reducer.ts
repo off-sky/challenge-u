@@ -25,8 +25,11 @@ export function challengesReducer(state: ChallengesState = challengesInitialStat
             return newState;
         }
 
-        case ChallengesActions.FETCH_REQUIREMENT_PRESETS_SUCCESS: {
-            newState.requirementPresets = action.payload;
+        case ChallengesActions.FETCH_MEASUREMENT_PRESETS_SUCCESS: {
+            const payload = action.payload as clgu.common.DataWithId;
+            newState.challengesMeasurementsPresets[payload.id] = 
+                new clgu.common.UpdatableDataObject(null, payload.data);
+            return newState;
         }
 
         case ChallengesActions.GET_CHALLENGE_DETAILS: {

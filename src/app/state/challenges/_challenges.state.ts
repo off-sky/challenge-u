@@ -33,7 +33,7 @@ export interface ChallengesState {
         [challengeId: string]: clgu.common.UpdatableDataObject<{ [id: string]: string}>;
     };
     challengesMeasurementsPresets: {
-        [challengeId: string]: clgu.common.UpdatableDataObject<clgu.challenges.db.Presets>;
+        [challengeId: string]: clgu.common.UpdatableDataObject<clgu.challenges.db.MeasurementPresets>;
     }
     list: {
         isLoading: boolean;

@@ -72,9 +72,15 @@ export class ChallengeActionService {
     return this.dbService.update(this.MEASUREMENTS_PATH, updateObj);
   }
 
-  public addMeasurementPresets(challengeId: string, req: clgu.challenges.db.Preset): Observable<any> {
-      const ref = `${this.PRESETS_PATH}/${challengeId}`;
-      return this.dbService.push(ref, req);
+  public addMeasurementPresets(challengeId: string, userId: string, req: clgu.challenges.MeasurementPreset): Observable<any> {
+      const ref = `${this.PRESETS_PATH}/${challengeId}/${userId}`;
+      const measDb = this.getMeasurementsObj(req.measurements);
+      const res = {
+        name: req.name,
+        measurements: measDb,
+        created_at: this.dbService.getTimestampField()
+      }
+      return this.dbService.push(ref, res);
   }
 
   public addRequirements(request: clgu.challenges.AddRequirementsRequest): Observable<any[]> {
