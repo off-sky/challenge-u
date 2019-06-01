@@ -145,7 +145,7 @@ export class ChallengesSelectors {
             .pipe(
                 filter(cd => !!cd),
                 distinctUntilKeyChanged('lastUpdated'),
-                filter(cd => !!cd.data),
+                filter((cd: clgu.common.UpdatableDataObject<clgu.challenges.db.CommonChallengeDays>) => !!cd.data),
                 map(cd => cd.data)
             )
     }

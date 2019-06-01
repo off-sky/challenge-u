@@ -35,8 +35,8 @@ export class ChallengeInfoService {
   }
 
 
-  public getRequirementPresets(userId: string): Observable<clgu.challenges.db.Requirements> {
-      return this.dbService.readOnce(`${this.USER_REQUIREMENT_PATH}/${userId}`, null, null, null, null, 10);
+  public getMeasurementPresets(challengeId: string, userId: string): Observable<clgu.challenges.db.Requirements> {
+      return this.dbService.readOnce(`${this.PRESETS_PATH}/${challengeId}/${userId}`);
   }
 
   public getChallengeBasicInfo(challengeId: string): Observable<clgu.challenges.db.ChallengeObj> {
@@ -82,8 +82,8 @@ export class ChallengeInfoService {
     return this.dbService.readOnce(ref);
   }
 
-  public getMeasurementsPresets(challengeId: string): Observable<clgu.challenges.db.Presets> {
-    return this.dbService.readOnce(`${this.PRESETS_PATH}/${challengeId}`);
+  public getMeasurementsPresets(challengeId: string, userId: string): Observable<clgu.challenges.db.MeasurementPresets> {
+    return this.dbService.readOnce(`${this.PRESETS_PATH}/${challengeId}/${userId}`);
   }
   
 

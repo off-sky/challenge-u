@@ -24,7 +24,7 @@ export class CombinedMeasurement implements iMeasurement {
     ];
 
     get filled(): boolean {
-        return this.value !== undefined && this.formControl.value !== null;
+        return this.formControl.value !== null;
     }
 
     
@@ -55,7 +55,6 @@ export class CombinedMeasurement implements iMeasurement {
                 })
             )
             .subscribe((fg) => {
-                console.log({ me: this.id, ...fg.value});
                 const keys = Object.keys(fg.controls);
                 if (!keys.some(key => fg.get(key).value === undefined || fg.get(key).value === null)) {
                     const scope = {};
@@ -68,7 +67,6 @@ export class CombinedMeasurement implements iMeasurement {
                         }
                         return o.value;
                     }).join(' ');
-                    console.log({ parseStr, scope })
                     const val = math.eval(parseStr, scope);
                     this.formControl.setValue(val);
                 } else {

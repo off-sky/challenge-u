@@ -1,6 +1,11 @@
 <div>
   <div>
-    <y-autocomplete [placeholder]="'Select from presets'"></y-autocomplete>
+    <y-autocomplete [placeholder]="'Select from presets'"
+                    [options]="presetOptions$ | async"
+                    [defOption]="false"
+                    [control]="presetControl"
+      >
+    </y-autocomplete>
   </div>
   <div>
       <div *ngFor="let fg of control.controls; let i = index">

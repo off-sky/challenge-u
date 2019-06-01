@@ -1,6 +1,7 @@
 import { Requirement } from "./requirement";
 import { Measurement } from "./measurement";
 import { DayShowUpRequest } from './day-show-up-request';
+import { MeasurementList } from './measurement-list';
 
 /**
  * This class represents activity on a single challenge day
@@ -11,7 +12,7 @@ export interface Activity {
     userId: string;
     challengeId: string;
     displayLabel: string;
-    measurements: Measurement[];
+    measurements: MeasurementList;
     isShowUp: boolean;
     isActive: boolean;
     isFuture: boolean;

@@ -9,7 +9,8 @@ import { FormArray, FormGroup, FormControl } from '@angular/forms';
 })
 export class EditMeasurementsComponent implements OnInit {
 
-  @Input() public measurements: clgu.challenges.Measurement[];
+  @Input() public measurements: clgu.challenges.MeasurementList;
+  public categories: clgu.challenges.MeasurementCategory[];
 
   private measObj = {};
   
@@ -19,6 +20,9 @@ export class EditMeasurementsComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
+    if (this.measurements) {
+      this.categories = this.measurements.categories;
+    }
   }
 
   onModelChanges(val: any, meas: clgu.challenges.Measurement): void {

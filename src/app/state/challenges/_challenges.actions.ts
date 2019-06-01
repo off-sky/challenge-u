@@ -25,9 +25,9 @@ export class ChallengesActions {
     public static readonly ADD_MEASUREMENT_PRESET_SUCCESS = '[Challenges] ADD_MEASUREMENT_PRESET_SUCCESS';
     public static readonly ADD_MEASUREMENT_PRESET_FAIL = '[Challenges] ADD_MEASUREMENT_PRESET_FAIL';
 
-    public static readonly FETCH_REQUIREMENT_PRESETS = '[Challenges] FETCH_REQUIREMENT_PRESETS';
-    public static readonly FETCH_REQUIREMENT_PRESETS_SUCCESS = '[Challenges] FETCH_REQUIREMENT_PRESETS_SUCCESS';
-    public static readonly FETCH_REQUIREMENT_PRESETS_FAIL = '[Challenges] FETCH_REQUIREMENT_PRESETS_FAIL';
+    public static readonly FETCH_MEASUREMENT_PRESETS = '[Challenges] FETCH_MEASUREMENT_PRESETS';
+    public static readonly FETCH_MEASUREMENT_PRESETS_SUCCESS = '[Challenges] FETCH_MEASUREMENT_PRESETS_SUCCESS';
+    public static readonly FETCH_MEASUREMENT_PRESETS_FAIL = '[Challenges] FETCH_MEASUREMENT_PRESETS_FAIL';
 
     public static readonly START_LISTEN_CHALLENGE_LIST = '[Challenges] START_LISTEN_CHALLENGE_LIST';
     public static readonly SAVE_CHALLENGE_LIST = '[Challenges] SAVE_CHALLENGE_LIST';
@@ -74,6 +74,26 @@ export class ChallengesActions {
         public readonly type = ChallengesActions.ADD_CATEGORY_FAIL;
         constructor(public payload?: clgu.common.Error) {}
     };
+
+
+    /**
+     * Presets
+     */
+    public static readonly AddMeasurementPreset = class implements Action {
+        public readonly type = ChallengesActions.ADD_MEASUREMENT_PRESET;
+        constructor(public payload: clgu.challenges.MeasurementPresetSaveRequest) {}
+    };
+
+    public static readonly AddMeasurementPresetSuccess = class implements Action {
+        public readonly type = ChallengesActions.ADD_MEASUREMENT_PRESET_SUCCESS;
+        constructor(public payload?: any) {}
+    };
+
+    public static readonly AddMeasurementPresetFail = class implements Action {
+        public readonly type = ChallengesActions.ADD_MEASUREMENT_PRESET_FAIL;
+        constructor(public payload?: clgu.common.Error) {}
+    };
+
 
     public static readonly ReloadCategories = class implements Action {
         public readonly type = ChallengesActions.RELOAD_CATEGORIES;
@@ -122,18 +142,18 @@ export class ChallengesActions {
         constructor(public payload: any) {}
     }
 
-    public static readonly FetchRequirementsPresets = class implements Action {
-        public readonly type = ChallengesActions.FETCH_REQUIREMENT_PRESETS;
-        constructor(public payload?: any) {}
+    public static readonly FetchMeasurementsPresets = class implements Action {
+        public readonly type = ChallengesActions.FETCH_MEASUREMENT_PRESETS;
+        constructor(public payload?: clgu.challenges.MeasurementPresetGetRequest) {}
     }
 
-    public static readonly FetchRequirementsPresetsSuccess = class implements Action {
-        public readonly type = ChallengesActions.FETCH_REQUIREMENT_PRESETS_SUCCESS;
-        constructor(public payload: clgu.challenges.db.Requirements) {}
+    public static readonly FetchMeasurementsPresetsSuccess = class implements Action {
+        public readonly type = ChallengesActions.FETCH_MEASUREMENT_PRESETS_SUCCESS;
+        constructor(public payload: clgu.common.DataWithId) {}
     }
 
-    public static readonly FetchRequirementsPresetsFail = class implements Action {
-        public readonly type = ChallengesActions.FETCH_REQUIREMENT_PRESETS_FAIL;
+    public static readonly FetchMeasurementsPresetsFail = class implements Action {
+        public readonly type = ChallengesActions.FETCH_MEASUREMENT_PRESETS_FAIL;
         constructor(public payload: clgu.common.Error) {}
     }
 

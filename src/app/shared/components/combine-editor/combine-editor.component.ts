@@ -28,6 +28,9 @@ export class CombineEditorComponent implements OnInit {
   ngOnInit() {
     this.bagName = this.id + '_BAG';
     this.updateDragula();
+    if (this.control.value && this.control.value.length > 0) {
+      this.currExpression = this.control.value;
+    }
   }
 
 

@@ -4,13 +4,16 @@
       No measurements for this activity.
   </div>
 
-  <div>
-      <div *ngFor="let m of filled()" class="y-display-measurements__item">
+  <div *ngFor="let c of filled" class="y-display-measurements__category">
+      <div>
+        {{ c.name }}
+      </div>
+      <div *ngFor="let m of c.measurements" class="y-display-measurements__item">
           <div class="y-display-measurements__item__label">
               {{ m.displayName }}
           </div>
           <div class="y-display-measurements__item__value">
-              <div *ngIf="m.type === 'number' || m.type === 'string'">
+              <div *ngIf="m.type === 'number' || m.type === 'string' || m.type === 'combine'">
                   {{ m.value }}
               </div>
               <div *ngIf="m.type === 'boolean' && m.value">

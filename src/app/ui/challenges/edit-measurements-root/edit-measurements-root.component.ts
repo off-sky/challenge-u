@@ -8,6 +8,8 @@ import { Store } from '@ngrx/store';
 import { shareReplay, map, take } from 'rxjs/operators';
 import { clgu } from 'src/types';
 import { ChallengesActions } from 'src/app/state/challenges/_challenges.actions';
+import { MatDialog } from '@angular/material';
+import { EditMeasPresetPopupComponent } from '../edit-meas-preset-popup/edit-meas-preset-popup.component';
 
 @Component({
   selector: 'y-edit-measurements-root',
@@ -46,7 +48,8 @@ export class EditMeasurementsRootComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private store: Store<AppState>
+    private store: Store<AppState>,
+    private dialogue: MatDialog
   ) { }
 
   ngOnInit() {
@@ -148,8 +151,22 @@ export class EditMeasurementsRootComponent implements OnInit {
     });
     result.userIds = currentValue.users.map(u => u.id);
     result.stamps = currentValue.dates.map(d => d.getTime());
+    this.dialogue.open(EditMeasPresetPopupComponent)
+      .afterClosed()
+      .subscribe(res => {
+        if (res) {
+          this.store.dispatch(new ChallengesActions.AddMeasurementPreset({
+            challengeId: this.challengeId,
+            preset: {
+              name: res,
+              measurements: result.measurements,
+            }
+          }))
+        }
+        this.store.dispatch(new ChallengesActions.UpdateChallengeMeasurements(result));
+      })
     console.log(result);
-    this.store.dispatch(new ChallengesActions.UpdateChallengeMeasurements(result));
+    
   }
 
 }

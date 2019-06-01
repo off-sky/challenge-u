@@ -5,7 +5,7 @@ import { AppState } from 'src/app/state/app.state';
 import { Store } from '@ngrx/store';
 import { ChallengesActions } from 'src/app/state/challenges/_challenges.actions';
 import { Observable, combineLatest, of } from 'rxjs';
-import { map, filter, take, shareReplay } from 'rxjs/operators';
+import { map, filter, take, shareReplay, tap } from 'rxjs/operators';
 import { ChallengesSelectors } from 'src/app/state/challenges/_challenges.selectors';
 import { ChallengesDbActions } from 'src/app/state/challenges/_challenges.db.actions';
 
@@ -88,7 +88,7 @@ export class ChallengeDayDetailsComponent implements OnInit {
     this.hasMeasurements$ = this.activity$
         .pipe(
           map(activity => {
-            return !!activity && !!activity.measurements && activity.measurements.length > 0;
+            return !!activity && !!activity.measurements && activity.measurements.measurements().length > 0;
           })
         );
 
@@ -146,6 +146,7 @@ export class ChallengeDayDetailsComponent implements OnInit {
 
     this.activity$ = ChallengesSelectors.activity$(this.store, this.challengeId, this.dayId, this.userId)
       .pipe(
+        tap(data => console.log({ activity: data })),
         shareReplay(1)
       );
   }
