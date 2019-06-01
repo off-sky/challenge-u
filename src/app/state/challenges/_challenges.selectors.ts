@@ -36,6 +36,26 @@ export class ChallengesSelectors {
         )
     }
 
+
+    public static readonly isChallengeMine$ = function(store: Store<AppState>, challengeId: string): Observable<boolean> {
+        return combineLatest(
+            ChallengesSelectors.basicChallengeInfo$(store, challengeId),
+            store.select(state => state.auth.authCheck.user)
+        )
+        .pipe(
+            map(vals => {
+                const challInfo = vals[0];
+                const user = vals[1];
+
+                if (!user || !challInfo) {
+                    return false;
+                }
+
+                return user.id === challInfo.owner_id;
+            })
+        )
+    }
+
     /**
      * wait - optional - if true, waits until all pieces of data arrive before first emit
      */

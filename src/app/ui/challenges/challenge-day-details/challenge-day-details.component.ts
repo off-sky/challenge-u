@@ -88,6 +88,7 @@ export class ChallengeDayDetailsComponent implements OnInit {
     this.hasMeasurements$ = this.activity$
         .pipe(
           map(activity => {
+            console.log({activity});
             return !!activity && !!activity.measurements && activity.measurements.length > 0;
           })
         );

@@ -1,13 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormArray, FormGroup, FormControl, Validators } from '@angular/forms';
-import { Observable } from 'rxjs';
+import { Observable, combineLatest } from 'rxjs';
 import { AppState } from 'src/app/state/app.state';
 import { ChallengesSelectors } from 'src/app/state/challenges/_challenges.selectors';
 import { Store } from '@ngrx/store';
 import { shareReplay, map, take } from 'rxjs/operators';
 import { clgu } from 'src/types';
 import { ChallengesActions } from 'src/app/state/challenges/_challenges.actions';
+import { UsersSelectors } from 'src/app/state/users/_users.selectors';
+import { AuthSelectors } from 'src/app/state/auth/_auth.selectors';
 
 @Component({
   selector: 'y-edit-measurements-root',
@@ -22,6 +24,7 @@ export class EditMeasurementsRootComponent implements OnInit {
   public measurementsFormControl = new FormArray([], [ Validators.required ]);
   public readonly userControl: FormControl = new FormControl([]);
   public datesControl: FormControl = new FormControl([]);
+  public isChallengeMine: boolean;
 
   public steps = [
     {
@@ -37,11 +40,13 @@ export class EditMeasurementsRootComponent implements OnInit {
       name: 'Dates'
     }
   ];
+  public lastStepInd = 2;
 
   public challengeId: string;
   public participantIds$: Observable<string[]>;
   public type$: Observable<clgu.challenges.common.ChallengeType>;
   public stamps$: Observable<number[]>;
+  
 
   constructor(
     private route: ActivatedRoute,
@@ -57,7 +62,7 @@ export class EditMeasurementsRootComponent implements OnInit {
         shareReplay(1)
       );
 
-      ChallengesSelectors.challengeDetails$(this.store, this.challengeId)
+    ChallengesSelectors.challengeDetails$(this.store, this.challengeId)
         .pipe(
           take(1)
         )
@@ -65,6 +70,21 @@ export class EditMeasurementsRootComponent implements OnInit {
           const participants = chall.participants.map(p => new clgu.users.models.User(p));
           this.userControl.setValue(participants);
         });
+
+
+    ChallengesSelectors.isChallengeMine$(this.store, this.challengeId)
+        .pipe(
+          take(1)
+        )
+        .subscribe(isMine => {
+          this.isChallengeMine = isMine;
+          if (!isMine) {
+            this.addParticipantsToMeasurements();
+            this.modifyStepsForNotMineChallenge();
+          }
+        })
+
+    
 
     this.participantIds$ = challenge$
         .pipe(
@@ -118,10 +138,17 @@ export class EditMeasurementsRootComponent implements OnInit {
   }
 
   public nextStep(): void {
-    if (this.activeStep === 2) {
+    if (this.activeStep === this.lastStepInd) {
       this.onSubmit();
     } else {
-      this.activeStep++;
+      const currInd = this.steps.findIndex(s => s.ind === this.activeStep);
+      const nextStep = this.steps[currInd + 1];
+      if (nextStep) {
+        this.activeStep = nextStep.ind;
+      } else {
+        this.onSubmit();
+      }
+      
     }
   }
 
@@ -151,5 +178,42 @@ export class EditMeasurementsRootComponent implements OnInit {
     console.log(result);
     this.store.dispatch(new ChallengesActions.UpdateChallengeMeasurements(result));
   }
+
+
+  private addParticipantsToMeasurements(): void {
+    combineLatest(
+      ChallengesSelectors.challengeDetails$(this.store, this.challengeId),
+      AuthSelectors.currentUser$(this.store)
+    )
+    .pipe(
+      take(1)
+    )
+    .subscribe(vals => {
+      this.userControl.setValue([]);
+      const chalDetails = vals[0];
+      const currUser = vals[1];
+
+      const participant = chalDetails.participants.find(u => u.id === currUser.id);
+
+      if (participant) {
+        this.userControl.setValue([ new clgu.users.models.User(participant) ]);
+      }
+    })
+  }
+
+
+  private modifyStepsForNotMineChallenge(): void {
+    this.steps = [
+      {
+        ind: 0,
+        name: 'Measurements'
+      },
+      {
+        ind: 2,
+        name: 'Dates'
+      }
+    ];
+  }
+
 
 }

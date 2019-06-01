@@ -17,14 +17,14 @@
 
   <!-- Steps -->
   <div class="y-review">
-      <div *ngFor="let step of steps" class="y-review__step"
+      <div *ngFor="let step of steps; let ind = index;" class="y-review__step"
                 [ngClass]="{
                   active: isStepActive(step.ind)
                 }"
                 (click)="goToStep(step.ind)"
         >
           <div class="y-review-step__number">
-              {{ step.ind + 1 }}.
+              {{ ind + 1 }}.
           </div>
           <div class="y-review-step__name">
               {{ step.name }}
