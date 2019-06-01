@@ -17,7 +17,7 @@ export class CombineEditorComponent implements OnInit {
 
   public bagName: string;
 
-  private currExpression: clgu.common.Option[] = [];
+  public currExpression: clgu.common.Option[] = [];
 
 
 
