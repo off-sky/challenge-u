@@ -183,11 +183,13 @@ export class MeasurementEditorComponent implements OnDestroy, OnInit {
       const dbMeasurements = Object.keys(val)
         .map(key => val[key]);
 
+      dbMeasurements.sort((a, b) => a.order_no - b.order_no);
+
       dbMeasurements.forEach((m, i) => {
         console.log(m);
         const fc =  new FormGroup({
           id: new FormControl(m.id),
-          category: new FormControl([m.category]),
+          category: new FormControl([{ display: m.category, value: m.category }]),
           displayName: new FormControl(m.display_name, [ Validators.required ]),
           type: new FormControl(m.type),
           formula: new FormControl(m.formula),
@@ -217,8 +219,9 @@ export class MeasurementEditorComponent implements OnDestroy, OnInit {
     this.updateInputControls();
   }
 
-  public onAddCategory(name: string): void {
+  public onAddCategory(name: string, control: FormControl): void {
     this.store.dispatch(new ChallengesActions.AddCategory({ id: this.challengeId, data: name }));
+    control.setValue([name]);
   }
 
 

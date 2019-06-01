@@ -46,7 +46,8 @@ export class AutocompleteDefOptionComponent implements OnChanges, OnInit {
       this.control$.next(this.control);
     }
     if (changes.options) {
-      this.options$.next(this.options || []);
+      const options = this.options || [];
+      this.options$.next(options);
     }
   }
 
@@ -57,6 +58,11 @@ export class AutocompleteDefOptionComponent implements OnChanges, OnInit {
         filter(val => !!val && !!val.toLowerCase),
         startWith(this.inputControl.value)
       )
+
+    if (this.control && this.control.value && this.control.value.length > 0 && !this.multi) {
+      this.inputControl.setValue(this.control.value[0].display)
+    }
+
     const options$ = this.options$.asObservable();
 
     this.filteredOptions$ = combineLatest(options$, inputValChanges$)
@@ -65,10 +71,13 @@ export class AutocompleteDefOptionComponent implements OnChanges, OnInit {
           const users = vals[0];
           const inputVal = vals[1];
           if (!inputVal) {
-            return [];
+            return users;
           }
           return users.filter(u => {
             const alreadySelected = this.selectedOptions[u.display];
+            if (!( typeof u.display === 'string')) {
+              console.log(u);
+            }
             return !alreadySelected && u.display.toLowerCase().includes(inputVal.toLowerCase());
           });
         })
@@ -94,8 +103,6 @@ export class AutocompleteDefOptionComponent implements OnChanges, OnInit {
   }
 
   public displayFn(opt): string | null {
-    console.log('Display fn:');
-    console.log(opt);
     if (this.multi) {
       return null;
     } else {
@@ -106,13 +113,16 @@ export class AutocompleteDefOptionComponent implements OnChanges, OnInit {
     }
   }
 
-  public onDefaultOptionClicked(input: string, event: MouseEvent): void {
-    this.defOptionSelected.emit(input);
-    event.stopPropagation();
-  }
 
   public onOptionSelected(event: MatAutocompleteSelectedEvent): void {
+    console.log('On option selected fired!!')
     const user = event.option.value as clgu.common.Option;
+    if (!user) {
+      return;
+    }
+    if (user.metadata && user.metadata.default) {
+      this.defOptionSelected.emit(user.value);
+    }
     if (this.multi) {
       const users = this.control.value;
       users.push(user);

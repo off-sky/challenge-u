@@ -23,7 +23,7 @@
                            [options]="categoryOptions$ | async"
                            [placeholder]="'Category'"
                            [control]="fg.get('category')"
-                           (defOptionSelected)="onAddCategory($event)"
+                           (defOptionSelected)="onAddCategory($event, fg.get('category'))"
                          >
                         </y-autocomplete>
                      </div>

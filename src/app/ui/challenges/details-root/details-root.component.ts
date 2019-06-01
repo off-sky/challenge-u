@@ -11,6 +11,7 @@ import { Observable, combineLatest } from 'rxjs';
 import { ChallengesSelectors } from 'src/app/state/challenges/_challenges.selectors';
 import { FormGroup, FormControl } from '@angular/forms';
 import { AuthSelectors } from 'src/app/state/auth/_auth.selectors';
+import { ScreenSizeService } from 'src/app/core/screen-size/screen-size.service';
 
 @Component({
   selector: 'y-details-root',
@@ -21,6 +22,7 @@ export class DetailsRootComponent implements OnInit {
 
   public challenge$: Observable<clgu.challenges.Challenge>;
   public isMine: Observable<boolean>;
+  public amIparticipant: Observable<boolean>;
 
   public showFormGroup: FormGroup;
 
@@ -28,19 +30,19 @@ export class DetailsRootComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private store: Store<AppState>,
-    private matDialogue: MatDialog
+    private screenSizeService: ScreenSizeService
   ) { }
 
   ngOnInit() {
     this.challenge$ = ChallengesSelectors.challengeDetails$(this.store, this.route.snapshot.params.id)
       .pipe(
         map(challDb => new clgu.challenges.models.Challenge(challDb)),
-
         shareReplay(1)
       );
 
  
-    this.isMine = ChallengesSelectors.isMyChallenge$(this.store, this.route.snapshot.params.id)
+    this.isMine = ChallengesSelectors.isMyChallenge$(this.store, this.route.snapshot.params.id);
+    this.amIparticipant = ChallengesSelectors.amIParticipant$(this.store, this.route.snapshot.params.id);
 
     this.initShowFormGroup();
    
@@ -48,22 +50,6 @@ export class DetailsRootComponent implements OnInit {
 
 
   public openMeasurements(): void {
-      // this.challenge$
-      //   .pipe(
-      //     take(1)
-      //   )
-      //   .subscribe(challenge => {
-      //     const ref = this.matDialogue.open(EditRequirementsComponent, { data: challenge.participants[0].activities });
-      //     ref.afterClosed()
-      //       .subscribe((res: clgu.challenges.AddRequirementsRequest)=> {
-      //         if (!res) {
-      //           return;
-      //         }
-      //         res.challengeId = challenge.id;
-      //         res.userId = challenge.ownerId;
-      //         this.store.dispatch(new ChallengesActions.AddRequirements(res));
-      //       });
-      //   })
 
       this.router.navigate(['home', 'challenges', 'details', this.route.snapshot.params.id, 'measurements']);
       
@@ -83,16 +69,17 @@ export class DetailsRootComponent implements OnInit {
 
 
   private initShowFormGroup(): void {
-    combineLatest(AuthSelectors.currentUser$(this.store), this.challenge$)
+    combineLatest(AuthSelectors.currentUser$(this.store), this.challenge$, this.screenSizeService.screenSize$())
       .pipe(
         take(1)
       )
       .subscribe(vals => {
         const currUser = vals[0];
         const challenge = vals[1];
+        const screenSize = vals[2];
         const controls = {};
         challenge.participants.forEach(p => {
-          controls[p.id] = new FormControl(p.id === currUser.id);
+          controls[p.id] = new FormControl(screenSize === 'desktop' || p.id === currUser.id);
         });
         this.showFormGroup = new FormGroup(controls);
       })

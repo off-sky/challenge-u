@@ -56,6 +56,29 @@ export class ChallengesSelectors {
         )
     }
 
+
+    public static readonly amIParticipant$ = function(store: Store<AppState>, challengeId: string): Observable<boolean> {
+        return combineLatest(
+            ChallengesSelectors.basicChallengeInfo$(store, challengeId),
+            ChallengesSelectors.challengeParticipantProfiles$(store, challengeId),
+            store.select(state => state.auth.authCheck.user)
+        )
+        .pipe(
+            map(vals => {
+                const challInfo = vals[0];
+                const partProfiles = vals[1];
+                const user = vals[2];
+
+                if (!user || !challInfo) {
+                    return false;
+                }
+
+                return user.id === challInfo.owner_id || partProfiles.some(p => p.id === user.id);
+            })
+        )
+    }
+
+
     /**
      * wait - optional - if true, waits until all pieces of data arrive before first emit
      */

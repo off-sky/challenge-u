@@ -190,6 +190,7 @@ export class EditMeasurementsRootComponent implements OnInit {
           }))
         }
         this.store.dispatch(new ChallengesActions.UpdateChallengeMeasurements(result));
+        this.goBack();
       })
     console.log(result);
     

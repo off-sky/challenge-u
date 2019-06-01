@@ -12,10 +12,9 @@
         {{ option.display }}
       </mat-option>
       <div *ngIf="inputControl.valueChanges | async; let input;">
-        <mat-option *ngIf="showDefultOption$ | async" (click)="onDefaultOptionClicked(input, $event)"
-          [value]="input"
+        <mat-option *ngIf="showDefultOption$ | async"
+          [value]="{ value: input, display: input, metadata: { default: true } }"
           >
-          
               {{defaultStr}}<span>&nbsp;"</span><span >{{input}}"</span>
           
         </mat-option>

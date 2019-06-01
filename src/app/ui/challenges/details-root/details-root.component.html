@@ -7,7 +7,8 @@
     </div>
 
     <div class="y-challenge-actions">
-        <button mat-raised-button color="primary"
+        <button *ngIf="amIparticipant | async"
+                mat-raised-button color="primary"
                 (click)="openMeasurements()"
           >
           Measurements
