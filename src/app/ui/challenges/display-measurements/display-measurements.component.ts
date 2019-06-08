@@ -20,6 +20,7 @@ export class DisplayMeasurementsComponent implements OnInit {
         this.filled = this.measurements.categories;
       } else {
         this.filled = this.measurements.filled();
+        console.log({ filled: this.filled })
       }
      
     }

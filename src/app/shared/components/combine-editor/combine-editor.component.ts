@@ -1,7 +1,6 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, SimpleChanges, OnChanges } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { DragulaService } from 'ng2-dragula';
-import { filter } from 'rxjs/operators';
 import { clgu } from 'src/types';
 
 @Component({
@@ -9,15 +8,23 @@ import { clgu } from 'src/types';
   templateUrl: './combine-editor.component.html',
   styleUrls: ['./combine-editor.component.scss']
 })
-export class CombineEditorComponent implements OnInit {
+export class CombineEditorComponent implements OnChanges, OnInit {
 
   @Input() public id: string;
   @Input() public control: FormControl;
   @Input() public options: clgu.common.Option[];
 
   public bagName: string;
+  public optionsCopy: clgu.common.Option[] = [];
 
   public currExpression: clgu.common.Option[] = [];
+
+
+  /**
+   * Support mouse click operation
+   */
+  private optionToBeAddedStore = {};
+  private optionToBeRemovedStore = {};
 
 
 
@@ -34,12 +41,56 @@ export class CombineEditorComponent implements OnInit {
   }
 
 
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes.options && !!this.options) {
+      this.optionsCopy = clgu.utils.cloneDeep(this.options)
+    }
+  }
+
+
   public removeFromExpression(ind: number): void {
     this.currExpression.splice(ind, 1);
   }
 
   public onExpressionChange(): void {
     this.control.setValue(this.currExpression);
+  }
+
+  public onMouseDownExpressionOption(ind: number): void {
+    this.optionToBeRemovedStore[ind] = setTimeout(() => {
+        if (this.optionToBeRemovedStore[ind] !== undefined) {
+          clearTimeout(this.optionToBeRemovedStore[ind]);
+          delete this.optionToBeRemovedStore[ind];
+        }
+    }, 1000);
+  }
+
+  public onMouseUpExpressionOption(ind: number): void {
+      if (this.optionToBeRemovedStore[ind] !== undefined) {
+        clearTimeout(this.optionToBeRemovedStore[ind]);
+        delete this.optionToBeRemovedStore[ind];
+        this.currExpression.splice(ind, 1);
+        this.onExpressionChange();
+      }
+  }
+
+
+  public onMouseDownOption(ind: number): void {
+    this.optionToBeAddedStore[ind] = setTimeout(() => {
+        if (this.optionToBeAddedStore[ind] !== undefined) {
+          clearTimeout(this.optionToBeAddedStore[ind]);
+          delete this.optionToBeAddedStore[ind];
+        }
+    }, 1000);
+  }
+
+  public onMouseUpOption(ind: number, option: clgu.common.Option): void {
+      if (this.optionToBeAddedStore[ind] !== undefined) {
+        clearTimeout(this.optionToBeAddedStore[ind]);
+        delete this.optionToBeAddedStore[ind];
+        this.currExpression.push(option);
+        this.onExpressionChange();
+      }
   }
 
 

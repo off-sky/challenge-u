@@ -295,55 +295,7 @@ export class ChallengesDbEffects {
             );
 
 
-    /**
-     * Requirements
-     */
-    @Effect() public reloadRequirements$ = this.actions
-        .pipe(
-            ofType(ChallengesDbActions.RELOAD_CHALLENGES_REQUIREMENTS),
-            withLatestFrom(this.store.select(state => state.challenges)),
-            flatMap((values: [YAction<clgu.common.ReloadInfoRequest>, ChallengesState]) => {
-                const action = values[0];
-                const challengeId = action.payload.ids[0];
-                const challState = values[1];
 
-                if (challState.challengesRequirements[challengeId] === undefined) {
-                    return this.challengeInfoService.getChallengeRequirements(challengeId)
-                        .pipe(
-                            map(res => {
-                                const result = new clgu.common.UpdatableDataObject<clgu.challenges.db.ChallengeRequirements>(challengeId, res);
-                                return new ChallengesDbActions.ReloadChallengesRequirementsSuccess(result);
-                            }),
-                            catchError(err => {
-                                console.log(err);
-                                const result = new clgu.common.UpdatableDataObject<clgu.challenges.db.ChallengeRequirements>(challengeId, null, err);
-                                return of(new ChallengesDbActions.ReloadChallengesRequirementsFail(result));
-                            })
-                        );
-                } else {
-                    return of(new AppActions.IdleAction());
-                }
-            })
-        );
-
-    @Effect({ dispatch: false }) public startListenRequirements$ = this.actions
-            .pipe(
-                ofType(ChallengesDbActions.START_LISTEN_CHALLENGES_REQUIREMENTS),
-                map((action: YAction<string>) => {
-                    const challengeId = action.payload;
-                    if (this.requirementSubs[challengeId]) {
-                        this.requirementSubs[challengeId].unsubscribe();
-                    }
-                    this.requirementSubs[challengeId] = this.challengeInfoService.listenChallengeRequirements(challengeId)
-                        .pipe(
-                            debounceTime(200)
-                        )
-                        .subscribe(res => {
-                            const update = new clgu.common.UpdatableDataObject<clgu.challenges.db.ChallengeRequirements>(challengeId, res);
-                            this.store.dispatch(new ChallengesDbActions.ReloadChallengesRequirementsSuccess(update));
-                        });
-                })
-            );
 
     @Effect({ dispatch: false }) public stopListeningRequirements$ = this.actions
             .pipe(

@@ -56,14 +56,6 @@ export class ChallengeInfoService {
     return this.dbService.listen(`${this.PARTICIPANTS_PATH}/${challengeId}`);
   }
 
-  public getChallengeRequirements(challengeId: string): Observable<clgu.challenges.db.ChallengeRequirements> {
-    return this.dbService.readOnce(`${this.REQUIREMENTS_PATH}/${challengeId}`);
-  }
-
-  public listenChallengeRequirements(challengeId: string): Observable<clgu.challenges.db.ChallengeRequirements> {
-    return this.dbService.listen(`${this.REQUIREMENTS_PATH}/${challengeId}`);
-  }
-
   public getUserChallengeDates(challengeId: string): Observable<clgu.challenges.db.UserChallengeDayMap> {
     return  this.dbService.readOnce(`${this.USER_CHALLENGE_DAYS_PATH}/${challengeId}`);
   }

@@ -29,7 +29,7 @@ export class CreateChallengeSchedule implements iCreateChallengeSchedule {
         this._endMoment = moment(endDate);
         this._type = type;
         this._fillRule = fillRule;
-        this.emitNewSchedule();
+        // this.emitNewSchedule();
     }
 
     limitDatesTo(dd: Date[]): void {

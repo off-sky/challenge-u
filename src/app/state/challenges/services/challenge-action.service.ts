@@ -83,15 +83,10 @@ export class ChallengeActionService {
       return this.dbService.push(ref, res);
   }
 
-  public addRequirements(request: clgu.challenges.AddRequirementsRequest): Observable<any[]> {
-    const obs: Observable<any>[] = request.dates.map(ts => {
-      return this.dbService.set(`${this.REQUIREMENTS_PATH}/${request.challengeId}/${ts}`, request.requirements);
-    });
-    // obs.push(
-    //   this.dbService.push(`${this.USERS_REQUIREMENTS_PATH}/${request.userId}`, request.requirements)
-    // );
-    return combineLatest(...obs);
-  }
+  // TODO: Implement delete challenge
+  // public deleteChallenge(challengeId: string): Observable<void> {
+
+  // }
 
   private getShowUpObject(req: clgu.challenges.DayShowUpRequest): clgu.challenges.db.UserChallengeDay {
     const result = {

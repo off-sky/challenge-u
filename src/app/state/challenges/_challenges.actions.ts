@@ -4,11 +4,6 @@ import { clgu } from 'src/types';
 export class ChallengesActions {
 
 
-
-    public static readonly ADD_REQUIREMENTS = '[Challenges] ADD_REQUIREMENTS';
-    public static readonly ADD_REQUIREMENTS_SUCCESS = '[Challenges] ADD_REQUIREMENTS_SUCCESS';
-    public static readonly ADD_REQUIREMENTS_FAIL = '[Challenges] ADD_REQUIREMENTS_FAIL';
-
     public static readonly ADD_CATEGORY = '[Challenges] ADD_CATEGORY';
     public static readonly ADD_CATEGORY_SUCCESS = '[Challenges] ADD_CATEGORY_SUCCESS';
     public static readonly ADD_CATEGORY_FAIL = '[Challenges] ADD_CATEGORY_FAIL';
@@ -109,22 +104,6 @@ export class ChallengesActions {
         public readonly type = ChallengesActions.RELOAD_CATEGORIES_FAIL;
         constructor(public payload?: clgu.common.Error) {}
     };
-
-    public static readonly AddRequirements = class implements Action {
-        public readonly type = ChallengesActions.ADD_REQUIREMENTS;
-        constructor(public payload: clgu.challenges.AddRequirementsRequest) {}
-    };
-
-    public static readonly AddRequirementsSuccess = class implements Action {
-        public readonly type = ChallengesActions.ADD_REQUIREMENTS_SUCCESS;
-        constructor(public payload?: any) {}
-    };
-
-    public static readonly AddRequirementsFail = class implements Action {
-        public readonly type = ChallengesActions.ADD_REQUIREMENTS_SUCCESS;
-        constructor(public payload?: clgu.common.Error) {}
-    };
-
 
     public static readonly CreateChallenge = class implements Action {
         public readonly type = ChallengesActions.CREATE_CHALLENGE;

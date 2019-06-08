@@ -61,7 +61,7 @@
               </div>
           </div>
         
-          <div class="y-participants__days__wrap">
+          <div #daysWrap class="y-participants__days__wrap">
               <div class="y-participants__days">
                 <ng-container *ngFor="let p of challenge.participants">
                     <div *ngIf="showFormGroup.get(p.id).value" class="y-participants__days-item">
@@ -76,6 +76,22 @@
                     </div>
                 </ng-container>
               </div>
+          </div>
+
+          <div *ngIf="showScrollUpButton$ | async;" class="y-scroll-up-btn"
+               (click)="onScrollUpClicked()"
+            >
+            <button mat-mini-fab color="primary">
+              <mat-icon>keyboard_arrow_up</mat-icon>
+            </button>
+          </div>
+
+          <div *ngIf="showScrollDownButton$ | async;" class="y-scroll-up-btn"
+                (click)="onScrollDownClicked()"
+            >
+            <button mat-mini-fab color="primary">
+              <mat-icon>keyboard_arrow_down</mat-icon>
+            </button>
           </div>
        
       </div>

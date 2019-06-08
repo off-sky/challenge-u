@@ -107,6 +107,9 @@ export class CombinedMeasurement implements iMeasurement {
             })
             res.formula = formula;
         }
+        if (this.category) {
+            res.category = this.category
+        }
         return res;
 
     }

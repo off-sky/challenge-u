@@ -40,6 +40,9 @@ export class Measurement implements iMeasurement {
             value: this.formControl.value,
             order_no: this.orderNo
         } as db.MeasurementObj;
+        if (this.category) {
+            res.category = this.category
+        }
         return res;
 
     }

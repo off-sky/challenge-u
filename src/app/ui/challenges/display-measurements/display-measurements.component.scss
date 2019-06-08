@@ -1,3 +1,6 @@
+@import '../../global-styles/variables';
+
+
 .y-display-measurements__item {
     display: flex;
     justify-content: flex-start;
@@ -5,5 +8,19 @@
     &__label {
         margin-right: 20px;
         font-style: italic;
+    }
+}
+
+.y-display-measurements {
+    &__category {
+        margin-bottom: 40px;
+
+        &-name {
+            font-size: 16px;
+            border-bottom: 2px solid $blue;
+            margin-bottom: 20px;
+            padding-bottom: 8px;
+            font-weight: 500;
+        }
     }
 }

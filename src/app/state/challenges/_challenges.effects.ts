@@ -73,23 +73,6 @@ export class ChallengesEffects {
         );
 
 
-    @Effect() public addRequirements$ = this.actions
-        .pipe(
-            ofType(ChallengesActions.ADD_REQUIREMENTS),
-            switchMap((a: YAction<clgu.challenges.AddRequirementsRequest>) => {
-                const request = a.payload;
-                return this.challengeActionService.addRequirements(request)
-                    .pipe(
-                        map(res => new ChallengesActions.AddRequirementsSuccess()),
-                        catchError(err => {
-                            console.log(err);
-                            return of(new ChallengesActions.AddRequirementsFail(err));
-                        })
-                    );
-
-            })
-        );
-
 
     @Effect() public createChallenge$ = this.actions
         .pipe(

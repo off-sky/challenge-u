@@ -1,6 +1,9 @@
 <div class="y-combine-editor">
   <div data-type="options" class="y-combine-editor__stardard-signs"  [dragula]="bagName" [dragulaModel]="options">
-      <div *ngFor="let s of options" class="y-combine-editor__stardard-signs__item"
+      <div *ngFor="let s of optionsCopy; let ind = index;"
+            class="y-combine-editor__stardard-signs__item"
+            (mousedown)="onMouseDownOption(ind)"
+            (mouseup)="onMouseUpOption(ind, s)"
         >
           <ng-container *ngIf="s.displayLong !== 'Number'">
               {{ s.display }}
@@ -20,16 +23,21 @@
       [(dragulaModel)]="currExpression"
       (dragulaModelChange)="onExpressionChange()"
       >
-    <div *ngFor="let e of currExpression; let i = index;" class="y-combine-editor__field__item" >
+    <div *ngFor="let e of currExpression; let i = index;"
+          class="y-combine-editor__field__item"
+          (mousedown)="onMouseDownExpressionOption(i)"
+          (mouseup)="onMouseUpExpressionOption(i)"
+          >
       <div class="y-combine-editor__field__value">
-          <ng-container *ngIf="e.displayLong !== 'Number'">
-              {{e.display}}
+          <ng-container *ngIf="e?.displayLong !== 'Number'">
+              {{e?.display}}
           </ng-container>
-          <ng-container *ngIf="e.displayLong === 'Number'">
+          <ng-container *ngIf="e?.displayLong === 'Number'">
               <input name="numbah"
                 class="numbah-input"
                 [(ngModel)]="e.value"
                 (ngModelChange)="onExpressionChange()"
+                (mousedown)="$event.stopPropagation()"
                 type="number"
                 value="1"
                 >

@@ -5,7 +5,7 @@
   </div>
 
   <div *ngFor="let c of filled" class="y-display-measurements__category">
-      <div>
+      <div class="y-display-measurements__category-name">
         {{ c.name }}
       </div>
       <div *ngFor="let m of c.measurements" class="y-display-measurements__item">

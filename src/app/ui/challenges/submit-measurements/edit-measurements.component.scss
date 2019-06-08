@@ -1,11 +1,29 @@
+@import '../../global-styles/variables';
+
 .y-edit-measurements__item {
     margin-bottom: 10px;
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
     align-items: center;
-
+    padding: 5px 20px;
+    &.filled {
+        background-color: #3f51b56b;
+    }
     &__name {
         margin-right: 15px;
+    }
+}
+
+.y-edit-measurements {
+    &__category {
+        margin-bottom: 40px;
+    }
+    &__category-name {
+        font-size: 16px;
+        border-bottom: 2px solid $blue;
+        margin-bottom: 20px;
+        padding-bottom: 8px;
+        font-weight: 500;
     }
 }
