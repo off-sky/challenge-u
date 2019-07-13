@@ -91,45 +91,6 @@ export function challengesReducer(state: ChallengesState = challengesInitialStat
 /**
  * Reducer for db actions
  */
-/**
- * public static readonly RELOAD_CHALLENGE_BASIC_INFO = '[Challenges Db] RELOAD_CHALLENGE_BASIC_INFO';
-    public static readonly RELOAD_CHALLENGE_BASIC_INFO_SUCCESS = '[Challenges Db] RELOAD_CHALLENGE_BASIC_INFO_SUCCESS';
-    public static readonly RELOAD_CHALLENGE_BASIC_INFO_FAIL = '[Challenges Db] RELOAD_CHALLENGE_BASIC_INFO_FAIL';
-
-    public static readonly RELOAD_CHALLENGE_DATES = '[Challenges Db] RELOAD_CHALLENGE_DATES';
-    public static readonly RELOAD_CHALLENGE_DATES_SUCCESS = '[Challenges Db] RELOAD_CHALLENGE_DATES_SUCCESS';
-    public static readonly RELOAD_CHALLENGE_DATES_FAIL = '[Challenges Db] RELOAD_CHALLENGE_DATES_FAIL';
-
-    public static readonly RELOAD_CHALLENGE_PARTICIPANTS = '[Challenges Db] RELOAD_CHALLENGE_PARTICIPANTS';
-    public static readonly RELOAD_CHALLENGE_PARTICIPANTS_SUCCESS = '[Challenges Db] RELOAD_CHALLENGE_PARTICIPANTS_SUCCESS';
-    public static readonly RELOAD_CHALLENGE_PARTICIPANTS_FAIL = '[Challenges Db] RELOAD_CHALLENGE_PARTICIPANTS_FAIL';
-    public static readonly START_LISTEN_CHALLENGE_PARTICIPANTS = '[Challenges Db] START_LISTEN_CHALLENGE_PARTICIPANTS';
-    public static readonly STOP_LISTEN_CHALLENGE_PARTICIPANTS = '[Challenges Db] STOP_LISTEN_CHALLENGE_PARTICIPANTS';
-
-    public static readonly RELOAD_USER_CHALLENGE_DATES = '[Challenges Db] RELOAD_USER_CHALLENGE_DATES';
-    public static readonly RELOAD_USER_CHALLENGE_DATES_SUCCESS = '[Challenges Db] RELOAD_USER_CHALLENGE_DATES_SUCCESS';
-    public static readonly RELOAD_USER_CHALLENGE_DATES_FAIL = '[Challenges Db] RELOAD_USER_CHALLENGE_DATES_FAIL';
-    public static readonly START_LISTEN_USER_CHALLENGE_DATES = '[Challenges Db] START_LISTEN_USER_CHALLENGE_DATES';
-    public static readonly STOP_LISTEN_USER_CHALLENGE_DATES = '[Challenges Db] STOP_LISTEN_USER_CHALLENGE_DATES';
-
-    public static readonly RELOAD_USER_CHALLENGES = '[Challenges Db] RELOAD_USER_CHALLENGES';
-    public static readonly RELOAD_USER_CHALLENGES_SUCCESS = '[Challenges Db] RELOAD_USER_CHALLENGES_SUCCESS';
-    public static readonly RELOAD_USER_CHALLENGES_FAIL = '[Challenges Db] RELOAD_USER_CHALLENGES_FAIL';
-    public static readonly START_LISTEN_USER_CHALLENGES = '[Challenges Db] START_LISTEN_USER_CHALLENGES';
-    public static readonly STOP_LISTEN_USER_CHALLENGES = '[Challenges Db] STOP_LISTEN_USER_CHALLENGES';
-
-    public static readonly RELOAD_CHALLENGES_REQUIREMENTS = '[Challenges Db] RELOAD_CHALLENGES_REQUIREMENTS';
-    public static readonly RELOAD_CHALLENGES_REQUIREMENTS_SUCCESS = '[Challenges Db] RELOAD_CHALLENGES_REQUIREMENTS_SUCCESS';
-    public static readonly RELOAD_CHALLENGES_REQUIREMENTS_FAIL = '[Challenges Db] RELOAD_CHALLENGES_REQUIREMENTS_FAIL';
-    public static readonly START_LISTEN_CHALLENGES_REQUIREMENTS = '[Challenges Db] START_LISTEN_CHALLENGES_REQUIREMENTS';
-    public static readonly STOP_LISTEN_CHALLENGES_REQUIREMENTS = '[Challenges Db] STOP_LISTEN_CHALLENGES_REQUIREMENTS';
-
-    public static readonly RELOAD_CHALLENGES_MEASUREMENTS = '[Challenges Db] RELOAD_CHALLENGES_MEASUREMENTS';
-    public static readonly RELOAD_CHALLENGES_MEASUREMENTS_SUCCESS = '[Challenges Db] RELOAD_CHALLENGES_MEASUREMENTS_SUCCESS';
-    public static readonly RELOAD_CHALLENGES_MEASUREMENTS_FAIL = '[Challenges Db] RELOAD_CHALLENGES_MEASUREMENTS_FAIL';
-    public static readonly START_LISTEN_CHALLENGES_MEASUREMENTS = '[Challenges Db] START_LISTEN_CHALLENGES_MEASUREMENTS';
-    public static readonly STOP_LISTEN_CHALLENGES_MEASUREMENTS = '[Challenges Db] STOP_LISTEN_CHALLENGES_MEASUREMENTS';
- */
 function challengesDbReducer(state: ChallengesState, action: YAction<any>): ChallengesState {
     const newState = clgu.utils.cloneDeep(state) as ChallengesState;
 
@@ -230,24 +191,6 @@ function challengesDbReducer(state: ChallengesState, action: YAction<any>): Chal
             newState.usersChallenges[payload.id] = payload;
         }
 
-        /**
-         * Requirements
-         */
-        case ChallengesDbActions.RELOAD_CHALLENGES_REQUIREMENTS: {
-            const payload = action.payload as clgu.common.ReloadInfoRequest;
-            if (payload.force) {
-                payload.ids.forEach(id => {
-                    delete newState.challengesRequirements[id];
-                });
-            }
-            return newState;
-        }
-
-        case ChallengesDbActions.RELOAD_CHALLENGES_REQUIREMENTS_SUCCESS:
-        case ChallengesDbActions.RELOAD_CHALLENGES_REQUIREMENTS_FAIL: {
-            const payload = action.payload as clgu.common.UpdatableDataObject<clgu.challenges.db.ChallengeRequirements>;
-            newState.challengesRequirements[payload.id] = payload;
-        }
 
         /**
          * Measurements

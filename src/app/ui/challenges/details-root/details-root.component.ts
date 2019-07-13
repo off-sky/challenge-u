@@ -62,6 +62,10 @@ export class DetailsRootComponent implements AfterViewInit, OnInit {
       this.router.navigate(['home', 'challenges', 'details', this.route.snapshot.params.id, 'measurements']);
   }
 
+  public goToChallengeList(): void {
+    this.router.navigate(['home', 'challenges', 'list']);
+  }
+
   public onScrollDayIntoView(el: ElementRef): void {
     if (el) {
       const div = el.nativeElement as HTMLElement;

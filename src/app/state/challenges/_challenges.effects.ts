@@ -175,7 +175,6 @@ export class ChallengesEffects {
                     this.store.dispatch(new ChallengesDbActions.ReloadChallengeDates({ ids: [ challengeId]}));
                     this.store.dispatch(new ChallengesDbActions.StartListenUserChallengeDates(challengeId));
                     this.store.dispatch(new ChallengesDbActions.StartListenChallengeParticipants(challengeId));
-                    this.store.dispatch(new ChallengesDbActions.StartListenChallengesRequirements(challengeId));
 
                     return ChallengesSelectors.challengeDetails$(this.store, challengeId)
                         .pipe(

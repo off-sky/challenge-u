@@ -2,8 +2,13 @@
 
   <!-- Title -->
   <div class="y-title-1">
-    <div class="challenge-name">
-        {{ challenge?.displayName }}
+    <div class="y-title-left">
+        <div class="y-back-btn__wrap" (click)="goToChallengeList()">
+            <mat-icon>keyboard_arrow_left</mat-icon>
+        </div>
+        <div class="challenge-name">
+            {{ challenge?.displayName }}
+        </div>
     </div>
 
     <div class="y-challenge-actions">

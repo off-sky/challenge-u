@@ -26,9 +26,6 @@ export interface ChallengesState {
             }
         };
     };
-    challengesRequirements: {
-        [challengeId: string]: clgu.common.UpdatableDataObject<{ [dateId: string]: clgu.challenges.db.Requirements }>;
-    };
     challengesCategories: {
         [challengeId: string]: clgu.common.UpdatableDataObject<{ [id: string]: string}>;
     };
@@ -67,7 +64,6 @@ export const challengesInitialState: ChallengesState = {
     challengeBasicInfo: {},
     challengesDates: {},
     challengesParticipants: {},
-    challengesRequirements: {},
     userChallengeDates: {},
     usersChallenges: {},
     challengesMeasurements: {},

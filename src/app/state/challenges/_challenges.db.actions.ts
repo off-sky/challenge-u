@@ -32,12 +32,6 @@ export class ChallengesDbActions {
     public static readonly START_LISTEN_USER_CHALLENGES = '[Challenges Db] START_LISTEN_USER_CHALLENGES';
     public static readonly STOP_LISTEN_USER_CHALLENGES = '[Challenges Db] STOP_LISTEN_USER_CHALLENGES';
 
-    public static readonly RELOAD_CHALLENGES_REQUIREMENTS = '[Challenges Db] RELOAD_CHALLENGES_REQUIREMENTS';
-    public static readonly RELOAD_CHALLENGES_REQUIREMENTS_SUCCESS = '[Challenges Db] RELOAD_CHALLENGES_REQUIREMENTS_SUCCESS';
-    public static readonly RELOAD_CHALLENGES_REQUIREMENTS_FAIL = '[Challenges Db] RELOAD_CHALLENGES_REQUIREMENTS_FAIL';
-    public static readonly START_LISTEN_CHALLENGES_REQUIREMENTS = '[Challenges Db] START_LISTEN_CHALLENGES_REQUIREMENTS';
-    public static readonly STOP_LISTEN_CHALLENGES_REQUIREMENTS = '[Challenges Db] STOP_LISTEN_CHALLENGES_REQUIREMENTS';
-
     public static readonly RELOAD_CHALLENGES_MEASUREMENTS = '[Challenges Db] RELOAD_CHALLENGES_MEASUREMENTS';
     public static readonly RELOAD_CHALLENGES_MEASUREMENTS_SUCCESS = '[Challenges Db] RELOAD_CHALLENGES_MEASUREMENTS_SUCCESS';
     public static readonly RELOAD_CHALLENGES_MEASUREMENTS_FAIL = '[Challenges Db] RELOAD_CHALLENGES_MEASUREMENTS_FAIL';
@@ -164,33 +158,6 @@ export class ChallengesDbActions {
         constructor(public payload?: any) {}
     };
 
-    /**
-     * Requirements
-     */
-    public static readonly ReloadChallengesRequirements = class implements Action {
-        public readonly type = ChallengesDbActions.RELOAD_CHALLENGES_REQUIREMENTS;
-        constructor(public payload: clgu.common.ReloadInfoRequest) {}
-    };
-
-    public static readonly ReloadChallengesRequirementsSuccess = class implements Action {
-        public readonly type = ChallengesDbActions.RELOAD_CHALLENGES_REQUIREMENTS_SUCCESS;
-        constructor(public payload: clgu.common.UpdatableDataObject<clgu.challenges.db.ChallengeRequirements>) {}
-    };
-
-    public static readonly ReloadChallengesRequirementsFail = class implements Action {
-        public readonly type = ChallengesDbActions.RELOAD_CHALLENGES_REQUIREMENTS_FAIL;
-        constructor(public payload: clgu.common.UpdatableDataObject<clgu.challenges.db.ChallengeRequirements>) {}
-    };
-
-    public static readonly StartListenChallengesRequirements = class implements Action {
-        public readonly type = ChallengesDbActions.START_LISTEN_CHALLENGES_REQUIREMENTS;
-        constructor(public payload: string) {}
-    };
-
-    public static readonly StopListenChallengesRequirements = class implements Action {
-        public readonly type = ChallengesDbActions.STOP_LISTEN_CHALLENGES_REQUIREMENTS;
-        constructor(public payload?: any) {}
-    };
 
     /**
      * Measurements

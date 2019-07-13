@@ -297,18 +297,6 @@ export class ChallengesDbEffects {
 
 
 
-    @Effect({ dispatch: false }) public stopListeningRequirements$ = this.actions
-            .pipe(
-                ofType(ChallengesDbActions.STOP_LISTEN_CHALLENGES_REQUIREMENTS),
-                map((action: YAction<string>) => {
-                    const challengeId = action.payload;
-                    if (this.requirementSubs[challengeId]) {
-                        this.requirementSubs[challengeId].unsubscribe();
-                        delete this.requirementSubs[challengeId];
-                    }
-                })
-            );
-
 
     /**
      * Measurements

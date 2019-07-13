@@ -7,6 +7,17 @@
     align-items: center;
 }
 
+.y-title-left {
+    display: flex;
+}
+
+.y-back-btn__wrap {
+    margin-right: 10px;
+    cursor: pointer;
+    position: relative;
+    bottom: -5px;
+}
+
 .challenge-name {
     margin-right: 20px;
 }

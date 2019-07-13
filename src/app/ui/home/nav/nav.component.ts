@@ -1,8 +1,9 @@
 import { Component, OnInit, Input, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
 import { ScreenSizeService } from 'src/app/core/screen-size/screen-size.service';
-import { ScreenSizes } from 'src/app/core/screen-size/interfaces';
+import { ScreenSizes, ScreenSizeType } from 'src/app/core/screen-size/interfaces';
 import { Observable, fromEvent, Subject } from 'rxjs';
 import { RouterService } from 'src/app/core/services/router.service';
+import { take } from 'rxjs/operators';
 
 @Component({
   selector: 'y-nav',
@@ -35,6 +36,8 @@ export class NavComponent implements AfterViewInit, OnInit {
 
 
   @Input() public opened: boolean;
+  public currScreenSize: ScreenSizeType;
+  public ScreenSizes = ScreenSizes;
 
   public isRouteLoading$: Observable<boolean>;
   @ViewChild('content') private content: ElementRef;
@@ -65,7 +68,7 @@ export class NavComponent implements AfterViewInit, OnInit {
     this.isRouteLoading$ = this.routerService.isLoading$();
     this.screenSizeService.screenSize$()
       .subscribe(size => {
-        console.log({ size })
+        this.currScreenSize = size;
         if (size === ScreenSizes.DESKTOP) {
           this.opened = true;
         }
@@ -73,6 +76,12 @@ export class NavComponent implements AfterViewInit, OnInit {
           this.opened = false;
         }
       })
+  }
+
+  public onMenuClick(): void {
+    if (this.currScreenSize === ScreenSizes.MOBILE) {
+      this.opened = false;
+    }
   }
 
 }

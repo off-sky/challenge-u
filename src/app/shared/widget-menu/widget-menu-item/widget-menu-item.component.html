@@ -1,0 +1,9 @@
+<div class="y-widget-menu-item">
+  <div class="y-widget-menu-item__trigger">
+      <ng-content select="y-widget-menu-trigger"></ng-content>
+  </div>
+  <div *ngIf="isOpen$ | async" class="y-widget-menu-item__contents">
+      <ng-content select="y-widget-menu-contents"></ng-content>
+  </div>
+ 
+</div>

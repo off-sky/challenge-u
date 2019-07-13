@@ -1,12 +1,14 @@
 <div class="y-nav">
     <div class="y-nav__menu"
          [ngClass]="{
-             opened: opened
+             opened: opened,
+             mobile: currScreenSize === ScreenSizes.MOBILE
          }"
         >
         <div class="y-nav__menu__item"
              [routerLink]="['/home', 'challenges']"
              routerLinkActive="active"
+             (click)="onMenuClick()"
             >
             Challenges
         </div>
@@ -14,6 +16,7 @@
         <div class="y-nav__menu__item"
              [routerLink]="['/home', 'users']"
              routerLinkActive="active"
+             (click)="onMenuClick()"
             >
             Friends
         </div>

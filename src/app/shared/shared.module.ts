@@ -14,6 +14,7 @@ import { StepsItemComponent } from './components/steps-item/steps-item.component
 import { AutocompleteDefOptionComponent } from './components/autocomplete-def-option/autocomplete-def-option.component';
 import { CombineEditorComponent } from './components/combine-editor/combine-editor.component';
 import { DragulaModule } from 'ng2-dragula';
+import { WidgetMenuModule } from './widget-menu/widget-menu.module';
 
 @NgModule({
   declarations: [
@@ -34,6 +35,7 @@ import { DragulaModule } from 'ng2-dragula';
     MaterialModule,
     ReactiveFormsModule,
     DragulaModule.forRoot(),
+    WidgetMenuModule
   ],
   exports: [
     AutocompleteDefOptionComponent,
@@ -48,7 +50,8 @@ import { DragulaModule } from 'ng2-dragula';
     SectionSpinnerComponent,
     StepsBarComponent,
     StepsItemComponent,
-    UserSelectComponent
+    UserSelectComponent,
+    WidgetMenuModule
   ]
 })
 export class SharedModule { }

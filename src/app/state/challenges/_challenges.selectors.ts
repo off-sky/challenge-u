@@ -202,13 +202,6 @@ export class ChallengesSelectors {
             )
     }
 
-    public static readonly challengeRequirements$ = function(store: Store<AppState>, challengeId): Observable<clgu.challenges.db.ChallengeRequirements> {
-        return store.select(state => state.challenges.challengesRequirements[challengeId])
-            .pipe(
-                clgu.common.untilDataObjectChanged(),
-                map(udo => !!udo ? udo.data : null)
-            )
-    }
 
     public static readonly challengeParticipants$ = function(store: Store<AppState>, challengeId: string): Observable<clgu.challenges.db.ChallengeParticipants> {
         return store.select(state => state.challenges.challengesParticipants[challengeId])
