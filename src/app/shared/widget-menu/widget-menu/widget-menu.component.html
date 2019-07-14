@@ -3,3 +3,19 @@
         <ng-content select="y-widget-menu-item"></ng-content>
     </div>
 </div>
+
+ <div class="y-widget-menu__contents"
+      [ngClass]="{
+          'open': isOpen$ | async,
+          'mobile': (screenSize$ | async) === ScreenSizes.MOBILE
+      }"
+    >
+    <ng-container *ngIf="template" [ngTemplateOutlet]="template | async"></ng-container>
+</div>
+
+<div *ngIf="isOpen$ | async"
+     class="y-widget-menu__page-mask"
+     (click)="closeAll()"
+    >
+</div>
+

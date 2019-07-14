@@ -1,7 +1,8 @@
-import { Component, OnInit, AfterContentInit, ContentChildren, QueryList } from '@angular/core';
+import { Component, OnInit, AfterContentInit, ContentChildren, QueryList, ElementRef } from '@angular/core';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { WidgetMenuTriggerComponent } from '../widget-menu-trigger/widget-menu-trigger.component';
-import { startWith, map, switchMap, shareReplay, tap } from 'rxjs/operators';
+import { startWith, map, switchMap, shareReplay, tap, filter, take } from 'rxjs/operators';
+import { WidgetMenuContentsComponent } from '../widget-menu-contents/widget-menu-contents.component';
 
 @Component({
   selector: 'y-widget-menu-item',
@@ -13,6 +14,7 @@ export class WidgetMenuItemComponent implements AfterContentInit, OnInit {
   public isOpen$: Observable<boolean>;
   private openChangeSub: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   @ContentChildren(WidgetMenuTriggerComponent) private trigger: QueryList<WidgetMenuTriggerComponent>;
+  @ContentChildren(WidgetMenuContentsComponent) private contents: QueryList<ElementRef>;
 
   constructor() { }
 
@@ -33,6 +35,24 @@ export class WidgetMenuItemComponent implements AfterContentInit, OnInit {
 
   public openedChanged(): Observable<boolean> {
     return this.openChangeSub.asObservable()
+  }
+
+  public showMyContents(): Observable<any> {
+    return this.openedChanged()
+      .pipe(
+        filter(open => open),
+        switchMap(() => {
+          console.log('About to emit component')
+          return this.contents.changes
+            .pipe(
+              startWith(this.contents),
+              filter(contents => !!contents),
+              switchMap((contents: QueryList<WidgetMenuContentsComponent>) => contents.first.templateSub),
+              filter(t => !!t),
+              take(1)
+            )
+        })
+      )
   }
 
 

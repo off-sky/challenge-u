@@ -64,15 +64,27 @@
     </div>
 </div>
 
-<!-- 
-<div *ngIf="hasRequirements$ | async" class="y-requirements y-section">
-    <div class="y-title-2">
-        Requirements <span *ngIf="isActive | async">(optional)</span>
-    </div>
-    <y-submit-requirements [requirements]="activity?.requirements"
-                            [readOnly]="!(isActive | async)"
-                            [supressNegative]="activity.isFuture"
-      >
-    </y-submit-requirements>
-</div> -->
 </ng-container>
+
+<!-- TODO: Uncomment when ready -->
+<!-- <y-widget-menu>
+
+    <y-widget-menu-item>
+      <y-widget-menu-trigger>
+        <mat-icon>alarm</mat-icon>
+      </y-widget-menu-trigger>
+      <y-widget-menu-contents>
+        <img src="/assets/timer.jpeg">
+      </y-widget-menu-contents>
+    </y-widget-menu-item>
+  
+    <y-widget-menu-item>
+      <y-widget-menu-trigger>
+        <mat-icon>audiotrack</mat-icon>
+      </y-widget-menu-trigger>
+      <y-widget-menu-contents>
+        <img src="/assets/player.jpg" style="width: 100%;">
+      </y-widget-menu-contents>
+    </y-widget-menu-item>
+    
+  </y-widget-menu> -->

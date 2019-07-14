@@ -1,0 +1,24 @@
+@import '../../../ui/global-styles/variables.scss';
+
+.y-widget-menu-trigger {
+    background-color: white;
+    color: $blue;
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+    border: 1px solid $blue;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition-property: height, width; 
+    transition-duration: 0.2s;
+    transition-timing-function: ease-in-out;
+    z-index: 13;
+    &.open {
+        background-color: $blue;
+        color: white;
+        width: 50px;
+        height: 50px;
+    }
+}

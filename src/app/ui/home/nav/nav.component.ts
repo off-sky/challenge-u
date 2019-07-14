@@ -78,6 +78,10 @@ export class NavComponent implements AfterViewInit, OnInit {
       })
   }
 
+  public toggle(): void {
+    this.opened = !this.opened;
+  }
+
   public onMenuClick(): void {
     if (this.currScreenSize === ScreenSizes.MOBILE) {
       this.opened = false;

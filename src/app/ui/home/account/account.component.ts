@@ -29,7 +29,7 @@ export class AccountComponent implements OnInit {
   public onMenuToggled(): void {
     this.menuOpened = !this.menuOpened;
     if (this.navCmp) {
-      this.navCmp.opened = this.menuOpened;
+      this.navCmp.toggle();
     }
   }
 
