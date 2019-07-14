@@ -9,10 +9,12 @@ import { Observable, BehaviorSubject } from 'rxjs';
 export class WidgetMenuTriggerComponent implements OnInit {
 
   private openSub: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  public _isOpen: Observable<boolean>;
 
   constructor() { }
 
   ngOnInit() {
+    this._isOpen = this.isOpen();
   }
 
   public isOpen(): Observable<boolean> {
