@@ -13,6 +13,7 @@ import { UserActions } from '../users/_users.actions';
 import { ChallengesActions } from '../challenges/_challenges.actions';
 import { ChallengesDbActions } from '../challenges/_challenges.db.actions';
 import { YAction } from 'src/types/store';
+import { WidgetActions } from '../widgets/_widget.actions';
 
 @Injectable()
 export class AuthEffects {
@@ -48,6 +49,7 @@ export class AuthEffects {
             ofType(AuthActions.CHECK_AUTH_AUTHED),
             switchMap((action: YAction<clgu.users.User>) => {
                 this.store.dispatch(new UserActions.GetUsers());
+                this.store.dispatch(new WidgetActions.FetchAllWidgets());
                 return of(new ChallengesDbActions.StartListenUserChallenges(action.payload.id));
             })
         )

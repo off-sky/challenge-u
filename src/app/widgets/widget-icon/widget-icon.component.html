@@ -1,0 +1,9 @@
+<mat-icon *ngIf="isStandard">
+  {{ widget.iconUrl}}
+</mat-icon>
+
+<div *ngIf="!isStandard" [ngStyle]="{
+  backround: 'url(' + widget.iconUrl + ') center center no-repeat'
+}"
+>
+</div>

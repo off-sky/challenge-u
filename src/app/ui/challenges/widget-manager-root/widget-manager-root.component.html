@@ -1,0 +1,48 @@
+
+ <!-- Header -->
+ <div class="m-edit-measurements-root__header">
+  <div class="y-section-header">
+    <div class="y-section-header__left" (click)="goBack()">
+        <div class="y-section-header__back-btn__wrap">
+            <mat-icon>keyboard_arrow_left</mat-icon>
+        </div>
+        <div class="y-section-header__title__wrap">
+          Manage Widgets
+        </div>
+    </div>
+  </div>
+</div>
+
+<div class="y-widget-manager-root__instructions">
+  Check the widgets you need in your challenge
+</div>
+
+<!-- Body -->
+<div class="y-widget-manager-root__widgets">
+  <div *ngFor="let widget of list$ | async" class="y-widget-manager-root__item">
+    <div class="y-widget-manager-root__item__checkbox">
+        <mat-checkbox [formControl]="widget.control">
+        </mat-checkbox>
+      </div>
+      <div class="y-widget-manager-root__item__name">
+        {{ widget.name }}
+      </div>
+  </div>
+</div>
+
+
+ <!-- Action bar -->
+ <div class="bottom-bar">
+  <button mat-raised-button
+      *ngIf="activeStep !== 0"
+      (click)="goBack()"
+      >
+      Cancel
+  </button>
+  <button mat-raised-button color="primary"
+          (click)="onSave()"
+      >
+      Save
+  </button>
+</div>
+

@@ -6,6 +6,8 @@ import { ChallengeDetailsResolverService } from './resolvers/challenge-details.r
 import { ChallengeDayDetailsComponent } from './challenge-day-details/challenge-day-details.component';
 import { EditChallengeRootComponent } from './edit-challenge-root/edit-challenge-root.component';
 import { EditMeasurementsRootComponent } from './edit-measurements-root/edit-measurements-root.component';
+import { WidgetManagerRootComponent } from './widget-manager-root/widget-manager-root.component';
+import { ChallengeUserWidgetResolver } from './resolvers/challenge-user-widgets-resolver.service';
 
 export const challengesRoutes: Routes = [
     {
@@ -27,7 +29,8 @@ export const challengesRoutes: Routes = [
             {
                 path: 'details/:id',
                 resolve: {
-                    challenge: ChallengeDetailsResolverService
+                    challenge: ChallengeDetailsResolverService,
+                    widgets: ChallengeUserWidgetResolver
                 },
                 children: [
                     {
@@ -46,6 +49,10 @@ export const challengesRoutes: Routes = [
                     {
                         path: 'measurements',
                         component: EditMeasurementsRootComponent
+                    },
+                    {
+                        path: 'widgets',
+                        component: WidgetManagerRootComponent
                     },
                     {
                         path: 'day/:userId/:dayId',

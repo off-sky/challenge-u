@@ -14,13 +14,11 @@ export class ChallengeInfoService {
   private CHALLENGES_PATH = 'challenges';
   private COMMON_CHALLENGE_DAYS_PATH = 'challenges_dates';
   private USER_CHALLENGE_DAYS_PATH = 'challenges_users_dates';
-  private USER_REQUIREMENT_PATH = 'users_requirements';
   private PARTICIPANTS_PATH = 'challenges_participants';
   private MEASUREMENTS_PATH = 'challenges_measurements';
   private CHALLENGES_CATEGORIES_PATH = 'challenges_categories';
   private PRESETS_PATH = 'challenges_measurements_presets';
-  private REQUIREMENTS_PATH = 'challenges_days_requirements';
-
+  
   constructor(
     private dbService: DatabaseService
   ) { }

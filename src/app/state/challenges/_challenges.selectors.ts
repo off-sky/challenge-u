@@ -37,6 +37,18 @@ export class ChallengesSelectors {
     }
 
 
+    public static readonly challengeAuthor$ = function(store: Store<AppState>, challengeId: string): Observable<clgu.users.User> {
+        return ChallengesSelectors.basicChallengeInfo$(store, challengeId)
+            .pipe(
+                switchMap((basicInfo) => {
+                   return  UsersSelectors.userProfiles$(store, [basicInfo.owner_id])
+                }),
+                map(users => users[0]),
+                map(dbUser => new clgu.users.models.User(dbUser))
+            );
+    }
+
+
     public static readonly isChallengeMine$ = function(store: Store<AppState>, challengeId: string): Observable<boolean> {
         return combineLatest(
             ChallengesSelectors.basicChallengeInfo$(store, challengeId),

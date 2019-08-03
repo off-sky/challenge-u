@@ -95,6 +95,11 @@ export class DetailsRootComponent implements AfterViewInit, OnInit {
   }
 
 
+  public openWidgetManager(): void {
+    this.router.navigate(['home', 'challenges', 'details', this.route.snapshot.params.id, 'widgets']);
+  }
+
+
   private showScrollUpButton(): Observable<boolean> {
       return this.pageService.contentScrolledY()
         .pipe(

@@ -23,6 +23,11 @@
           >
           Edit
         </button>
+        <button *ngIf="amIparticipant | async" mat-raised-button color="primary"
+                (click)="openWidgetManager()"
+          >
+          Widgets
+        </button>
     </div>
   </div>
 

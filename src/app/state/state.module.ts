@@ -11,6 +11,7 @@ import { appReducer, appMetaReducers } from './app.reducer';
 import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
 import { ChallengesModule } from './challenges/challenges.module';
+import { WidgetModule } from './widgets/widgets.module';
 
 @NgModule({
   declarations: [],
@@ -28,6 +29,7 @@ import { ChallengesModule } from './challenges/challenges.module';
     AuthModule,
     ChallengesModule,
     UsersModule,
+    WidgetModule,
 
     !environment.production ? StoreDevtoolsModule.instrument() : []
   ]

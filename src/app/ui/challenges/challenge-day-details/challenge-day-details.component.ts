@@ -5,9 +5,11 @@ import { AppState } from 'src/app/state/app.state';
 import { Store } from '@ngrx/store';
 import { ChallengesActions } from 'src/app/state/challenges/_challenges.actions';
 import { Observable, combineLatest, of } from 'rxjs';
-import { map, filter, take, shareReplay, tap } from 'rxjs/operators';
+import { map, filter, take, shareReplay, tap, switchMap } from 'rxjs/operators';
 import { ChallengesSelectors } from 'src/app/state/challenges/_challenges.selectors';
 import { ChallengesDbActions } from 'src/app/state/challenges/_challenges.db.actions';
+import { AuthSelectors } from 'src/app/state/auth/_auth.selectors';
+import { WidgetSelectors } from 'src/app/state/widgets/_widget.selectors';
 
 @Component({
   selector: 'y-challenge-day-details',
@@ -23,6 +25,7 @@ export class ChallengeDayDetailsComponent implements OnInit {
   public isMine: Observable<boolean>;
   public showUpText$: Observable<string>;
   public cheerUpText$: Observable<string>;
+  public widgets$: Observable<clgu.widgets.Widget[]>;
   public hasMeasurements$: Observable<boolean>;
   public hasRequirements$: Observable<boolean>;
 
@@ -91,6 +94,14 @@ export class ChallengeDayDetailsComponent implements OnInit {
             return !!activity && !!activity.measurements && activity.measurements.measurements().length > 0;
           })
         );
+
+
+      this.widgets$ = AuthSelectors.currentUser$(this.store)
+          .pipe(
+            switchMap(user => {
+              return WidgetSelectors.widgetsByChallengeByUser$(this.store, this.challengeId, user.id);
+            })
+          )
 
  
 

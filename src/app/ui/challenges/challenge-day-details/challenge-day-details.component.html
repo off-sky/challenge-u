@@ -67,24 +67,15 @@
 </ng-container>
 
 <!-- TODO: Uncomment when ready -->
-<!-- <y-widget-menu>
+<y-widget-menu>
 
-    <y-widget-menu-item>
+    <y-widget-menu-item *ngFor="let widget of widgets$ | async">
       <y-widget-menu-trigger>
-        <mat-icon>alarm</mat-icon>
+        <y-widget-icon [widget]="widget"></y-widget-icon>
       </y-widget-menu-trigger>
       <y-widget-menu-contents>
-        <img src="/assets/timer.jpeg">
-      </y-widget-menu-contents>
-    </y-widget-menu-item>
-  
-    <y-widget-menu-item>
-      <y-widget-menu-trigger>
-        <mat-icon>audiotrack</mat-icon>
-      </y-widget-menu-trigger>
-      <y-widget-menu-contents>
-        <img src="/assets/player.jpg" style="width: 100%;">
+        <y-widget-renderer [widget]="widget"></y-widget-renderer>
       </y-widget-menu-contents>
     </y-widget-menu-item>
     
-  </y-widget-menu> -->
+  </y-widget-menu>

@@ -17,7 +17,6 @@ export class ChallengeActionService {
   private MEASUREMENTS_PATH = 'challenges_measurements';
   private PARTICIPANTS_PATH = 'challenges_participants';
   private PRESETS_PATH = 'challenges_measurements_presets';
-  private REQUIREMENTS_PATH = 'challenges_days_requirements';
 
   constructor(
     private dbService: DatabaseService

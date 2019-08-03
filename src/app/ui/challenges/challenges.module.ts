@@ -21,6 +21,9 @@ import { EditChallengeParticipantsComponent } from './edit-challenge-participant
 import { EditMeasurementsRootComponent } from './edit-measurements-root/edit-measurements-root.component';
 import { EditMeasurementsScheduleComponent } from './edit-measurements-schedule/edit-measurements-schedule.component';
 import { EditMeasPresetPopupComponent } from './edit-meas-preset-popup/edit-meas-preset-popup.component';
+import { WidgetManagerRootComponent } from './widget-manager-root/widget-manager-root.component';
+import { ChallengeUserWidgetResolver } from './resolvers/challenge-user-widgets-resolver.service';
+import { WidgetsModule } from 'src/app/widgets/widgets.module';
 
 @NgModule({
   declarations: [
@@ -40,16 +43,19 @@ import { EditMeasPresetPopupComponent } from './edit-meas-preset-popup/edit-meas
     EditChallengeParticipantsComponent,
     EditMeasurementsRootComponent,
     EditMeasurementsScheduleComponent,
-    EditMeasPresetPopupComponent
+    EditMeasPresetPopupComponent,
+    WidgetManagerRootComponent
   ],
   providers: [
-    ChallengeDetailsResolverService
+    ChallengeDetailsResolverService,
+    ChallengeUserWidgetResolver
   ],
   imports: [
     CommonModule,
     MaterialModule,
     SharedModule,
-    RouterModule
+    RouterModule,
+    WidgetsModule
   ],
   entryComponents: [
     EditMeasPresetPopupComponent
