@@ -75,6 +75,65 @@ export class WidgetEffects {
                     })))
                 )
             })
-        )
+        );
+
+    
+    @Effect() public fetchDataByWidgetsByChallengeByUser$ = this.actions$
+        .pipe(
+            ofType(WidgetActions.FETCH_CHALLENGE_USER_WIDGET_DATA),
+            switchMap((action: YAction<clgu.widgets.ChallengeUserWidgetData<any>>) => {
+                const p = action.payload;
+
+                return this.widgetDbService.fetchDataByWidgetByChallengeByUser(
+                    p.challengeId,
+                    p.userId,
+                    p.widgetId
+                )
+                .pipe(
+                    map(res => new WidgetActions.FetchChallengeUserWidgetDataSuccess({
+                        challengeId: p.challengeId,
+                        userId: p.userId,
+                        widgetId: p.widgetId,
+                        data: res
+                    })),
+                    catchError(err => of(new WidgetActions.UpdateChallengeUserWidgetDataFail({
+                        challengeId: p.challengeId,
+                        userId: p.userId,
+                        widgetId: p.widgetId,
+                        data: err
+                    })))
+                )
+            })
+        );
+
+
+    @Effect() public updateDataByWidgetsByChallengeByUser$ = this.actions$
+        .pipe(
+            ofType(WidgetActions.UPDATE_CHALLENGE_USER_WIDGET_DATA),
+            switchMap((action: YAction<clgu.widgets.ChallengeUserWidgetData<any>>) => {
+                const p = action.payload;
+
+                return this.widgetDbService.updateDataByWidgetByChallengeByUser(
+                    p.challengeId,
+                    p.userId,
+                    p.widgetId,
+                    p.data
+                )
+                .pipe(
+                    map(res => new WidgetActions.UpdateChallengeUserWidgetDataSuccess({
+                        challengeId: p.challengeId,
+                        userId: p.userId,
+                        widgetId: p.widgetId,
+                        data: res
+                    })),
+                    catchError(err => of(new WidgetActions.UpdateChallengeUserWidgetDataFail({
+                        challengeId: p.challengeId,
+                        userId: p.userId,
+                        widgetId: p.widgetId,
+                        data: err
+                    })))
+                )
+            })
+        );
 
 }

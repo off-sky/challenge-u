@@ -4,15 +4,19 @@ import { TimerComponent } from './timer/timer.component';
 import { WidgetRendererComponent } from './widget-renderer/widget-renderer.component';
 import { WidgetIconComponent } from './widget-icon/widget-icon.component';
 import { MaterialModule } from '../ui/material/material.module';
+import { RangeInputComponent } from './shared/range-input/range-input.component';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
     TimerComponent,
     WidgetRendererComponent,
-    WidgetIconComponent
+    WidgetIconComponent,
+    RangeInputComponent
   ],
   imports: [
     CommonModule,
+    ReactiveFormsModule,
     MaterialModule
   ],
   exports: [

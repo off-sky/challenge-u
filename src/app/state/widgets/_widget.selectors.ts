@@ -43,14 +43,14 @@ export class WidgetSelectors {
 
 
     public static readonly widgetData$ = (store: Store<AppState>,
-                                          widgetId: string,
                                           challengeId: string,
-                                          userId: string): Observable<any> => {
+                                          userId: string,
+                                          widgetId: string): Observable<any> => {
         return store.select(state => state.widgets.challengeUserWidgetData)
                     .pipe(
                         map(dataState => dataState[challengeId] || {}),
-                        map(dataState => dataState[challengeId][userId] || {}),
-                        map(dataState => dataState[challengeId][userId][widgetId]),
+                        map(dataState => dataState[userId] || {}),
+                        map(dataState => dataState[widgetId]),
                         clgu.common.untilDataObjectChanged(),
                         map(udo => udo ? udo.data : null)
                     )

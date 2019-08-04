@@ -14,6 +14,10 @@ export class WidgetActions {
     public static readonly UPDATE_CHALLENGE_USER_WIDGETS_SUCCESS = '[Widgets] UPDATE_CHALLENGE_USER_WIDGETS_SUCCESS';
     public static readonly UPDATE_CHALLENGE_USER_WIDGETS_FAIL = '[Widgets] UPDATE_CHALLENGE_USER_WIDGETS_FAIL';
 
+    public static readonly FETCH_CHALLENGE_USER_WIDGET_DATA = '[Widgets] FETCH_CHALLENGE_USER_WIDGET_DATA';
+    public static readonly FETCH_CHALLENGE_USER_WIDGET_DATA_SUCCESS = '[Widgets] FETCH_CHALLENGE_USER_WIDGET_DATA_SUCCESS';
+    public static readonly FETCH_CHALLENGE_USER_WIDGET_DATA_FAIL = '[Widgets] FETCH_CHALLENGE_USER_WIDGET_DATA_FAIL';
+
     public static readonly UPDATE_CHALLENGE_USER_WIDGET_DATA = '[Widgets] UPDATE_CHALLENGE_USER_WIDGET_DATA';
     public static readonly UPDATE_CHALLENGE_USER_WIDGET_DATA_SUCCESS = '[Widgets] UPDATE_CHALLENGE_USER_WIDGET_DATA_SUCCESS';
     public static readonly UPDATE_CHALLENGE_USER_WIDGET_DATA_FAIL = '[Widgets] UPDATE_CHALLENGE_USER_WIDGET_DATA_FAIL';
@@ -70,6 +74,24 @@ export class WidgetActions {
 
     public static readonly UpdateChallengeUserWidgetsFail = class implements Action {
         public readonly type = WidgetActions.UPDATE_CHALLENGE_USER_WIDGETS_FAIL;
+        constructor(public payload: clgu.widgets.ChallengeUserWidgetData<clgu.common.Error>) {
+        }
+    }
+
+    public static readonly FetchChallengeUserWidgetData = class implements Action {
+        public readonly type = WidgetActions.FETCH_CHALLENGE_USER_WIDGET_DATA;
+        constructor(public payload: clgu.widgets.ChallengeUserWidgetData<any>) {
+        }
+    }
+
+    public static readonly FetchChallengeUserWidgetDataSuccess = class implements Action {
+        public readonly type = WidgetActions.FETCH_CHALLENGE_USER_WIDGET_DATA_SUCCESS;
+        constructor(public payload: clgu.widgets.ChallengeUserWidgetData<any>) {
+        }
+    }
+
+    public static readonly FetchChallengeUserWidgetDataFail = class implements Action {
+        public readonly type = WidgetActions.FETCH_CHALLENGE_USER_WIDGET_DATA_FAIL;
         constructor(public payload: clgu.widgets.ChallengeUserWidgetData<clgu.common.Error>) {
         }
     }

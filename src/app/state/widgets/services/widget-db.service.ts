@@ -11,6 +11,7 @@ export class WidgetDbService {
 
     private ALL_WIDGETS_REF = 'widgets';
     private WIDGET_BY_CHALLENGE_BY_USER_REF = 'challenges_users_widgets';
+    private WIDGET_DATA_REF = 'challenge_users_widgets_data';
 
     constructor(
         private dbService: DatabaseService
@@ -45,6 +46,27 @@ export class WidgetDbService {
                 map(() => widgetIds)
             );
     }
+
+
+    public fetchDataByWidgetByChallengeByUser(challengeId: string,
+                                              userId: string,
+                                              widgetId: string): Observable<any> {
+        const path = `${this.WIDGET_DATA_REF}/${challengeId}/${userId}/${widgetId}`;
+        return this.dbService.readOnce(path)
+    }
+
+
+    public updateDataByWidgetByChallengeByUser(challengeId: string,
+                                            userId: string,
+                                            widgetId: string,
+                                            data: any): Observable<any> {
+        const path = `${this.WIDGET_DATA_REF}/${challengeId}/${userId}/${widgetId}`;
+        return this.dbService.set(path, data)
+            .pipe(map(() => data));
+    }
+
+
+
 
 
     private getWidgetObject(widgetIds: string[]): clgu.widgets.db.UserWidgets {

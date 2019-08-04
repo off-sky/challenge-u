@@ -1,0 +1,64 @@
+
+.y-timer {
+    &__main {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-evenly;
+    }
+
+    &__display-value {
+        margin-right: 10px;
+        font-size: 20px;
+        color: rgb(105, 105, 105);
+    }
+
+    &__label {
+        font-size: 10px;
+        color: rgb(105, 105, 105);
+    }
+
+    &__intervals {
+        padding-top: 30px;
+    }
+
+    &__top {
+        display: flex;
+        width: 100%;
+        justify-content: center;
+        min-height: 40px;
+        margin-bottom: 10px;
+        &__inputs {
+            display: flex;
+        }
+        &__save-mode {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+    }
+
+    &__time {
+        display: flex;
+        &__item {
+            min-width: 50px;
+            margin-right: 10px;
+        }
+    }
+}
+
+.y-cancel-btn {
+    margin-right: 10px;
+}
+
+.y-interval {
+    margin-bottom: 20px;
+    padding: 0 40px;
+    &__name {
+        font-weight: bold;
+    }
+    &__time {
+        font-size: 10px;
+        color: rgb(105, 105, 105);
+    }
+}

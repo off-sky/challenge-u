@@ -35,6 +35,28 @@ export function widgetReducer(state: WidgetState = WidgetInitialState, action: Y
             return newState;
         }
 
+
+        case WidgetActions.UPDATE_CHALLENGE_USER_WIDGET_DATA_SUCCESS: {
+            const p = action.payload as clgu.widgets.ChallengeUserWidgetData<any>;
+            newState.challengeUserWidgetData[p.challengeId] = newState.challengeUserWidgetData[p.challengeId] || {};
+            newState.challengeUserWidgetData[p.challengeId][p.userId] = newState.challengeUserWidgetData[p.challengeId][p.userId] || {};
+            newState.challengeUserWidgetData[p.challengeId][p.userId][p.widgetId] =
+                new clgu.common.UpdatableDataObject<any>(null, p.data);
+
+            return newState;
+        }
+
+
+        case WidgetActions.FETCH_CHALLENGE_USER_WIDGET_DATA_SUCCESS: {
+            const p = action.payload as clgu.widgets.ChallengeUserWidgetData<any>;
+            newState.challengeUserWidgetData[p.challengeId] = newState.challengeUserWidgetData[p.challengeId] || {};
+            newState.challengeUserWidgetData[p.challengeId][p.userId] = newState.challengeUserWidgetData[p.challengeId][p.userId] || {};
+            newState.challengeUserWidgetData[p.challengeId][p.userId][p.widgetId] =
+                new clgu.common.UpdatableDataObject<any>(null, p.data);
+
+            return newState;
+        }
+
         case WidgetActions.UPDATE_CHALLENGE_USER_WIDGETS_SUCCESS: {
             const payload = action.payload as clgu.widgets.ChallengeUserWidgetData<string[]>;
             newState.challengeUserWidgets[payload.challengeId] = newState.challengeUserWidgets[payload.challengeId] || {};

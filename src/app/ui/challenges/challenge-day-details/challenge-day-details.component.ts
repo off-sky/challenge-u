@@ -32,8 +32,8 @@ export class ChallengeDayDetailsComponent implements OnInit {
   private currentUser$: Observable<clgu.users.User>;
 
   private dayId: string;
-  private challengeId: string;
-  private userId: string;
+  public challengeId: string;
+  public userId: string;
 
 
   public cheerUpTexts = [

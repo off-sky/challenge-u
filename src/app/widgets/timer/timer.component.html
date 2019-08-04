@@ -1,3 +1,121 @@
-<p>
-  timer works!
-</p>
+<div class="y-timer">
+  <div class="y-timer__main">
+      <div *ngIf="!isRunning" class="y-timer__top">
+          <div *ngIf="!saveMode" class="y-timer__top__inputs">
+              <div class="y-timer__time">
+                  <div class="y-timer__time__item hours">
+                    <y-range-input [min]="0"
+                                   [max]="10"
+                                   [control]="hoursControl"
+                      >
+                    </y-range-input>
+                    <div class="y-timer__label">
+                      Hours
+                    </div>
+                  </div>
+                  <div class="y-timer__time__item minutes">
+                    <y-range-input [min]="0"
+                                    [max]="60"
+                                    [control]="minutesControl"
+                      >
+                    </y-range-input>
+                    <div class="y-timer__label">
+                      Minutes
+                    </div>
+                  </div>
+                  <div class="y-timer__time__item seconds">
+                    <y-range-input [min]="0"
+                                   [max]="60"
+                                   [control]="secondsControl"
+                      >
+                    </y-range-input>
+                    <div class="y-timer__label">
+                      Seconds
+                    </div>
+                  </div>
+                </div>
+                <div class="y-timer__save">
+                  <button (click)="toggleSaveMode()"
+                          mat-stroked-button
+                    >
+                    Save...
+                  </button>
+                </div>
+          </div>
+          <div *ngIf="saveMode" class="y-timer__top__save-mode">
+              <div>
+                <mat-form-field>
+                  <input matInput
+                    placeholder="Timer Name"
+                    [formControl]="timerNameControl"
+                  >
+                </mat-form-field>
+              </div>
+              <div class="y-timer__top__save-mode__buttons">
+                  <button (click)="toggleSaveMode()"
+                          class="y-cancel-btn"
+                              mat-flat-button
+                    >
+                    Cancel
+                  </button>
+                  <button (click)="onSaveClick()"
+                          mat-flat-button color="primary"
+                    >
+                    Save
+                  </button>
+              </div>
+          </div>
+        
+      </div>
+      <div *ngIf="isRunning" class="y-timer__top">
+          <div class="y-timer__display-value hours" *ngIf="currentHours | async; let val">
+            {{ val }}
+          </div>
+          <div class="y-timer__display-value minutes" *ngIf="currentMinutes | async; let val">
+            {{ val }}
+          </div>
+          <div class="y-timer__display-value seconds" *ngIf="currentSeconds | async; let val">
+            {{ val }}
+          </div>
+      </div>
+      <div *ngIf="!saveMode" class="y-timer__controls">
+          <div class="y-timer__controls__container">
+              <button mat-icon-button *ngIf="!isRunning" (click)="onToggleRunStop()">
+                <mat-icon>play_arrow</mat-icon>
+              </button>
+              <ng-container *ngIf="isRunning">
+                  <div class="y-timer__controls__container">
+                      <button mat-icon-button *ngIf="!isPaused" (click)="onTogglePause()">
+                        <mat-icon>pause</mat-icon>
+                      </button>
+                      <button mat-icon-button *ngIf="isPaused" (click)="onTogglePause()">
+                        <mat-icon>play_arrow</mat-icon>
+                      </button>
+                      <button mat-icon-button (click)="onToggleRunStop()">
+                        <mat-icon>stop</mat-icon>
+                      </button>
+                  </div>
+              </ng-container>
+          </div>
+      </div>
+  </div>
+  
+
+  <div class="y-timer__bottom">
+      <div class="y-timer__intervals">
+          <div *ngFor="let int of intervals$ | async;"
+               (click)="onIntervalClick(int)"
+               class="y-interval"
+               >
+            <div class="y-interval__name">
+                {{ int.name }}
+            </div>
+            <div class="y-interval__time">
+              <span>{{ int.hours }}</span> :
+              <span>{{ int.minutes }}</span> :
+              <span>{{ int.seconds }}</span>
+            </div>
+          </div>
+      </div>
+  </div>
+</div>
