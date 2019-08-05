@@ -19,6 +19,7 @@ import { PageService } from 'src/app/core/services/page.service';
 export class DetailsRootComponent implements AfterViewInit, OnInit {
 
   public challenge$: Observable<clgu.challenges.Challenge>;
+  public challengeAuthor$: Observable<clgu.users.User>;
   public isMine: Observable<boolean>;
   public amIparticipant: Observable<boolean>;
   public showScrollUpButton$: Observable<boolean>;
@@ -43,6 +44,8 @@ export class DetailsRootComponent implements AfterViewInit, OnInit {
         map(challDb => new clgu.challenges.models.Challenge(challDb)),
         shareReplay(1)
       );
+
+    this.challengeAuthor$ = ChallengesSelectors.challengeAuthor$(this.store, this.route.snapshot.params.id)
 
  
     this.isMine = ChallengesSelectors.isMyChallenge$(this.store, this.route.snapshot.params.id);

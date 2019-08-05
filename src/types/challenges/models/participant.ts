@@ -12,6 +12,8 @@ export class Participant implements iParticipant {
     displayName: string;
     photo: Photo;
     activities: Activity[] = [];
+    totalDaysCount: number;
+    showUpDaysCount: number;
 
     constructor(user: userDb.UserLike,
                 commonDays: challDb.CommonChallengeDays,
@@ -23,6 +25,8 @@ export class Participant implements iParticipant {
             ) {
         this.initUser(user);
         this.initActivities(commonDays, userDays, challengeType, challengeId, measurements, challRequirements);
+        this.totalDaysCount = this.activities.filter(a => !a.isFuture).length;
+        this.showUpDaysCount = this.activities.filter(a => !a.isFuture && a.isShowUp).length;
     }
 
 

@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ReflectiveInjector, ComponentFactoryResolver, ViewChild, ViewContainerRef, AfterViewInit } from '@angular/core';
+import { Component, OnInit, Input, ReflectiveInjector, ComponentFactoryResolver, ViewChild, ViewContainerRef, AfterViewInit, ChangeDetectorRef } from '@angular/core';
 import { clgu } from 'src/types';
 import * as widgetComponents from '../../../types/widgets/widget-components';
 import { AppState } from 'src/app/state/app.state';
@@ -20,6 +20,7 @@ export class WidgetRendererComponent implements AfterViewInit, OnInit {
   @ViewChild('insert', {read: ViewContainerRef }) private insertContainer: ViewContainerRef;
 
   constructor(
+    private cd: ChangeDetectorRef,
     private resolver: ComponentFactoryResolver,
     private store: Store<AppState>
   ) { }
@@ -51,6 +52,7 @@ export class WidgetRendererComponent implements AfterViewInit, OnInit {
         .subscribe(data => {
           const copy = clgu.utils.cloneDeep(data)
           instance.dataArrived$.next(copy);
+          this.cd.detectChanges();
         })
 
         instance.dataSaved$
@@ -68,6 +70,7 @@ export class WidgetRendererComponent implements AfterViewInit, OnInit {
           })
 
         this.insertContainer.insert(component.hostView);
+        this.cd.detectChanges();
     }
   }
 

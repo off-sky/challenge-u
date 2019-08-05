@@ -1,3 +1,5 @@
+@import '../../global-styles/variables';
+
 .y-title-1 {
     font-size: 25px;
     font-weight: 500;
@@ -46,6 +48,12 @@
         }
     }
 
+    &__show-up-rate {
+        font-size: 12px;
+        color: $grey;
+        text-align: center;
+    }
+
     &__info {
         display: flex;
         &__wrap {
@@ -84,13 +92,14 @@
 }
 
 .y-challenge-actions {
-    display:  flex;
-    flex-wrap: wrap;
-    button {
-        margin: 5px 0;
-    }
-    button:not(:last-child) {
-        margin-right: 10px;
+    padding: 20px;
+    &__item {
+        cursor: pointer;
+        padding: 20px 0;
+        font-weight: bold;
+        &:hover {
+            text-decoration: underline;
+        }
     }
 }
 
@@ -104,6 +113,12 @@
 
 .y-challenge-decription {
     margin-bottom: 20px;
+}
+
+.challenge-author {
+    font-size: 12px;
+    font-weight: normal;
+    color: $grey;
 }
 
 .y-scroll-up-btn {

@@ -80,18 +80,18 @@
       </div>
       <div *ngIf="!saveMode" class="y-timer__controls">
           <div class="y-timer__controls__container">
-              <button mat-icon-button *ngIf="!isRunning" (click)="onToggleRunStop()">
+              <button mat-icon-button class="btn" *ngIf="!isRunning" (click)="onToggleRunStop()">
                 <mat-icon>play_arrow</mat-icon>
               </button>
               <ng-container *ngIf="isRunning">
                   <div class="y-timer__controls__container">
-                      <button mat-icon-button *ngIf="!isPaused" (click)="onTogglePause()">
+                      <button mat-icon-button class="btn" *ngIf="!isPaused" (click)="onTogglePause()">
                         <mat-icon>pause</mat-icon>
                       </button>
-                      <button mat-icon-button *ngIf="isPaused" (click)="onTogglePause()">
+                      <button mat-icon-button class="btn" *ngIf="isPaused" (click)="onTogglePause()">
                         <mat-icon>play_arrow</mat-icon>
                       </button>
-                      <button mat-icon-button (click)="onToggleRunStop()">
+                      <button mat-icon-button class="btn" (click)="onToggleRunStop()">
                         <mat-icon>stop</mat-icon>
                       </button>
                   </div>

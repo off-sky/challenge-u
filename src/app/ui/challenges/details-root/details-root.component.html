@@ -8,27 +8,12 @@
         </div>
         <div class="challenge-name">
             {{ challenge?.displayName }}
+            <div class="challenge-author" *ngIf="challengeAuthor$ | async; let author;">
+              by {{ author.displayName }}
+             </div>
         </div>
     </div>
 
-    <div class="y-challenge-actions">
-        <button *ngIf="amIparticipant | async"
-                mat-raised-button color="primary"
-                (click)="openMeasurements()"
-          >
-          Measurements
-        </button>
-        <button *ngIf="isMine | async" mat-raised-button color="primary"
-                (click)="openEdit()"
-          >
-          Edit
-        </button>
-        <button *ngIf="amIparticipant | async" mat-raised-button color="primary"
-                (click)="openWidgetManager()"
-          >
-          Widgets
-        </button>
-    </div>
   </div>
 
   <div class="y-challenge-decription">
@@ -64,6 +49,9 @@
                           </div>
                           <div class="y-participants__info-item__name">
                               {{ p.displayName }}
+                          </div>
+                          <div class="y-participants__show-up-rate">
+                            Showed up to {{ p.showUpDaysCount }} of {{ p.totalDaysCount}}
                           </div>
                     </div>
                 </ng-container>
@@ -108,3 +96,35 @@
   </div>
 
 </div>
+
+<y-widget-menu>
+
+  <y-widget-menu-item>
+    <y-widget-menu-trigger>
+      <mat-icon>settings</mat-icon>
+    </y-widget-menu-trigger>
+    <y-widget-menu-contents>
+      <div class="y-challenge-actions">
+        <div    class="y-challenge-actions__item"
+                *ngIf="amIparticipant | async"
+                (click)="openMeasurements()"
+          >
+          Measurements...
+        </div>
+        <div class="y-challenge-actions__item"
+              *ngIf="isMine | async"
+                (click)="openEdit()"
+          >
+          Edit
+        </div>
+        <div    class="y-challenge-actions__item"
+                *ngIf="amIparticipant | async"
+                (click)="openWidgetManager()"
+          >
+          Widgets
+        </div>
+    </div>
+    </y-widget-menu-contents>
+  </y-widget-menu-item>
+  
+</y-widget-menu>

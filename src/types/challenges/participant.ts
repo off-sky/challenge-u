@@ -6,4 +6,6 @@ export interface Participant {
     displayName: string;
     photo: Photo;
     activities: Activity[];
+    totalDaysCount: number;
+    showUpDaysCount: number;
 }
