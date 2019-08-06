@@ -42,7 +42,11 @@
           <div class="y-participants__info__wrap">
               <div class="y-participants__info">
                 <ng-container *ngFor="let p of challenge.participants">
-                    <div *ngIf="showFormGroup.get(p.id).value" class="y-participants__info-item">
+                    <div *ngIf="showFormGroup.get(p.id).value" class="y-participants__info-item"
+                          [ngClass]="{
+                            'mobile': (screenSize$ | async) === 'mobile'
+                          }"
+                      >
               
                           <div class="y-participants__info-item__photo">
                               <y-photo [data]="p?.photo?.data"></y-photo>
@@ -62,7 +66,11 @@
           <div #daysWrap class="y-participants__days__wrap">
               <div class="y-participants__days">
                 <ng-container *ngFor="let p of challenge.participants">
-                    <div *ngIf="showFormGroup.get(p.id).value" class="y-participants__days-item">
+                    <div *ngIf="showFormGroup.get(p.id).value" class="y-participants__days-item"
+                          [ngClass]="{
+                            'mobile': (screenSize$ | async) === 'mobile'
+                          }"
+                      >
                         <div *ngFor="let a of p.activities" class="y-participants__days-item__day"
                           >
                               <y-challenge-day-card [activity]="a"

@@ -38,6 +38,11 @@
             width: $item-width;
             &__day {
                 margin-bottom: 10px;
+                display: flex;
+                justify-content: center;
+            }
+            &.mobile {
+                width: 100px;
             }
         }
         &__wrap {
@@ -67,6 +72,7 @@
             margin: 0 -40px;
             margin-bottom: 20px;
         }
+
     }
 
     &__info-item {
@@ -83,6 +89,9 @@
             text-align: center;
             font-size: 14px;
             font-weight: 500;
+        }
+        &.mobile {
+            width: 100px;
         }
     }
 

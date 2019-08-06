@@ -1,5 +1,6 @@
 <div class="y-day-card" [ngClass]="{
-  active: isActive
+  active: isActive,
+  mobile: (screenSize$ | async) === 'mobile'
 }"
 (click)="onDayClick()"
 >

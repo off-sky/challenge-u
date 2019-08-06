@@ -10,6 +10,7 @@ import { FormGroup, FormControl } from '@angular/forms';
 import { AuthSelectors } from 'src/app/state/auth/_auth.selectors';
 import { ScreenSizeService } from 'src/app/core/screen-size/screen-size.service';
 import { PageService } from 'src/app/core/services/page.service';
+import { ScreenSizeType } from 'src/app/core/screen-size/interfaces';
 
 @Component({
   selector: 'y-details-root',
@@ -22,6 +23,7 @@ export class DetailsRootComponent implements AfterViewInit, OnInit {
   public challengeAuthor$: Observable<clgu.users.User>;
   public isMine: Observable<boolean>;
   public amIparticipant: Observable<boolean>;
+  public screenSize$: Observable<ScreenSizeType>;
   public showScrollUpButton$: Observable<boolean>;
   public showScrollDownButton$: Observable<boolean>;
   public showFormGroup: FormGroup;
@@ -56,6 +58,7 @@ export class DetailsRootComponent implements AfterViewInit, OnInit {
 
 
   ngAfterViewInit() {
+    this.screenSize$ = this.screenSizeService.screenSize$();
     this.showScrollUpButton$ = this.showScrollUpButton();
     this.showScrollDownButton$ = this.showScrollDownButton();
   }
@@ -69,16 +72,16 @@ export class DetailsRootComponent implements AfterViewInit, OnInit {
     this.router.navigate(['home', 'challenges', 'list']);
   }
 
-  public onScrollDayIntoView(el: ElementRef): void {
-    if (el) {
-      const div = el.nativeElement as HTMLElement;
-      div.scrollIntoView({ behavior: 'auto', block: 'center'});
-      setTimeout(() => {
-        this.pageService.currentContentScroll()
-          .then(y => this.lastActiveDayY = y);
-      })
-    }
-  }
+  // public onScrollDayIntoView(el: ElementRef): void {
+  //   if (el) {
+  //     const div = el.nativeElement as HTMLElement;
+  //     div.scrollIntoView({ behavior: 'auto', block: 'center'});
+  //     setTimeout(() => {
+  //       this.pageService.currentContentScroll()
+  //         .then(y => this.lastActiveDayY = y);
+  //     })
+  //   }
+  // }
 
   public onScrollUpClicked(): void {
     this.pageService.scrollContentY(0);
