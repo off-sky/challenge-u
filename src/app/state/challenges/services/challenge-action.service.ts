@@ -83,9 +83,15 @@ export class ChallengeActionService {
   }
 
   // TODO: Implement delete challenge
-  // public deleteChallenge(challengeId: string): Observable<void> {
-
-  // }
+  public leaveChallenge(challengeId: string, userId: string): Observable<void> {
+    const challengesByUserRef = `${this.CHALLENGE_BY_USER_PATH}/${userId}/${challengeId}`;
+    const usersByChallengeRef = `${this.PARTICIPANTS_PATH}/${challengeId}/${userId}`;
+    const updateObj = {
+      [challengesByUserRef]: null,
+      [usersByChallengeRef]: null
+    }
+    return this.dbService.update(undefined, updateObj);
+  }
 
   private getShowUpObject(req: clgu.challenges.DayShowUpRequest): clgu.challenges.db.UserChallengeDay {
     const result = {

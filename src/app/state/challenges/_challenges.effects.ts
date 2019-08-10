@@ -14,6 +14,7 @@ import { ChallengeActionService } from './services/challenge-action.service';
 import { Router } from '@angular/router';
 import { ChallengesDbActions } from './_challenges.db.actions';
 import { ChallengesSelectors } from './_challenges.selectors';
+import { AuthState } from '../auth/_auth.state';
 
 @Injectable()
 export class ChallengesEffects {
@@ -299,5 +300,23 @@ export class ChallengesEffects {
                         )
                 })
             );
+
+
+        /**Leave challenge */
+        @Effect() public leaveChallenge$ = this.actions
+                .pipe(
+                    ofType(ChallengesActions.LEAVE_CHALLENGE),
+                    withLatestFrom(this.store.select(state => state.auth)),
+                    switchMap((vals: [ YAction<string>, AuthState]) => {
+                        const [ action, state ] = vals;
+                        const challengeId = action.payload;
+                        const userId = state.authCheck.user.id;
+                        return this.challengeActionService.leaveChallenge(challengeId, userId)
+                            .pipe(
+                                map(res => new ChallengesActions.LeaveChallengeSuccess(challengeId)),
+                                catchError(err => of(new ChallengesActions.LeaveChallengeFail({ id: challengeId, error: err})))
+                            );
+                    })
+                )
 
 }

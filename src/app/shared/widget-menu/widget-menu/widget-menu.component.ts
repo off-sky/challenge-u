@@ -111,14 +111,5 @@ export class WidgetMenuComponent implements AfterContentInit, OnInit {
   }
 
 
-  private createContent(contentCmp: ElementRef): void {
-    console.log('Creating contents:');
-    console.log(contentCmp.nativeElement);
-    console.log('Parent:');
-    console.log(this.containerRef.nativeElement);
-    const el = contentCmp.nativeElement as HTMLElement;
-    this.renderer.appendChild(this.containerRef.nativeElement, el.children[0]);
-    this.cd.detectChanges();
-  }
 
 }

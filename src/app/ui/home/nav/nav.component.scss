@@ -15,7 +15,11 @@
         height: 100%;
         background-color: gainsboro;
         padding-top: $header-height;
-    
+        transition: width 0.3s ease-in-out;
+        &.mobile {
+            position: fixed;
+            z-index: 1000;
+        }
         &.opened {
             width: 200px;
         }
@@ -35,7 +39,9 @@
         height: 100vh;
         overflow: auto;
         &.opened {
-            width: calc(100vw - 200px);
+            &:not(.mobile) {
+                width: calc(100vw - 200px);
+            }
         }
     }
 }

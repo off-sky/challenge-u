@@ -3,7 +3,7 @@ import { clgu } from '../../../../types';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AppState } from 'src/app/state/app.state';
 import { Store } from '@ngrx/store';
-import { map, take, shareReplay, debounceTime, tap } from 'rxjs/operators';
+import { map, take, shareReplay, debounceTime, tap, startWith } from 'rxjs/operators';
 import { Observable, combineLatest, fromEvent } from 'rxjs';
 import { ChallengesSelectors } from 'src/app/state/challenges/_challenges.selectors';
 import { FormGroup, FormControl } from '@angular/forms';
@@ -58,9 +58,11 @@ export class DetailsRootComponent implements AfterViewInit, OnInit {
 
 
   ngAfterViewInit() {
-    this.screenSize$ = this.screenSizeService.screenSize$();
-    this.showScrollUpButton$ = this.showScrollUpButton();
-    this.showScrollDownButton$ = this.showScrollDownButton();
+    setTimeout(() => {
+      this.screenSize$ = this.screenSizeService.screenSize$();
+      this.showScrollUpButton$ = this.showScrollUpButton();
+      this.showScrollDownButton$ = this.showScrollDownButton();
+    });
   }
 
 
@@ -72,16 +74,12 @@ export class DetailsRootComponent implements AfterViewInit, OnInit {
     this.router.navigate(['home', 'challenges', 'list']);
   }
 
-  // public onScrollDayIntoView(el: ElementRef): void {
-  //   if (el) {
-  //     const div = el.nativeElement as HTMLElement;
-  //     div.scrollIntoView({ behavior: 'auto', block: 'center'});
-  //     setTimeout(() => {
-  //       this.pageService.currentContentScroll()
-  //         .then(y => this.lastActiveDayY = y);
-  //     })
-  //   }
-  // }
+  public onScrollDayIntoView(el: ElementRef): void {
+    if (el) {
+      const div = el.nativeElement as HTMLElement;
+      this.lastActiveDayY = div.getBoundingClientRect().top - 360;
+    }
+  }
 
   public onScrollUpClicked(): void {
     this.pageService.scrollContentY(0);
@@ -117,6 +115,7 @@ export class DetailsRootComponent implements AfterViewInit, OnInit {
   private showScrollDownButton(): Observable<boolean> {
     return this.pageService.contentScrolledY()
       .pipe(
+        startWith(0),
         map(val => val === 0)
       );
 }

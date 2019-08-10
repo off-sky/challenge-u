@@ -24,6 +24,7 @@ import { EditMeasPresetPopupComponent } from './edit-meas-preset-popup/edit-meas
 import { WidgetManagerRootComponent } from './widget-manager-root/widget-manager-root.component';
 import { ChallengeUserWidgetResolver } from './resolvers/challenge-user-widgets-resolver.service';
 import { WidgetsModule } from 'src/app/widgets/widgets.module';
+import { LeaveConfirmPopupComponent } from './leave-confirm-popup/leave-confirm-popup.component';
 
 @NgModule({
   declarations: [
@@ -44,7 +45,8 @@ import { WidgetsModule } from 'src/app/widgets/widgets.module';
     EditMeasurementsRootComponent,
     EditMeasurementsScheduleComponent,
     EditMeasPresetPopupComponent,
-    WidgetManagerRootComponent
+    WidgetManagerRootComponent,
+    LeaveConfirmPopupComponent
   ],
   providers: [
     ChallengeDetailsResolverService,
@@ -58,7 +60,8 @@ import { WidgetsModule } from 'src/app/widgets/widgets.module';
     WidgetsModule
   ],
   entryComponents: [
-    EditMeasPresetPopupComponent
+    EditMeasPresetPopupComponent,
+    LeaveConfirmPopupComponent
   ]
 })
 export class ChallengesModule { }

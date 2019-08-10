@@ -1,0 +1,12 @@
+<h1 mat-dialog-title>
+  {{ challengeName }}
+</h1>
+<div mat-dialog-content>
+    <div class="bold">
+      Are you sure you'd like to leave the challenge?
+    </div>
+</div>
+<div mat-dialog-actions>
+  <button mat-button [mat-dialog-close]="false">CANCEL</button>
+  <button mat-button [mat-dialog-close]="true" cdkFocusInitial>YES</button>
+</div>

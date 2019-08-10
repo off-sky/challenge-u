@@ -59,10 +59,12 @@ export class DatabaseService {
 
   public update(ref: string, updateObj: any): Observable<any> {
     return new Observable(observer => {
-      firebase.database().ref(ref).update(updateObj, (err) => {
+      const dbRef = ref ? firebase.database().ref(ref) : firebase.database().ref();
+      dbRef.update(updateObj, (err) => {
         if (err) {
           return observer.error(err);
         }
+        observer.next();
         observer.complete();
       });
     });

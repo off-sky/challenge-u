@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { environment } from 'src/environments/environment';
 import { StoreModule } from '@ngrx/store';
 import { StoreRouterConnectingModule } from '@ngrx/router-store';
-import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+// import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { EffectsModule } from '@ngrx/effects';
 import { AppEffects } from './app.effects';
 import { appReducer, appMetaReducers } from './app.reducer';
@@ -31,7 +31,7 @@ import { WidgetModule } from './widgets/widgets.module';
     UsersModule,
     WidgetModule,
 
-    !environment.production ? StoreDevtoolsModule.instrument() : []
+    // !environment.production ? StoreDevtoolsModule.instrument() : []
   ]
 })
 export class StateModule {

@@ -15,11 +15,20 @@
          >
       <mat-card>
           <mat-card-header>
-            <mat-card-title>{{ item.name }}</mat-card-title>
+            <mat-card-title class="card-title__wrap">
+              <div class="card-title">
+                <div>{{ item.name }}</div>
+              </div>
+            </mat-card-title>
             <mat-card-subtitle *ngIf="item.description">
               {{ item.description }}
             </mat-card-subtitle>
           </mat-card-header>
+          <button mat-icon-button class="close-btn"
+                  (click)="onCloseClick(item, $event)"
+            >
+            <mat-icon>close</mat-icon>
+          </button>
       </mat-card>
     </div>
   </div>

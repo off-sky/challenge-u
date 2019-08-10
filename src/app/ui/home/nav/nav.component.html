@@ -24,7 +24,8 @@
     </div>
     <div #content class="y-nav__content"
          [ngClass]="{
-                opened: opened
+                opened: opened,
+                mobile: currScreenSize === ScreenSizes.MOBILE
             }">
         <ng-content *ngIf="!(isRouteLoading$ | async)" ></ng-content>
         <y-section-spinner *ngIf="isRouteLoading$ | async"></y-section-spinner>

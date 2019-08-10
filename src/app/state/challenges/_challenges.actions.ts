@@ -54,6 +54,11 @@ export class ChallengesActions {
     public static readonly UPDATE_CHALLENGE_MEASUREMENTS_SUCCESS = `[Challenges] UPDATE_CHALLENGE_MEASUREMENTS_SUCCESS`;
     public static readonly UPDATE_CHALLENGE_MEASUREMENTS_FAIL = `[Challenges] UPDATE_CHALLENGE_MEASUREMENTS_FAIL`;
 
+    public static readonly LEAVE_CHALLENGE = `[Challenges] LEAVE_CHALLENGE`;
+    public static readonly LEAVE_CHALLENGE_SUCCESS = `[Challenges] LEAVE_CHALLENGE_SUCCESS`;
+    public static readonly LEAVE_CHALLENGE_FAIL = `[Challenges] LEAVE_CHALLENGE_FAIL`;
+
+
 
     public static readonly AddCategory = class implements Action {
         public readonly type = ChallengesActions.ADD_CATEGORY;
@@ -255,5 +260,25 @@ export class ChallengesActions {
     }
 
 
+    /**
+     * Leave Challenge
+     */
+    public static readonly LeaveChallenge = class implements Action {
+        public readonly type = ChallengesActions.LEAVE_CHALLENGE;
+        // challenge id
+        constructor(public payload: string) {}
+    }
+
+    public static readonly LeaveChallengeSuccess = class implements Action {
+        public readonly type = ChallengesActions.LEAVE_CHALLENGE_SUCCESS;
+        // challenge id
+        constructor(public payload: string) {}
+    }
+
+    
+    public static readonly LeaveChallengeFail = class implements Action {
+        public readonly type = ChallengesActions.LEAVE_CHALLENGE_FAIL;
+        constructor(public payload?: clgu.common.ErrorWithId) {}
+    }
 
 }
