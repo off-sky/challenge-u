@@ -33,6 +33,11 @@ export class ChallengeActionService {
       return this.dbService.set(`${this.CHALLENGE_USER_DATE_PATH}/${request.challengeId}/${request.userId}/${request.dayId}`, obj);
   }
 
+  public undoShowup(challengeId: string, userId: string, dayId: string): Observable<void> {
+    const ref = `${this.CHALLENGE_USER_DATE_PATH}/${challengeId}/${userId}/${dayId}`
+    return this.dbService.set(ref, null);
+  }
+
   public updateBasicChallengeInfo(challengeId: string, req: clgu.challenges.UpdateBasicInfoRequest): Observable<any> {
       const nameUpdate = req.name ? this.dbService.set(`${this.CHALLENGES_PATH}/${challengeId}/name`, req.name) : of(null);
       const descrUpdate = req.description ?  this.dbService.set(`${this.CHALLENGES_PATH}/${challengeId}/description`, req.description) : of(null);

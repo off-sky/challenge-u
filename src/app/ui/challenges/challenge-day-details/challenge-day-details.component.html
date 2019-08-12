@@ -29,14 +29,19 @@
                 }"
 >
     <div *ngIf="activity?.isShowUp" class="y-activity-status__show-up">
-        <div *ngIf="showUpText$ | async; let showUpText;">
-          {{ showUpText }}. <span *ngIf="isMine | async">
-            <ng-container *ngIf="cheerUpText$ | async; let cheerUpText">
-                {{ cheerUpText }}
-            </ng-container>
-          
-          </span>
-        </div> <mat-icon *ngIf="isMine">grade</mat-icon>
+      <div class="y-activity-status__show-up__cheer-up">
+          <div *ngIf="showUpText$ | async; let showUpText;">
+              {{ showUpText }}. <span *ngIf="isMine | async">
+                <ng-container *ngIf="cheerUpText$ | async; let cheerUpText">
+                    {{ cheerUpText }}
+                </ng-container>
+              
+              </span>
+            </div> <mat-icon *ngIf="isMine">grade</mat-icon>
+      </div>
+      <div>
+        <button mat-raised-button (click)="onUndoShowUp()">Undo</button>
+      </div>
     </div>
     <div *ngIf="activity?.isFuture">
         Wait till {{activity.displayLabel }} to show up for this activity 

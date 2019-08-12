@@ -59,6 +59,10 @@ export class ChallengesActions {
     public static readonly LEAVE_CHALLENGE_FAIL = `[Challenges] LEAVE_CHALLENGE_FAIL`;
 
 
+    public static readonly UNDO_SHOWUP = `[Challenges] UNDO_SHOWUP`;
+    public static readonly UNDO_SHOWUP_SUCCESS = `[Challenges] UNDO_SHOWUP_SUCCESS`;
+    public static readonly UNDO_SHOWUP_FAIL = `[Challenges] UNDO_SHOWUP_FAIL`;
+
 
     public static readonly AddCategory = class implements Action {
         public readonly type = ChallengesActions.ADD_CATEGORY;
@@ -279,6 +283,24 @@ export class ChallengesActions {
     public static readonly LeaveChallengeFail = class implements Action {
         public readonly type = ChallengesActions.LEAVE_CHALLENGE_FAIL;
         constructor(public payload?: clgu.common.ErrorWithId) {}
+    }
+
+    public static readonly UndoShowUp = class implements Action {
+        public readonly type = ChallengesActions.UNDO_SHOWUP;
+        constructor(public payload?: clgu.challenges.UndoShowupRequest) {
+        }
+    }
+
+    public static readonly UndoShowUpSuccess = class implements Action {
+        public readonly type = ChallengesActions.UNDO_SHOWUP_SUCCESS;
+        constructor(public payload?: clgu.challenges.UndoShowupRequest) {
+        }
+    }
+
+    public static readonly UndoShowUpFail = class implements Action {
+        public readonly type = ChallengesActions.UNDO_SHOWUP_FAIL;
+        constructor(public payload?: clgu.common.ErrorWithId) {
+        }
     }
 
 }

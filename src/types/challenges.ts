@@ -15,6 +15,7 @@ export { Requirement } from './challenges/requirement';
 export { RequirementPresetOption } from './challenges/requirement-preset-option';
 export { UpdateBasicInfoRequest } from './challenges/update-basic-info';
 export { UpdateParticipantsRequest } from './challenges/update-participants';
+export { UndoShowupRequest } from './challenges/undo-showup-request';
 import * as models from './challenges/models';
 import * as common from './challenges/common';
 export { models, common };

@@ -127,6 +127,10 @@ export class EditMeasurementsRootComponent implements OnInit {
     this.router.navigate(['home', 'challenges', 'details', this.challengeId])
   }
 
+  public onPreviousStep(): void {
+    this.goToStep(this.activeStep - 1);
+  }
+
   public goToStep(ind: number): void {
     this.activeStep = ind;
   }

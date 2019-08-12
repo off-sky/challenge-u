@@ -186,18 +186,15 @@ export class MeasurementEditorComponent implements OnDestroy, OnInit {
       dbMeasurements.sort((a, b) => a.order_no - b.order_no);
 
       dbMeasurements.forEach((m, i) => {
-        console.log(m);
         const fc =  new FormGroup({
           id: new FormControl(m.id),
           category: new FormControl([{ display: m.category, value: m.category }]),
           displayName: new FormControl(m.display_name, [ Validators.required ]),
           type: new FormControl(m.type),
-          formula: new FormControl(m.formula),
+          formula: new FormControl(clgu.utils.cloneDeep(m.formula)),
           orderNo: new FormControl(i),
         });
         this.control.push(fc);
-        const typeOption = this.measurementTypeOptions.find(o => o.value === m.type);
-        // fc.get('type').setValue(typeOption);
       });
 
       this.updateInputControls();

@@ -139,6 +139,18 @@ export class ChallengeDayDetailsComponent implements OnInit {
     }
   }
 
+  public onUndoShowUp(): void {
+    if (this.activity$) {
+      this.activity$
+        .pipe(
+          take(1)
+        )
+        .subscribe(activity => {
+          this.store.dispatch(new ChallengesActions.UndoShowUp({ challengeId: this.challengeId, dayId: activity.id }));
+        });
+    }
+  }
+
 
   public goBack(): void {
       this.router.navigate(['home', 'challenges', 'details', this.challengeId ])

@@ -317,6 +317,24 @@ export class ChallengesEffects {
                                 catchError(err => of(new ChallengesActions.LeaveChallengeFail({ id: challengeId, error: err})))
                             );
                     })
-                )
+                );
+
+    
+     /**Undo showup */
+     @Effect() public undoShowup$ = this.actions
+     .pipe(
+         ofType(ChallengesActions.UNDO_SHOWUP),
+         withLatestFrom(this.store.select(state => state.auth)),
+         switchMap((vals: [ YAction<clgu.challenges.UndoShowupRequest>, AuthState]) => {
+             const [ action, state ] = vals;
+             const req = action.payload;
+             const userId = state.authCheck.user.id;
+             return this.challengeActionService.undoShowup(req.challengeId, userId, req.dayId)
+                 .pipe(
+                     map(res => new ChallengesActions.UndoShowUpSuccess(req)),
+                     catchError(err => of(new ChallengesActions.UndoShowUpFail({ id: req.challengeId, error: err})))
+                 );
+         })
+     )
 
 }

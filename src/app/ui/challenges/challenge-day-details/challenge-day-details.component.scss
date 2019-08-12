@@ -51,7 +51,12 @@
 
     &__show-up {
         display: flex;
-        
+        align-items: center;
+        justify-content: space-between;
+        &__cheer-up {
+            display: flex;
+            align-items: center;
+        }
         div {
            margin-right: 10px; 
         }
