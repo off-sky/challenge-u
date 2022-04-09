@@ -30,7 +30,7 @@
     "core-js": "^2.5.4",
     "firebase": "^5.9.4",
     "mathjs-expression-parser": "^1.0.2",
-    "moment": "^2.24.0",
+    "moment": "^2.29.2",
     "ng-sidebar": "^8.0.0",
     "ng2-dragula": "^2.1.1",
     "ngrx-store-freeze": "^0.2.4",
